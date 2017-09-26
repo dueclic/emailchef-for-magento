@@ -42,21 +42,21 @@
     <adminhtml>
         <layout>
             <updates>
-                <namespace_module>
+                <dueclic_emailchef>
                     <file>emailchef.xml</file>
-                </namespace_module>
+                </dueclic_emailchef>
             </updates>
         </layout>
     </adminhtml>
     <frontend>
         <routers>
-            <emailchef>
+            <dueclic_emailchef>
                 <use>standard</use>
                 <args>
                     <module>Dueclic_Emailchef</module>
                     <frontName>emailchef</frontName>
                 </args>
-            </emailchef>
+            </dueclic_emailchef>
         </routers>
     </frontend>
 </config>

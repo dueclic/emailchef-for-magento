@@ -5,6 +5,10 @@ require_once(dirname(__DIR__) . "/lib/emailchef/class-emailchef.php");
 class Dueclic_Emailchef_AjaxController extends Mage_Core_Controller_Front_Action
 {
 
+	public function indexAction(){
+		die("foo");
+	}
+
     public function checkCredentialsAction()
     {
 

@@ -6,7 +6,7 @@ class Dueclic_Emailchef_Model_System_Config_Source_Dropdown_List {
         return array(
             array(
                 'value' => 'dopt',
-                'label' => Mage::getModuleDir('controllers', 'ajax'),
+                'label' => Mage::getBaseUrl(),
             ),
             array(
                 'value' => 'sopt',
