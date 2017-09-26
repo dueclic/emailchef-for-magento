@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="21d40169-49e0-4413-917c-bfe74759afb2" name="MagLocal" url="http://localhost">
+        <fileTransfer port="0" mountedRoot="/Library/WebServer/Documents/magento1" accessType="MOUNT" />
+      </webServer>
+    </option>
+  </component>
+</project>

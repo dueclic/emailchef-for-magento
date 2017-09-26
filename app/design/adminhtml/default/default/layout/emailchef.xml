@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<layout>
+    <default>
+        <reference name="head">
+            <action method="addCss">
+                <name>emailchef/css/emailchef.css</name>
+            </action>
+            <action method="addJs">
+                <script>emailchef/jquery.min.js</script>
+            </action>
+            <action method="addJs">
+                <script>emailchef/emailchef.js</script>
+            </action>
+        </reference>
+    </default>
+</layout>

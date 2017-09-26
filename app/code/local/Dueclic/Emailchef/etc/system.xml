@@ -1,0 +1,78 @@
+<?xml version="1.0"?>
+<config>
+    <tabs>
+        <emconf translate="label">
+            <label>eMailChef</label>
+            <sort_order>140</sort_order>
+        </emconf>
+    </tabs>
+    <sections>
+        <tab1 translate="label" module="adminhtml">
+            <label>Configurazione</label>
+            <tab>emconf</tab>
+            <sort_order>10</sort_order>
+            <show_in_default>1</show_in_default>
+            <show_in_website>1</show_in_website>
+            <show_in_store>1</show_in_store>
+            <groups>
+                <general translate="label comment">
+                    <label>Dati di accesso</label>
+                    <sort_order>50</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <username translate="label comment">
+                            <label>Username</label>
+                            <comment>Username eMailChef</comment>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <backend_model>dueclic_emailchef/usernamevalidator</backend_model>
+                        </username>
+                        <password translate="label comment">
+                            <label>Password</label>
+                            <comment>Password eMailChef</comment>
+                            <frontend_type>password</frontend_type>
+                            <sort_order>11</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </password>
+                        <check translate="label">
+                            <label>Test Login</label>
+                            <frontend_type>button</frontend_type>
+                            <sort_order>12</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <frontend_model>dueclic_emailchef/adminhtml_system_config_form_testbutton</frontend_model>
+                        </check>
+                        <list translate="label comment">
+                            <label>Lista</label>
+                            <comment>Scegli la lista</comment>
+                            <frontend_type>select</frontend_type>
+                            <source_model>dueclic_emailchef/system_config_source_dropdown_list</source_model>
+                            <sort_order>13</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </list>
+                        <policy translate="label comment">
+                            <label>Policy</label>
+                            <comment>Scegli se vuoi usare single / double opt-in</comment>
+                            <frontend_type>select</frontend_type>
+                            <source_model>dueclic_emailchef/system_config_source_dropdown_policy</source_model>
+                            <sort_order>14</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </policy>
+                    </fields>
+                </general>
+            </groups>
+        </tab1>
+    </sections>
+</config>
