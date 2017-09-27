@@ -52,20 +52,21 @@
                         </check>
                         <list translate="label comment">
                             <label>Lista</label>
-                            <comment>Scegli la lista</comment>
+                            <comment></comment>
                             <frontend_type>select</frontend_type>
                             <source_model>dueclic_emailchef/system_config_source_dropdown_list</source_model>
                             <sort_order>13</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
+                            <frontend_model>dueclic_emailchef/adminhtml_system_config_form_listselect</frontend_model>
                         </list>
                         <policy translate="label comment">
                             <label>Policy</label>
                             <comment>Scegli se vuoi usare single / double opt-in</comment>
                             <frontend_type>select</frontend_type>
                             <source_model>dueclic_emailchef/system_config_source_dropdown_policy</source_model>
-                            <sort_order>14</sort_order>
+                            <sort_order>15</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>

@@ -7,6 +7,12 @@ function checkLogin() {
 }
 
 $e(document).ready(function () {
+
+  $e("#create_emailchef_list_trigger").on("click", function(evt){
+    evt.preventDefault();
+    $e("#create_emailchef_list").toggle();
+  });
+
   $e("#emailchef_selftest_button").on("click", function (evt) {
     evt.preventDefault();
     var btn = $e(this);
@@ -27,7 +33,7 @@ $e(document).ready(function () {
           if (response.lists.length > 0) {
 
             $e.each(response.lists, function (key, list) {
-              $e("#tab1_general_list").append($e('<option>').text(list.name).attr('value', list.id));
+              $e("#tab1_general_list").append($e('<option>').text(list.label).attr('value', list.value));
             });
 
           }
@@ -36,6 +42,9 @@ $e(document).ready(function () {
             $e("#tab1_general_list").append($e('<option>').text("Nessuna lista trovata.").attr('value', -1))
           }
 
+        }
+        else {
+          alert(response.msg);
         }
       },
       error: function (jqXHR, textStatus, errorThrown) {

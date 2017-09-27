@@ -1,5 +1,26 @@
 /*
-
 eMailChef css
-
 */
+
+#create_emailchef_list {
+  background: rgb(244, 114, 0);
+  padding: 10px;
+  display: none;
+}
+
+#create_emailchef_list strong {
+  color: #fff;
+}
+
+#create_emailchef_list p.note span {
+  color: #fff;
+}
+
+#create_emailchef_list .btn-emailchef {
+  margin-top: 10px;
+}
+
+#create_emailchef_list_btn {
+  background: #fff;
+  color: rgb(244, 114, 0);
+}

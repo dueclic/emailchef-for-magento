@@ -69,8 +69,8 @@ class MG_Emailchef extends MG_Emailchef_Api
 
         foreach ($lists as $list) {
             $results[] = array(
-                'id'   => $list['id'],
-                'name' => $list['name'],
+                'value'   => $list['id'],
+                'label' => $list['name'],
             );
         }
 

@@ -1,13 +1,7 @@
 <?php
 
-require_once(dirname(__DIR__) . "/lib/emailchef/class-emailchef.php");
-
 class Dueclic_Emailchef_AjaxController extends Mage_Core_Controller_Front_Action
 {
-
-	public function indexAction(){
-		die("foo");
-	}
 
     public function checkCredentialsAction()
     {
@@ -20,7 +14,14 @@ class Dueclic_Emailchef_AjaxController extends Mage_Core_Controller_Front_Action
         $postData = $this->getRequest()->getPost();
 
         if (isset($postData['username']) && isset($postData['password'])) {
-            $mgec = new MG_Emailchef($postData['username'], $postData['password']);
+
+            /**
+             * @var $config \Dueclic_Emailchef_Model_Config
+             */
+
+            $config = Mage::getModel("dueclic_emailchef/config");
+
+            $mgec = $config->getEmailChefInstance($postData['username'], $postData['password']);
 
             if ($mgec->isLogged()) {
                 $response["type"] = "success";
