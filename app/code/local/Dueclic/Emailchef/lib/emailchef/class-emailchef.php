@@ -124,9 +124,14 @@ class MG_Emailchef extends MG_Emailchef_Api
 
     protected function get_custom_fields()
     {
-        $custom_fields = require(PS_EMAILCHEF_DIR . "/conf/custom_fields.php");
 
-        return $custom_fields;
+	    /**
+	     * @var $helper \Dueclic_Emailchef_Helper_Customfield
+	     */
+
+    	$helper = Mage::helper("dueclic_emailchef/customfield");
+    	return $helper->getCustomFields();
+
     }
 
     /**
