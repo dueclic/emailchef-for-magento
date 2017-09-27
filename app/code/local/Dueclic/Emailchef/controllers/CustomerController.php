@@ -10,6 +10,7 @@ class Dueclic_Emailchef_CustomerController extends
         $model = Mage::getModel("customer/customer");
 
         $customerCollection = $model->getCollection();
+        $customersCollection = array();
 
         foreach ($customerCollection as $customerCollectionId) {
 
@@ -61,6 +62,7 @@ class Dueclic_Emailchef_CustomerController extends
 
                 $data = array_merge(
                     $data, array(
+                        "lang" => $helper->getStoreIdByCustomerCountryId($address->getCountry()),
                         "billing_company"   => $address->getData("company"),
                         "billing_address_1" => $address->getData('street'),
                         "billing_postcode"  => $address->getData("postcode"),
@@ -74,10 +76,11 @@ class Dueclic_Emailchef_CustomerController extends
                 );
             }
 
-            print_r($data);
+            $customersCollection[] = $data;
 
-            exit;
         }
+
+        return $customersCollection;
 
     }
 

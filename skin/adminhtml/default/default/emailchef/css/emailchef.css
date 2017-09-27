@@ -7,20 +7,50 @@ eMailChef css
   padding: 10px;
   display: none;
 }
-
 #create_emailchef_list strong {
   color: #fff;
 }
-
 #create_emailchef_list p.note span {
   color: #fff;
 }
-
 #create_emailchef_list .btn-emailchef {
   margin-top: 10px;
 }
-
 #create_emailchef_list_btn {
   background: #fff;
   color: rgb(244, 114, 0);
+}
+
+#emailchef_response .alert {
+  padding: 15px;
+  margin: 20px 0;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  display: none;
+}
+
+#emailchef_response .alert.alert-danger {
+  color: #a94442;
+  background-color: #f2dede;
+  border-color: #ebccd1
+}
+
+#emailchef_response .alert.alert-info {
+  color: #31708f;
+  background-color: #d9edf7;
+  border-color: #bce8f1
+}
+
+#emailchef_response .alert.alert-success {
+  color: #3c763d;
+  background-color: #dff0d8;
+  border-color: #d6e9c6
+}
+
+.loading-spinner-emailchef {
+  width:16px;
+  height: 16px;
+  display:inline-block;
+  background:url('../img/spinner.gif') no-repeat;
+  padding-right:20px;
 }
