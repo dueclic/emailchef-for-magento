@@ -10,10 +10,26 @@ class MG_Emailchef extends MG_Emailchef_Api
     public $lastResponse;
     private $new_custom_id;
 
+    /**
+     * @var $instance \MG_Emailchef
+     */
+
+    private static $instance = false;
+
     public function __construct($username, $password)
     {
         parent::__construct($username, $password);
         $this->api_url = "https://app.emailchef.com/apps/api/v1";
+    }
+
+    public static function getInstance($username, $password){
+
+        if (self::$instance === false) {
+            self::$instance = new self($username, $password);
+        }
+
+        return self::$instance;
+
     }
 
     /**

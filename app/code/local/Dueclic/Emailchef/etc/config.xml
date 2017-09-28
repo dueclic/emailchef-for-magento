@@ -21,23 +21,33 @@
             <dueclic_emailchef>
                 <class>Dueclic_Emailchef_Block</class>
             </dueclic_emailchef>
+            <adminhtml>
+                <rewrite>
+                    <system_config_edit>Dueclic_Emailchef_Block_Adminhtml_System_Config_Edit</system_config_edit>
+                </rewrite>
+            </adminhtml>
         </blocks>
         <events>
-            <sales_order_save_after>
+            <admin_system_config_changed_section_emailchef>
                 <observers>
+                    <dueclic_emailchef>
+                        <type>singleton</type>
+                        <class>dueclic_emailchef/observer</class>
+                        <method>maybeSyncEmailchef</method>
+                    </dueclic_emailchef>
                 </observers>
-            </sales_order_save_after>
+            </admin_system_config_changed_section_emailchef>
         </events>
     </global>
     <default>
-        <tab1>
+        <emailchef>
             <general>
                 <username></username>
                 <password></password>
                 <list></list>
                 <policy></policy>
             </general>
-        </tab1>
+        </emailchef>
     </default>
     <adminhtml>
         <layout>

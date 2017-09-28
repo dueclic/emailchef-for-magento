@@ -9,8 +9,8 @@ class Dueclic_Emailchef_Model_System_Config_Source_Dropdown_List {
 
         $config = Mage::getModel("dueclic_emailchef/config");
 
-        $username = Mage::getStoreConfig( 'tab1/general/username' );
-        $password = Mage::getStoreConfig( 'tab1/general/password' );
+        $username = Mage::getStoreConfig( 'emailchef/general/username' );
+        $password = Mage::getStoreConfig( 'emailchef/general/password' );
 
         if (!empty($username) && !empty($password)){
             $emailchef = $config->getEmailChefInstance($username, $password);

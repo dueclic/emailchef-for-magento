@@ -3,6 +3,89 @@
 class Dueclic_Emailchef_AjaxController extends Mage_Core_Controller_Front_Action
 {
 
+    public function createCustomFieldsAction()
+    {
+
+        $args = $this->getRequest()->getPost();
+
+        $this->getResponse()->clearHeaders()->setHeader(
+            'Content-Type', 'application/json', true
+        );
+
+        /**
+         * @var $config \Dueclic_Emailchef_Model_Config
+         */
+
+        $config = Mage::getModel("dueclic_emailchef/config");
+
+        if (isset($args['api_user']) && isset($args['api_pass'])) {
+
+            $mgec = $config->getEmailChefInstance(
+                $args['api_user'], $args['api_pass']
+            );
+
+        } else {
+
+            $username = Mage::getStoreConfig('emailchef/general/username');
+            $password = Mage::getStoreConfig('emailchef/general/password');
+
+            $mgec = $config->getEmailChefInstance(
+                $username, $password
+            );
+        }
+
+        $response = array(
+            'type' => 'error',
+            'msg'  => 'Username o password non corretti.',
+        );
+
+        if ($mgec->isLogged()) {
+
+            if ( ! $args['list_id'] || empty($args['list_id'])) {
+                $response['msg'] = 'Lista assegnata non valida.';
+
+                $this->getResponse()->setBody(
+                    json_encode($response)
+                );
+
+            }
+
+            $init = $mgec->initialize_custom_fields($args['list_id']);
+
+            if ($init) {
+
+                $response['type'] = "success";
+                $response['msg']  = "Custom fields creati con successo.";
+
+                Mage::log(
+                    sprintf(
+                        'Creati custom fields per la lista %d',
+                        $args['list_id']
+                    ),
+                    8
+                );
+
+                $this->getResponse()->setBody(
+                    json_encode($response)
+                );
+
+            }
+
+            $response['msg'] = $mgec->lastError;
+
+            Mage::log(
+                sprintf(
+                    'Tentativo fallito di creazione dei custom fields per la lista %d',
+                    $args['list_id']
+                ),
+                3
+            );
+
+
+        }
+
+    }
+
     public function checkCredentialsAction()
     {
 
@@ -26,10 +109,10 @@ class Dueclic_Emailchef_AjaxController extends Mage_Core_Controller_Front_Action
             );
 
             if ($mgec->isLogged()) {
-                $response["type"] = "success";
-                $response["msg"] = "Utente loggato con successo.";
+                $response["type"]   = "success";
+                $response["msg"]    = "Utente loggato con successo.";
                 $response["policy"] = $mgec->get_policy();
-                $response["lists"] = $mgec->get_lists();
+                $response["lists"]  = $mgec->get_lists();
             }
 
         }
@@ -67,8 +150,8 @@ class Dueclic_Emailchef_AjaxController extends Mage_Core_Controller_Front_Action
 
         } else {
 
-            $username = Mage::getStoreConfig( 'tab1/general/username' );
-            $password = Mage::getStoreConfig( 'tab1/general/password' );
+            $username = Mage::getStoreConfig('emailchef/general/username');
+            $password = Mage::getStoreConfig('emailchef/general/password');
 
             $mgec = $config->getEmailChefInstance(
                 $username, $password
@@ -83,7 +166,8 @@ class Dueclic_Emailchef_AjaxController extends Mage_Core_Controller_Front_Action
         if ($mgec->isLogged()) {
 
             if ( ! $args['list_name'] || empty($args['list_name'])) {
-                $response['msg'] = 'Inserisci un nome e una descrizione per la nuova lista';
+                $response['msg']
+                    = 'Inserisci un nome e una descrizione per la nuova lista';
                 $this->getResponse()->setBody(
                     json_encode($response)
                 );
@@ -93,7 +177,9 @@ class Dueclic_Emailchef_AjaxController extends Mage_Core_Controller_Front_Action
                 $args['list_desc'] = "";
             }
 
-            $list_id = $mgec->create_list($args['list_name'], $args['list_desc']);
+            $list_id = $mgec->create_list(
+                $args['list_name'], $args['list_desc']
+            );
 
             $response['full_response'] = $mgec->lastResponse;
 

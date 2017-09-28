@@ -19,8 +19,8 @@ class Dueclic_Emailchef_Model_Config
      */
 
     public function getEmailChefInstance($user, $pass){
-        require(dirname(__DIR__) . "/lib/emailchef/class-emailchef.php");
-        $mgec = new MG_Emailchef($user, $pass);
+        require_once(dirname(__DIR__) . "/lib/emailchef/class-emailchef.php");
+        $mgec = \MG_Emailchef::getInstance($user, $pass);
         return $mgec;
     }
 

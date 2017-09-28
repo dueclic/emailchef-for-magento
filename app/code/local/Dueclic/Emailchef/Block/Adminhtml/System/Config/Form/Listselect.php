@@ -10,6 +10,8 @@ class Dueclic_Emailchef_Block_Adminhtml_System_Config_Form_Listselect
     private function createListHtml()
     {
         ob_start();
+
+
         ?>
         <p>Oppure <a href="#" id="create_emailchef_list_trigger">crea una nuova lista</a></p>
         <div id="create_emailchef_list">
