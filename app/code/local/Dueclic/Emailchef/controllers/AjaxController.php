@@ -71,7 +71,7 @@ class Dueclic_Emailchef_AjaxController extends Mage_Core_Controller_Front_Action
                 ),
                 Zend_Log::INFO
             );
-            
+
         } else {
 
             Mage::log(
