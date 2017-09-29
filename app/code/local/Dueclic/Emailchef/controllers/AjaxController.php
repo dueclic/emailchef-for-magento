@@ -61,6 +61,8 @@ class Dueclic_Emailchef_AjaxController extends Mage_Core_Controller_Front_Action
             $response['type'] = "success";
             $response["msg"]  = "Esportazione iniziale avvenuta con successo.";
 
+            Mage::getModel('core/config')->saveConfig('emailchef/general/syncevent', 0);
+
             Mage::log(
                 sprintf(
                     'Esportazione per la lista %d avvenuta con successo.'
@@ -69,7 +71,7 @@ class Dueclic_Emailchef_AjaxController extends Mage_Core_Controller_Front_Action
                 ),
                 Zend_Log::INFO
             );
-
+            
         } else {
 
             Mage::log(
@@ -86,10 +88,6 @@ class Dueclic_Emailchef_AjaxController extends Mage_Core_Controller_Front_Action
         $this->getResponse()->setBody(
             json_encode($response)
         );
-
-        /*Mage::app();
-        print_r(Mage::getModel('core/config')->saveConfig('emailchef/general/syncevent', "-2"));
-        */
 
     }
 
@@ -152,7 +150,7 @@ class Dueclic_Emailchef_AjaxController extends Mage_Core_Controller_Front_Action
                         'Creati custom fields per la lista %d',
                         $args['list_id']
                     ),
-                    8
+                    Zend_Log::INFO
                 );
 
             }
@@ -164,7 +162,7 @@ class Dueclic_Emailchef_AjaxController extends Mage_Core_Controller_Front_Action
                     'Tentativo fallito di creazione dei custom fields per la lista %d',
                     $args['list_id']
                 ),
-                3
+                Zend_Log::ERR
             );
 
         }
@@ -285,7 +283,7 @@ class Dueclic_Emailchef_AjaxController extends Mage_Core_Controller_Front_Action
                         $args['list_name'],
                         $args['list_desc']
                     ),
-                    6
+                    Zend_Log::INFO
                 );
 
                 $this->getResponse()->setBody(
@@ -303,7 +301,7 @@ class Dueclic_Emailchef_AjaxController extends Mage_Core_Controller_Front_Action
                     $args['list_name'],
                     $args['list_desc']
                 ),
-                3
+                Zend_Log::ERR
             );
 
         }
