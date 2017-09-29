@@ -51,6 +51,10 @@ eMailChef css
   display: none;
 }
 
+#row_emailchef_general_syncevent {
+  display: none;
+}
+
 .loading-spinner-emailchef {
   width:16px;
   height: 16px;

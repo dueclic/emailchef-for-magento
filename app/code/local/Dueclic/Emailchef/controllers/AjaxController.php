@@ -3,6 +3,96 @@
 class Dueclic_Emailchef_AjaxController extends Mage_Core_Controller_Front_Action
 {
 
+    public function initialSyncAction()
+    {
+
+        //error_reporting(0);
+
+        $args = $this->getRequest()->getPost();
+
+        $this->getResponse()->clearHeaders()->setHeader(
+            'Content-Type', 'application/json', true
+        );
+
+        $response = array(
+            'type' => 'error',
+            'msg'  => 'Username o password non corretti.',
+        );
+
+        /**
+         * @var $config \Dueclic_Emailchef_Model_Config
+         */
+
+        $config = Mage::getModel("dueclic_emailchef/config");
+
+        $username = Mage::getStoreConfig('emailchef/general/username');
+        $password = Mage::getStoreConfig('emailchef/general/password');
+        $list_id  = Mage::getStoreConfig('emailchef/general/list');
+
+        $mgec = $config->getEmailChefInstance(
+            $username, $password
+        );
+
+        Mage::log(
+            sprintf(
+                'Avviata sincronizzazione iniziale per la lista %d',
+                $list_id
+            ),
+            Zend_Log::INFO
+        );
+
+        if ($mgec->isLogged()) {
+
+            /**
+             * @var $helper \Dueclic_Emailchef_Helper_Customer
+             */
+
+            $helper = Mage::helper("dueclic_emailchef/customer");
+
+            $customers = $helper->getCustomersData();
+
+            foreach ($customers as $customer) {
+                $mgec->upsert_customer(
+                    $list_id,
+                    $customer
+                );
+            }
+
+            $response['type'] = "success";
+            $response["msg"]  = "Esportazione iniziale avvenuta con successo.";
+
+            Mage::log(
+                sprintf(
+                    'Esportazione per la lista %d avvenuta con successo.'
+                    ,
+                    $list_id
+                ),
+                Zend_Log::INFO
+            );
+
+        } else {
+
+            Mage::log(
+                sprintf(
+                    'Esportazione per la lista %d non avvenuta. Motivo errore: %s',
+                    $list_id,
+                    $response['msg']
+                ),
+                Zend_Log::ERR
+            );
+
+        }
+
+        $this->getResponse()->setBody(
+            json_encode($response)
+        );
+
+        /*Mage::app();
+        print_r(Mage::getModel('core/config')->saveConfig('emailchef/general/syncevent', "-2"));
+        */
+
+    }
+
     public function createCustomFieldsAction()
     {
 
@@ -65,10 +155,6 @@ class Dueclic_Emailchef_AjaxController extends Mage_Core_Controller_Front_Action
                     8
                 );
 
-                $this->getResponse()->setBody(
-                    json_encode($response)
-                );
-
             }
 
             $response['msg'] = $mgec->lastError;
@@ -81,8 +167,11 @@ class Dueclic_Emailchef_AjaxController extends Mage_Core_Controller_Front_Action
                 3
             );
 
-
         }
+
+        $this->getResponse()->setBody(
+            json_encode($response)
+        );
 
     }
 

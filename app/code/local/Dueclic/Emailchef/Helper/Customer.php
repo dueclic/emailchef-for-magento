@@ -32,13 +32,13 @@ class Dueclic_Emailchef_Helper_Customer extends Mage_Core_Helper_Abstract
 
     public function getStoreIdByCustomerCountryId($countryIdCustomer)
     {
-        $countryIdReturn = null;
+        $countryIdReturn   = null;
         $countryIdCustomer = trim((string)$countryIdCustomer);
-        if (!strlen($countryIdCustomer)) {
+        if ( ! strlen($countryIdCustomer)) {
             return false;
         }
         foreach (Mage::app()->getStores() as $store) {
-            if (!$store->getIsActive()) {
+            if ( ! $store->getIsActive()) {
                 continue;
             }
             foreach (
@@ -51,6 +51,7 @@ class Dueclic_Emailchef_Helper_Customer extends Mage_Core_Helper_Abstract
                 }
             }
         }
+
         return $countryIdReturn;
     }
 
@@ -101,7 +102,7 @@ class Dueclic_Emailchef_Helper_Customer extends Mage_Core_Helper_Abstract
         $lastShipmentOrderStatus  = null;
         $lastShipmentOrderIds     = null;
         $lastOrderDate            = null;
-        $lastOrderIds = array();
+        $lastOrderIds             = array();
 
         $orders = Mage::getResourceModel('sales/order_collection')
             ->addAttributeToFilter('customer_id', $customer_id);
@@ -141,11 +142,12 @@ class Dueclic_Emailchef_Helper_Customer extends Mage_Core_Helper_Abstract
 
             $items = $order->getAllItems();
 
-            if ($lastOrderDate == null)
+            if ($lastOrderDate == null) {
                 $lastOrderDate = $order->getCreatedAt();
-            else {
-                if ($order->getCreatedAt() > $lastOrderDate )
+            } else {
+                if ($order->getCreatedAt() > $lastOrderDate) {
                     $lastOrderDate = $order->getCreatedAt();
+                }
             }
 
             foreach ($items as $item) {
@@ -153,7 +155,10 @@ class Dueclic_Emailchef_Helper_Customer extends Mage_Core_Helper_Abstract
                     $allProductsIds[] = $item->getProductId();
                 }
 
-                if ( strtotime($order->getCreatedAt()) == strtotime($lastOrderDate) ) {
+                if (strtotime($order->getCreatedAt()) == strtotime(
+                        $lastOrderDate
+                    )
+                ) {
                     if ( ! in_array($item->getProductId(), $lastOrderIds)) {
                         $lastOrderIds[] = $item->getProductId();
                     }
@@ -172,35 +177,132 @@ class Dueclic_Emailchef_Helper_Customer extends Mage_Core_Helper_Abstract
         $latest_order_date   = self::getDateFromDateTime(
             end($allOrdersDateTimes)
         );
+
+        /**
+         * @var $order_status \Mage_Sales_Model_Order_Status
+         */
+
+        $order_status = Mage::getModel('sales/order_status');
+
         $latest_order_id     = end($allOrdersIds);
-        $latest_order_status = end($allOrdersStatuses);
+        $latest_order_status = $order_status->load(end($allOrdersStatuses))->getStoreLabel();
 
         $report = array(
-            "total_ordered_30d"       => self::_formatPrice(
+            "total_ordered_30d"           => self::_formatPrice(
                 $last30daysOrdersAmount
             ),
-            "total_ordered_12m"       => self::_formatPrice(
+            "total_ordered_12m"           => self::_formatPrice(
                 $last12monthsOrdersAmount
             ),
-            "all_ordered_product_ids" => implode(", ", $allProductsIds),
-            "total_orders"            => count($allOrdersIds),
-            "total_ordered"           => self::_formatPrice(
+            "all_ordered_product_ids"     => implode(", ", $allProductsIds),
+            "total_orders"                => count($allOrdersIds),
+            "total_ordered"               => self::_formatPrice(
                 $allOrdersTotalAmount
             ),
-            "latest_order_amount"     => $latest_order_amount,
-            "latest_order_date"       => $latest_order_date,
-            "latest_order_id"         => $latest_order_id,
-            "latest_order_status"     => $latest_order_status,
+            "latest_order_amount"         => $latest_order_amount,
+            "latest_order_date"           => $latest_order_date,
+            "latest_order_id"             => $latest_order_id,
+            "latest_order_status"         => $latest_order_status,
             "latest_order_product_ids"    => implode(",", $lastOrderIds),
             "latest_shipped_order_id"     => $lastShipmentOrderId,
             "latest_shipped_order_date"   => $lastShipmentOrderDate,
-            "latest_shipped_order_status" => $lastShipmentOrderStatus,
+            "latest_shipped_order_status" => $order_status->load($lastShipmentOrderStatus)->getStoreLabel(),
             "ab_cart_is_abandoned_cart"   => "no",
         );
 
 
         return $report;
 
+    }
+
+    public function getCustomerData($currentCustomerId)
+    {
+
+        $model = Mage::getModel("customer/customer");
+
+        /**
+         * @var $customer \Mage_Customer_Model_Customer
+         */
+
+        $customer  = $model->load($currentCustomerId);
+        $gender_id = $customer->getAttribute('gender')->getSource()
+            ->getOptionId($customer->getGender());
+
+        $customerAddressId = $customer->getDefaultBilling();
+
+        /**
+         * @var $gender \Dueclic_Emailchef_Helper_Customer
+         */
+
+        $grand_total = $this->getTotalOrdered($customer->getId());
+
+        $data = array(
+            "customer_id"   => $customer->getId(),
+            "customer_type" => Mage::getModel('customer/group')->load(
+                $customer->getGroupId()
+            )->getCustomerGroupCode(),
+            "first_name"    => $customer->getFirstname(),
+            "last_name"     => $customer->getLastname(),
+            "user_email"    => $customer->getEmail(),
+            "source"        => "eMailChef for Magento",
+            "gender"        => $this->getGenderStatus($gender_id),
+            "birthday"      => $this->getDateFromDateTime($customer->getDob()),
+            "newsletter"    => "no",
+            "currency"      => Mage::app()->getStore()->getCurrentCurrencyCode(
+            ),
+        );
+
+        $data = array_merge($data, $grand_total);
+
+        if ($customerAddressId) {
+            $address = Mage::getModel('customer/address')->load(
+                $customerAddressId
+            );
+
+            $data = array_merge(
+                $data, array(
+                    "lang"              => $this->getStoreIdByCustomerCountryId(
+                        $address->getCountry()
+                    ),
+                    "billing_company"   => $address->getData("company"),
+                    "billing_address_1" => $address->getData('street'),
+                    "billing_postcode"  => $address->getData("postcode"),
+                    "billing_city"      => $address->getData("city"),
+                    "billing_state"     => $address->getData("region"),
+                    "billing_country"   => $address->getCountry(),
+                    "billing_phone"     => $address->getData('telephone'),
+                    "billing_phone_2"   => $address->getData("fax"),
+
+                )
+            );
+        }
+
+        return $data;
+
+    }
+
+    public function getCustomersData()
+    {
+        $model = Mage::getModel("customer/customer");
+
+        $customerCollection  = $model->getCollection();
+        $customersCollection = array();
+
+        foreach ($customerCollection as $customerCollectionId) {
+
+            if (is_object($customerCollectionId)) {
+                $currentCustomerId = $customerCollectionId->getId();
+            }
+
+            if ( ! $currentCustomerId) {
+                continue;
+            }
+
+            $customersCollection[] = $this->getCustomerData($currentCustomerId);
+
+        }
+
+        return $customersCollection;
     }
 
 }

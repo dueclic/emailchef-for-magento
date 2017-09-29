@@ -27,21 +27,11 @@
                 </rewrite>
             </adminhtml>
         </blocks>
-        <events>
-            <admin_system_config_changed_section_emailchef>
-                <observers>
-                    <dueclic_emailchef>
-                        <type>singleton</type>
-                        <class>dueclic_emailchef/observer</class>
-                        <method>maybeSyncEmailchef</method>
-                    </dueclic_emailchef>
-                </observers>
-            </admin_system_config_changed_section_emailchef>
-        </events>
     </global>
     <default>
         <emailchef>
             <general>
+                <syncevent>0</syncevent>
                 <username></username>
                 <password></password>
                 <list></list>

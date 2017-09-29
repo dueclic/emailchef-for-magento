@@ -37,7 +37,7 @@ $e(document).ready(function () {
 
           },
           error: function (jxqr, textStatus, thrown) {
-            $e("#create_emailchef_cf_danger").find(".reason").text(jxqr.error + " " + textStatus + " " + thrown);
+            $e("#create_emailchef_cf_danger").find(".reason").text(textStatus + " " + thrown);
             $e("#create_emailchef_cf_danger").show();
           },
           complete: function () {
@@ -94,7 +94,7 @@ $e(document).ready(function () {
 
           },
           error: function (jxqr, textStatus, thrown) {
-            $e("#create_emailchef_list_danger").find(".reason").text(jxqr.error + " " + textStatus + " " + thrown);
+            $e("#create_emailchef_list_danger").find(".reason").text(textStatus + " " + thrown);
             $e("#create_emailchef_list_danger").show();
           },
           complete: function () {
@@ -184,7 +184,7 @@ $e(document).ready(function () {
 
           },
           error: function (jxqr, textStatus, thrown) {
-            $e("#create_emailchef_ccf_danger").find(".reason").text(jxqr.error + " " + textStatus + " " + thrown);
+            $e("#create_emailchef_ccf_danger").find(".reason").text(textStatus + " " + thrown);
             $e("#create_emailchef_ccf_danger").show();
           },
           complete: function () {
@@ -224,6 +224,8 @@ $e(document).ready(function () {
 
       $e(document).on("click", "#emailchef_save_wizard", function (evt) {
 
+        $e("#emailchef_general_syncevent").val(1);
+
         if (isCreated === 0) {
 
           var apiUser = $e("#emailchef_general_username").val();
@@ -235,10 +237,27 @@ $e(document).ready(function () {
         }
         else
           configForm.submit();
+
       });
 
       $e("#row_emailchef_general_policy .note").show().insertBefore("#emailchef_response_ccf");
       $e("#row_emailchef_general_policy .note").show().insertBefore("#emailchef_response_ccf");
+
+      if ($e("#emailchef_general_syncevent").val() == 1){
+        $e.ajax({
+          type: 'POST',
+          url: "/index.php/emailchef/ajax/initialsync",
+          dataType: 'json',
+          success: function (response) {
+
+            console.log(response.msg);
+
+          },
+          error: function (jxqr, textStatus, thrown) {
+            alert("Error: "+textStatus + " " + thrown);
+          }
+        });
+      }
 
     }
 );
