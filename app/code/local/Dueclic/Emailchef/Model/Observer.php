@@ -45,10 +45,16 @@ class Dueclic_Emailchef_Model_Observer {
 			$helper   = Mage::helper( "dueclic_emailchef/customer" );
 			$customer = $observer->getEvent()->getCustomer();
 
-			$upsert = $mgec->upsert_customer( $list_id, $helper->getCustomerData(
+			$sync_data = $helper->getCustomerData(
 				$customer->getId(),
 				$newsletter
-			) );
+			);
+
+			if ($is_subscribed === null){
+				unset($sync_data["newsletter"]);
+			}
+
+			$upsert = $mgec->upsert_customer( $list_id, $sync_data );
 
 			if ( $upsert ) {
 				Mage::log(
@@ -103,6 +109,66 @@ class Dueclic_Emailchef_Model_Observer {
 
 			}
 
+
+		}
+
+	}
+
+	public function prepareOrderForDataSync ( $observer ) {
+
+		/**
+		 * @var $config \Dueclic_Emailchef_Model_Config
+		 */
+
+		$config = Mage::getModel( "dueclic_emailchef/config" );
+
+		$username = Mage::getStoreConfig( 'emailchef/general/username' );
+		$password = Mage::getStoreConfig( 'emailchef/general/password' );
+		$list_id  = Mage::getStoreConfig( 'emailchef/general/list' );
+
+		$mgec = $config->getEmailChefInstance(
+			$username, $password
+		);
+
+		if ( $mgec->isLogged() ) {
+
+			/**
+			 * @var $helper \Dueclic_Emailchef_Helper_Customer
+			 * @var $order \Mage_Sales_Model_Order
+			 */
+
+			$helper   = Mage::helper( "dueclic_emailchef/customer" );
+			$order = $observer->getEvent()->getOrder();
+
+			$syncOrderData = $helper->getSyncOrderData($order);
+			$upsert = $mgec->upsert_customer( $list_id, $syncOrderData );
+
+			if ( $upsert ) {
+				Mage::log(
+					sprintf(
+						"Inserito nella lista %d i dati aggiornati del cliente %d (Nome: %s Cognome: %s e altri %d campi)",
+						$list_id,
+						$syncOrderData['customer_id'],
+						$syncOrderData['first_name'],
+						$syncOrderData['last_name'],
+						intval( count( $syncOrderData ) - 2 )
+					),
+					Zend_Log::INFO
+				);
+			} else {
+				$this->log(
+					sprintf(
+						"Inserimento nella lista %d dei dati aggiornati del cliente %d (Nome: %s Cognome: %s e altri %d campi) non avvenuto (Errore: %s)" ,
+						$list_id,
+						$syncOrderData['customer_id'],
+						$syncOrderData['first_name'],
+						$syncOrderData['last_name'],
+						intval( count( $syncOrderData ) - 2 ),
+						$mgec->lastError
+					),
+					Zend_Log::ERROR
+				);
+			}
 
 		}
 

@@ -24,7 +24,7 @@ class Dueclic_Emailchef_Helper_Customer extends Mage_Core_Helper_Abstract
             return "f";
         }
         if ($gender == 1) {
-            return "f";
+            return "m";
         }
 
         return "na";
@@ -72,7 +72,7 @@ class Dueclic_Emailchef_Helper_Customer extends Mage_Core_Helper_Abstract
         return date('Y-m-d', strtotime($datetime));
     }
 
-    public function getTotalOrdered($customer_id)
+    public function getTotalOrdered($customer_id, $withAdd=true)
     {
 
         $dateFormat      = 'm/d/y h:i:s';
@@ -198,7 +198,10 @@ class Dueclic_Emailchef_Helper_Customer extends Mage_Core_Helper_Abstract
             "total_orders"                => count($allOrdersIds),
             "total_ordered"               => self::_formatPrice(
                 $allOrdersTotalAmount
-            ),
+            )
+        );
+
+        $additional = array(
             "latest_order_amount"         => $latest_order_amount,
             "latest_order_date"           => $latest_order_date,
             "latest_order_id"             => $latest_order_id,
@@ -206,10 +209,11 @@ class Dueclic_Emailchef_Helper_Customer extends Mage_Core_Helper_Abstract
             "latest_order_product_ids"    => implode(",", $lastOrderIds),
             "latest_shipped_order_id"     => $lastShipmentOrderId,
             "latest_shipped_order_date"   => $lastShipmentOrderDate,
-            "latest_shipped_order_status" => $order_status->load($lastShipmentOrderStatus)->getStoreLabel(),
-            "ab_cart_is_abandoned_cart"   => "no",
+            "latest_shipped_order_status" => $order_status->load($lastShipmentOrderStatus)->getLabel(),
         );
 
+        if ($withAdd)
+        	$report = array_merge($report, $additional);
 
         return $report;
 
@@ -303,6 +307,158 @@ class Dueclic_Emailchef_Helper_Customer extends Mage_Core_Helper_Abstract
         }
 
         return $customersCollection;
+    }
+
+	/**
+	 * @param $order \Mage_Sales_Model_Order
+	 */
+
+    public function getSyncOrderData($order){
+
+	    $customerId = $order->getCustomerId();
+	    $model = Mage::getModel("customer/customer");
+
+	    /**
+	     * @var $customer \Mage_Customer_Model_Customer
+	     */
+
+	    $customer  = $model->load($customerId);
+	    $gender_id = $customer->getAttribute('gender')->getSource()
+	                          ->getOptionId($customer->getGender());
+
+	    $customerAddressId = $customer->getDefaultBilling();
+
+	    /**
+	     * @var $gender \Dueclic_Emailchef_Helper_Customer
+	     */
+
+	    $grand_total = $this->getTotalOrdered($customer->getId(), false);
+
+	    if (!$order->getCustomerIsGuest()) {
+
+		    $data = array(
+			    "customer_id"   => $customer->getId(),
+			    "customer_type" => Mage::getModel( 'customer/group' )->load(
+				    $customer->getGroupId()
+			    )->getCustomerGroupCode(),
+			    "first_name"    => $customer->getFirstname(),
+			    "last_name"     => $customer->getLastname(),
+			    "user_email"    => $customer->getEmail(),
+			    "source"        => "eMailChef for Magento",
+			    "gender"        => $this->getGenderStatus( $gender_id ),
+			    "birthday"      => $this->getDateFromDateTime( $customer->getDob() ),
+			    "currency"      => $order->getOrderCurrencyCode(),
+		    );
+
+	    }
+	    else {
+
+		    $data = array(
+			    "customer_id"   => $order->getCustomerId(),
+			    "customer_type" => Mage::getModel( 'customer/group' )->load(
+				    $order->getCustomerGroupId()
+			    )->getCustomerGroupCode(),
+			    "first_name"    => $order->getCustomerFirstname(),
+			    "last_name"     => $order->getCustomerLastname(),
+			    "user_email"    => $order->getCustomerEmail(),
+			    "source"        => "eMailChef for Magento",
+			    "gender"        => $this->getGenderStatus( $order->getCustomerGender() ),
+			    "birthday"      => $this->getDateFromDateTime( $order->getCustomerDob() ),
+			    "currency"      => $order->getOrderCurrencyCode(),
+		    );
+	    }
+
+	    $data = array_merge($data, $grand_total);
+
+	    /**
+	     * @var $order_status \Mage_Sales_Model_Order_Status
+	     */
+
+	    $order_status = Mage::getModel('sales/order_status');
+
+	    $latest_order = array(
+	        'latest_order_id' => $order->getId(),
+		    'latest_order_date' => $this->getDateFromDateTime($order->getUpdatedAt()),
+		    'latest_order_amount' => self::_formatPrice($order->getGrandTotal()),
+		    'latest_order_status' => $order_status->load($order->getStatus())->getLabel(),
+	    );
+
+	    $all_items_order = array();
+
+	    foreach ($order->getAllItems() as $item) {
+		    if ( ! in_array($item->getProductId(), $all_items_order)) {
+			    $all_items_order[] = $item->getProductId();
+		    }
+	    }
+
+	    $latest_order["latest_order_product_ids"] = implode(",", $all_items_order);
+
+	    $data = array_merge($data, $latest_order);
+
+	    $address = $order->getBillingAddress();
+
+	    $order_address = array(
+	        "lang" => $this->getStoreIdByCustomerCountryId(
+		        $address->getCountry()
+	        ),
+	        "billing_company"   => $address->getData("company"),
+	        "billing_address_1" => $address->getData('street'),
+	        "billing_postcode"  => $address->getData("postcode"),
+	        "billing_city"      => $address->getData("city"),
+	        "billing_state"     => $address->getData("region"),
+	        "billing_country"   => $address->getCountry(),
+	        "billing_phone"     => $address->getData('telephone'),
+	        "billing_phone_2"   => $address->getData("fax"),
+	    );
+
+	    $data = array_merge($data, $order_address);
+
+	    $totals = array(
+		    "total_ordered_30d"           => self::_formatPrice(
+			    $latest_order["latest_order_amount"]
+		    ),
+		    "total_ordered_12m"           => self::_formatPrice(
+			    $latest_order["latest_order_amount"]
+		    ),
+		    "all_ordered_product_ids"     => $latest_order["latest_order_product_ids"],
+		    "total_orders"                => 1,
+		    "total_ordered"               => self::_formatPrice(
+			    $latest_order["latest_order_amount"]
+		    )
+	    );
+
+	    if (!$order->getCustomerIsGuest()) {
+	    	$totals = $this->getTotalOrdered($customerId, false);
+	    }
+
+	    $data = array_merge($data, $totals);
+
+	    $data = array_merge($data, $this->flushAbandonedCarts());
+
+	    if ($order->hasShipments()) {
+		    $latest_shipped_order = array(
+			    'latest_shipped_order_id' => $order->getId(),
+			    'latest_shipped_order_date' => $this->getDateFromDateTime($order->getUpdatedAt()),
+			    'latest_shipped_order_status' => $order_status->load($order->getStatus())->getLabel(),
+		    );
+		    $data = array_merge($data, $latest_shipped_order);
+	    }
+
+	    return $data;
+
+    }
+
+    public function flushAbandonedCarts(){
+	    return array(
+		    'ab_cart_prod_name_pr_hr'    => '',
+		    'ab_cart_prod_desc_pr_hr'    => '',
+		    'ab_cart_prod_pr_pr_hr'      => '',
+		    'ab_cart_date'               => '',
+		    'ab_cart_prod_id_pr_hr'      => '',
+		    'ab_cart_prod_url_pr_hr'     => '',
+		    'ab_cart_prod_url_img_pr_hr' => '',
+		    'ab_cart_is_abandoned_cart'  => false,
+	    );
     }
 
 }

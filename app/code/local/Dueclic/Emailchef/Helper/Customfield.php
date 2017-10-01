@@ -274,6 +274,7 @@ class Dueclic_Emailchef_Helper_Customfield extends Mage_Core_Helper_Abstract
                 'name'      => 'Carrello abbandonato - Sì/No',
                 'data_type' => 'boolean',
                 'ord'       => 32,
+                'default_value' => 'no',
             ),
             'ab_cart_prod_name_pr_hr'     => array(
                 'name'      => 'Carrello abbandonato - Nome prodotto più caro',

@@ -26,6 +26,15 @@
                     </dueclic_emailchef>
                 </observers>
             </customer_save_after>
+            <sales_order_save_commit_after>
+                <observers>
+                    <dueclic_emailchef>
+                        <type>singleton</type>
+                        <class>Dueclic_Emailchef_Model_Observer</class>
+                        <method>prepareOrderForDataSync</method>
+                    </dueclic_emailchef>
+                </observers>
+            </sales_order_save_commit_after>
         </events>
         <helpers>
             <dueclic_emailchef>
