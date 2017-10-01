@@ -7,6 +7,26 @@
     </modules>
 
     <global>
+        <template>
+            <email>
+                <emailchef_newsletter_dopt translate="label" module="dueclic_emailchef">
+                    <label>eMailChef Newsletter Double Opt-in</label>
+                    <file>emailchef_newsletter_dopt.html</file>
+                    <type>html</type>
+                </emailchef_newsletter_dopt>
+            </email>
+        </template>
+        <events>
+            <customer_save_after>
+                <observers>
+                    <dueclic_emailchef>
+                        <type>singleton</type>
+                        <class>Dueclic_Emailchef_Model_Observer</class>
+                        <method>prepareCustomerForDataSync</method>
+                    </dueclic_emailchef>
+                </observers>
+            </customer_save_after>
+        </events>
         <helpers>
             <dueclic_emailchef>
                 <class>Dueclic_Emailchef_Helper</class>

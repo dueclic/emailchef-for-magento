@@ -1,315 +1,312 @@
 <?php
 
-class Dueclic_Emailchef_AjaxController extends Mage_Core_Controller_Front_Action
-{
+class Dueclic_Emailchef_AjaxController extends Mage_Core_Controller_Front_Action {
 
-    public function initialSyncAction()
-    {
 
-        //error_reporting(0);
 
-        $args = $this->getRequest()->getPost();
+	public function initialSyncAction() {
 
-        $this->getResponse()->clearHeaders()->setHeader(
-            'Content-Type', 'application/json', true
-        );
+		error_reporting( 0 );
 
-        $response = array(
-            'type' => 'error',
-            'msg'  => 'Username o password non corretti.',
-        );
+		$args = $this->getRequest()->getPost();
 
-        /**
-         * @var $config \Dueclic_Emailchef_Model_Config
-         */
+		$this->getResponse()->clearHeaders()->setHeader(
+			'Content-Type', 'application/json', true
+		);
 
-        $config = Mage::getModel("dueclic_emailchef/config");
+		$response = array(
+			'type' => 'error',
+			'msg'  => 'Username o password non corretti.',
+		);
 
-        $username = Mage::getStoreConfig('emailchef/general/username');
-        $password = Mage::getStoreConfig('emailchef/general/password');
-        $list_id  = Mage::getStoreConfig('emailchef/general/list');
+		/**
+		 * @var $config \Dueclic_Emailchef_Model_Config
+		 */
 
-        $mgec = $config->getEmailChefInstance(
-            $username, $password
-        );
+		$config = Mage::getModel( "dueclic_emailchef/config" );
 
-        Mage::log(
-            sprintf(
-                'Avviata sincronizzazione iniziale per la lista %d',
-                $list_id
-            ),
-            Zend_Log::INFO
-        );
+		$username = Mage::getStoreConfig( 'emailchef/general/username' );
+		$password = Mage::getStoreConfig( 'emailchef/general/password' );
+		$list_id  = Mage::getStoreConfig( 'emailchef/general/list' );
 
-        if ($mgec->isLogged()) {
+		$mgec = $config->getEmailChefInstance(
+			$username, $password
+		);
 
-            /**
-             * @var $helper \Dueclic_Emailchef_Helper_Customer
-             */
+		Mage::log(
+			sprintf(
+				'Avviata sincronizzazione iniziale per la lista %d',
+				$list_id
+			),
+			Zend_Log::INFO
+		);
 
-            $helper = Mage::helper("dueclic_emailchef/customer");
+		if ( $mgec->isLogged() ) {
 
-            $customers = $helper->getCustomersData();
+			/**
+			 * @var $helper \Dueclic_Emailchef_Helper_Customer
+			 */
 
-            foreach ($customers as $customer) {
-                $mgec->upsert_customer(
-                    $list_id,
-                    $customer
-                );
-            }
+			$helper = Mage::helper( "dueclic_emailchef/customer" );
 
-            $response['type'] = "success";
-            $response["msg"]  = "Esportazione iniziale avvenuta con successo.";
+			$customers = $helper->getCustomersData();
 
-            Mage::getModel('core/config')->saveConfig('emailchef/general/syncevent', 0);
+			foreach ( $customers as $customer ) {
+				$mgec->upsert_customer(
+					$list_id,
+					$customer
+				);
+			}
 
-            Mage::log(
-                sprintf(
-                    'Esportazione per la lista %d avvenuta con successo.'
-                    ,
-                    $list_id
-                ),
-                Zend_Log::INFO
-            );
+			$response['type'] = "success";
+			$response["msg"]  = "Esportazione iniziale avvenuta con successo.";
 
-        } else {
+			Mage::getModel( 'core/config' )->saveConfig( 'emailchef/general/syncevent', 0 );
 
-            Mage::log(
-                sprintf(
-                    'Esportazione per la lista %d non avvenuta. Motivo errore: %s',
-                    $list_id,
-                    $response['msg']
-                ),
-                Zend_Log::ERR
-            );
+			Mage::log(
+				sprintf(
+					'Esportazione per la lista %d avvenuta con successo.'
+					,
+					$list_id
+				),
+				Zend_Log::INFO
+			);
 
-        }
+		} else {
 
-        $this->getResponse()->setBody(
-            json_encode($response)
-        );
+			Mage::log(
+				sprintf(
+					'Esportazione per la lista %d non avvenuta. Motivo errore: %s',
+					$list_id,
+					$response['msg']
+				),
+				Zend_Log::ERR
+			);
 
-    }
+		}
 
-    public function createCustomFieldsAction()
-    {
+		$this->getResponse()->setBody(
+			json_encode( $response )
+		);
 
-        $args = $this->getRequest()->getPost();
+	}
 
-        $this->getResponse()->clearHeaders()->setHeader(
-            'Content-Type', 'application/json', true
-        );
+	public function createCustomFieldsAction() {
 
-        /**
-         * @var $config \Dueclic_Emailchef_Model_Config
-         */
+		$args = $this->getRequest()->getPost();
 
-        $config = Mage::getModel("dueclic_emailchef/config");
+		$this->getResponse()->clearHeaders()->setHeader(
+			'Content-Type', 'application/json', true
+		);
 
-        if (isset($args['api_user']) && isset($args['api_pass'])) {
+		/**
+		 * @var $config \Dueclic_Emailchef_Model_Config
+		 */
 
-            $mgec = $config->getEmailChefInstance(
-                $args['api_user'], $args['api_pass']
-            );
+		$config = Mage::getModel( "dueclic_emailchef/config" );
 
-        } else {
+		if ( isset( $args['api_user'] ) && isset( $args['api_pass'] ) ) {
 
-            $username = Mage::getStoreConfig('emailchef/general/username');
-            $password = Mage::getStoreConfig('emailchef/general/password');
+			$mgec = $config->getEmailChefInstance(
+				$args['api_user'], $args['api_pass']
+			);
 
-            $mgec = $config->getEmailChefInstance(
-                $username, $password
-            );
-        }
+		} else {
 
-        $response = array(
-            'type' => 'error',
-            'msg'  => 'Username o password non corretti.',
-        );
+			$username = Mage::getStoreConfig( 'emailchef/general/username' );
+			$password = Mage::getStoreConfig( 'emailchef/general/password' );
 
-        if ($mgec->isLogged()) {
+			$mgec = $config->getEmailChefInstance(
+				$username, $password
+			);
+		}
 
-            if ( ! $args['list_id'] || empty($args['list_id'])) {
-                $response['msg'] = 'Lista assegnata non valida.';
+		$response = array(
+			'type' => 'error',
+			'msg'  => 'Username o password non corretti.',
+		);
 
-                $this->getResponse()->setBody(
-                    json_encode($response)
-                );
+		if ( $mgec->isLogged() ) {
 
-            }
+			if ( ! $args['list_id'] || empty( $args['list_id'] ) ) {
+				$response['msg'] = 'Lista assegnata non valida.';
 
-            $init = $mgec->initialize_custom_fields($args['list_id']);
+				$this->getResponse()->setBody(
+					json_encode( $response )
+				);
 
-            if ($init) {
+			}
 
-                $response['type'] = "success";
-                $response['msg']  = "Custom fields creati con successo.";
+			$init = $mgec->initialize_custom_fields( $args['list_id'] );
 
-                Mage::log(
-                    sprintf(
-                        'Creati custom fields per la lista %d',
-                        $args['list_id']
-                    ),
-                    Zend_Log::INFO
-                );
+			if ( $init ) {
 
-            }
+				$response['type'] = "success";
+				$response['msg']  = "Custom fields creati con successo.";
 
-            $response['msg'] = $mgec->lastError;
+				Mage::log(
+					sprintf(
+						'Creati custom fields per la lista %d',
+						$args['list_id']
+					),
+					Zend_Log::INFO
+				);
 
-            Mage::log(
-                sprintf(
-                    'Tentativo fallito di creazione dei custom fields per la lista %d',
-                    $args['list_id']
-                ),
-                Zend_Log::ERR
-            );
+			}
 
-        }
+			$response['msg'] = $mgec->lastError;
 
-        $this->getResponse()->setBody(
-            json_encode($response)
-        );
+			Mage::log(
+				sprintf(
+					'Tentativo fallito di creazione dei custom fields per la lista %d',
+					$args['list_id']
+				),
+				Zend_Log::ERR
+			);
 
-    }
+		}
 
-    public function checkCredentialsAction()
-    {
+		$this->getResponse()->setBody(
+			json_encode( $response )
+		);
 
-        $response = array(
-            "type" => "error",
-            "msg"  => "I dati di accesso sono errati.",
-        );
+	}
 
-        $args = $this->getRequest()->getPost();
+	public function checkCredentialsAction() {
 
-        if (isset($args['username']) && isset($args['password'])) {
+		$response = array(
+			"type" => "error",
+			"msg"  => "I dati di accesso sono errati.",
+		);
 
-            /**
-             * @var $config \Dueclic_Emailchef_Model_Config
-             */
+		$args = $this->getRequest()->getPost();
 
-            $config = Mage::getModel("dueclic_emailchef/config");
+		if ( isset( $args['username'] ) && isset( $args['password'] ) ) {
 
-            $mgec = $config->getEmailChefInstance(
-                $args['username'], $args['password']
-            );
+			/**
+			 * @var $config \Dueclic_Emailchef_Model_Config
+			 */
 
-            if ($mgec->isLogged()) {
-                $response["type"]   = "success";
-                $response["msg"]    = "Utente loggato con successo.";
-                $response["policy"] = $mgec->get_policy();
-                $response["lists"]  = $mgec->get_lists();
-            }
+			$config = Mage::getModel( "dueclic_emailchef/config" );
 
-        }
+			$mgec = $config->getEmailChefInstance(
+				$args['username'], $args['password']
+			);
 
-        $this->getResponse()->clearHeaders()->setHeader(
-            'Content-Type', 'application/json', true
-        );
-        $this->getResponse()->setBody(
-            json_encode($response)
-        );
-    }
+			if ( $mgec->isLogged() ) {
+				$response["type"]   = "success";
+				$response["msg"]    = "Utente loggato con successo.";
+				$response["policy"] = $mgec->get_policy();
+				$response["lists"]  = $mgec->get_lists();
+			}
 
-    public function addListAction()
-    {
+		}
 
-        error_reporting(0);
+		$this->getResponse()->clearHeaders()->setHeader(
+			'Content-Type', 'application/json', true
+		);
+		$this->getResponse()->setBody(
+			json_encode( $response )
+		);
+	}
 
-        $args = $this->getRequest()->getPost();
+	public function addListAction() {
 
-        $this->getResponse()->clearHeaders()->setHeader(
-            'Content-Type', 'application/json', true
-        );
+		error_reporting( 0 );
 
-        /**
-         * @var $config \Dueclic_Emailchef_Model_Config
-         */
+		$args = $this->getRequest()->getPost();
 
-        $config = Mage::getModel("dueclic_emailchef/config");
+		$this->getResponse()->clearHeaders()->setHeader(
+			'Content-Type', 'application/json', true
+		);
 
-        if (isset($args['api_user']) && isset($args['api_pass'])) {
+		/**
+		 * @var $config \Dueclic_Emailchef_Model_Config
+		 */
 
-            $mgec = $config->getEmailChefInstance(
-                $args['api_user'], $args['api_pass']
-            );
+		$config = Mage::getModel( "dueclic_emailchef/config" );
 
-        } else {
+		if ( isset( $args['api_user'] ) && isset( $args['api_pass'] ) ) {
 
-            $username = Mage::getStoreConfig('emailchef/general/username');
-            $password = Mage::getStoreConfig('emailchef/general/password');
+			$mgec = $config->getEmailChefInstance(
+				$args['api_user'], $args['api_pass']
+			);
 
-            $mgec = $config->getEmailChefInstance(
-                $username, $password
-            );
-        }
+		} else {
 
-        $response = array(
-            'type' => 'error',
-            'msg'  => 'Username o password non corretti.',
-        );
+			$username = Mage::getStoreConfig( 'emailchef/general/username' );
+			$password = Mage::getStoreConfig( 'emailchef/general/password' );
 
-        if ($mgec->isLogged()) {
+			$mgec = $config->getEmailChefInstance(
+				$username, $password
+			);
+		}
 
-            if ( ! $args['list_name'] || empty($args['list_name'])) {
-                $response['msg']
-                    = 'Inserisci un nome e una descrizione per la nuova lista';
-                $this->getResponse()->setBody(
-                    json_encode($response)
-                );
-            }
+		$response = array(
+			'type' => 'error',
+			'msg'  => 'Username o password non corretti.',
+		);
 
-            if ( ! $args['list_desc'] || empty($args['list_desc'])) {
-                $args['list_desc'] = "";
-            }
+		if ( $mgec->isLogged() ) {
 
-            $list_id = $mgec->create_list(
-                $args['list_name'], $args['list_desc']
-            );
+			if ( ! $args['list_name'] || empty( $args['list_name'] ) ) {
+				$response['msg']
+					= 'Inserisci un nome e una descrizione per la nuova lista';
+				$this->getResponse()->setBody(
+					json_encode( $response )
+				);
+			}
 
-            $response['full_response'] = $mgec->lastResponse;
+			if ( ! $args['list_desc'] || empty( $args['list_desc'] ) ) {
+				$args['list_desc'] = "";
+			}
 
-            if ($list_id !== false) {
+			$list_id = $mgec->create_list(
+				$args['list_name'], $args['list_desc']
+			);
 
-                $response['type']    = "success";
-                $response['msg']     = "Lista creata con successo.";
-                $response['list_id'] = $list_id;
+			$response['full_response'] = $mgec->lastResponse;
 
-                Mage::log(
-                    sprintf(
-                        'Creata lista %d (Nome: %s, Descrizione: %s)',
-                        $list_id,
-                        $args['list_name'],
-                        $args['list_desc']
-                    ),
-                    Zend_Log::INFO
-                );
+			if ( $list_id !== false ) {
 
-                $this->getResponse()->setBody(
-                    json_encode($response)
-                );
+				$response['type']    = "success";
+				$response['msg']     = "Lista creata con successo.";
+				$response['list_id'] = $list_id;
 
-            }
+				Mage::log(
+					sprintf(
+						'Creata lista %d (Nome: %s, Descrizione: %s)',
+						$list_id,
+						$args['list_name'],
+						$args['list_desc']
+					),
+					Zend_Log::INFO
+				);
 
-            $response['msg'] = $mgec->lastError;
+				$this->getResponse()->setBody(
+					json_encode( $response )
+				);
 
-            Mage::log(
-                sprintf(
-                    'Tentativo fallito di creazione della lista %d (Nome: %s, Descrizione: %s)',
-                    $list_id,
-                    $args['list_name'],
-                    $args['list_desc']
-                ),
-                Zend_Log::ERR
-            );
+			}
 
-        }
+			$response['msg'] = $mgec->lastError;
 
-        $this->getResponse()->setBody(
-            json_encode($response)
-        );
+			Mage::log(
+				sprintf(
+					'Tentativo fallito di creazione della lista %d (Nome: %s, Descrizione: %s)',
+					$list_id,
+					$args['list_name'],
+					$args['list_desc']
+				),
+				Zend_Log::ERR
+			);
 
-    }
+		}
+
+		$this->getResponse()->setBody(
+			json_encode( $response )
+		);
+
+	}
 
 }

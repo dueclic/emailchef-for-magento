@@ -215,7 +215,7 @@ class Dueclic_Emailchef_Helper_Customer extends Mage_Core_Helper_Abstract
 
     }
 
-    public function getCustomerData($currentCustomerId)
+    public function getCustomerData($currentCustomerId, $newsletter = "no")
     {
 
         $model = Mage::getModel("customer/customer");
@@ -247,7 +247,7 @@ class Dueclic_Emailchef_Helper_Customer extends Mage_Core_Helper_Abstract
             "source"        => "eMailChef for Magento",
             "gender"        => $this->getGenderStatus($gender_id),
             "birthday"      => $this->getDateFromDateTime($customer->getDob()),
-            "newsletter"    => "no",
+            "newsletter"    => $newsletter,
             "currency"      => Mage::app()->getStore()->getCurrentCurrencyCode(
             ),
         );

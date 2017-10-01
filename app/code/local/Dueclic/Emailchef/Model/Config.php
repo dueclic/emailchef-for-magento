@@ -24,4 +24,16 @@ class Dueclic_Emailchef_Model_Config
         return $mgec;
     }
 
+    public function getShopLogo(){
+    	return Mage::getSingleton('core/design_package')->getSkinBaseUrl().Mage::getStoreConfig('design/header/logo_src');
+    }
+
+    public function getVerifyUrl(){
+    	return "#";
+    }
+
+	public function getUnsubUrl(){
+		return "#";
+	}
+
 }
