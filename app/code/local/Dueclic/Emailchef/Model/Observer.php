@@ -86,8 +86,8 @@ class Dueclic_Emailchef_Model_Observer {
 				$params = array(
 					'shop_name'     => Mage::app()->getStore()->getName(),
 					'customer_name' => $customer->getFirstname(),
-					'verif_url'     => $config->getVerifyUrl(),
-					'unsub_url'     => $config->getUnsubUrl(),
+					'verif_url'     => $config->getVerifyUrl($customer->getEmail()),
+					'unsub_url'     => $config->getUnsubUrl($customer->getEmail()),
 					'shop_logo'     => Mage::getSingleton( 'core/design_package' )->getSkinBaseUrl() . Mage::getStoreConfig( 'design/header/logo_src' )
 				);
 

@@ -28,12 +28,12 @@ class Dueclic_Emailchef_Model_Config
     	return Mage::getSingleton('core/design_package')->getSkinBaseUrl().Mage::getStoreConfig('design/header/logo_src');
     }
 
-    public function getVerifyUrl(){
-    	return "#";
+    public function getVerifyUrl($email){
+	    return Mage::getUrl('emailchef/optin/verify/email/'.$email);
     }
 
-	public function getUnsubUrl(){
-		return "#";
+	public function getUnsubUrl($email){
+		return Mage::getUrl('emailchef/optin/unsub/email/'.$email);
 	}
 
 }
