@@ -108,8 +108,7 @@ class Dueclic_Emailchef_Model_Observer {
 				);
 
 			}
-
-
+            
 		}
 
 	}
