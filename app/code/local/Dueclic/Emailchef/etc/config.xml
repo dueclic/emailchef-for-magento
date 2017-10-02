@@ -41,6 +41,26 @@
                 <class>Dueclic_Emailchef_Helper</class>
             </dueclic_emailchef>
         </helpers>
+        <resources>
+            <dueclic_emailchef_setup>
+                <setup>
+                    <module>Dueclic_Emailchef</module>
+                </setup>
+                <connection>
+                    <use>core_setup</use>
+                </connection>
+            </dueclic_emailchef_setup>
+            <dueclic_emailchef_write>
+                <connection>
+                    <use>core_write</use>
+                </connection>
+            </dueclic_emailchef_write>
+            <dueclic_emailchef_read>
+                <connection>
+                    <use>core_read</use>
+                </connection>
+            </dueclic_emailchef_read>
+        </resources>
         <models>
             <dueclic_emailchef>
                 <class>Dueclic_Emailchef_Model</class>

@@ -158,7 +158,7 @@ class Dueclic_Emailchef_Helper_Customfield extends Mage_Core_Helper_Abstract
                 'ord'       => 12,
             ),
             'billing_phone'               => array(
-                'name'      => 'Telefono fisso',
+                'name'      => 'Telefono',
                 'data_type' => 'text',
                 'ord'       => 13,
             ),
@@ -271,9 +271,9 @@ class Dueclic_Emailchef_Helper_Customfield extends Mage_Core_Helper_Abstract
                 'ord'       => 31,
             ),
             'ab_cart_is_abandoned_cart'   => array(
-                'name'      => 'Carrello abbandonato - Sì/No',
-                'data_type' => 'boolean',
-                'ord'       => 32,
+                'name'          => 'Carrello abbandonato - Sì/No',
+                'data_type'     => 'boolean',
+                'ord'           => 32,
                 'default_value' => 'no',
             ),
             'ab_cart_prod_name_pr_hr'     => array(

@@ -194,6 +194,24 @@ class Dueclic_Emailchef_AjaxController extends Mage_Core_Controller_Front_Action
 			);
 
 			if ( $mgec->isLogged() ) {
+
+                /**
+                 * @var $resource \Mage_Core_Model_Resource
+                 */
+
+			    $resource = Mage::getSingleton("core/resource");
+
+                if ( ! $resource->getConnection('core_read')->tableColumnExists(
+                    $resource->getTableName('sales_flat_quote'), 'emailchef_sync'
+                )
+                ) {
+                    $resource->getConnection('core_write')->addColumn(
+                        $resource->getTableName('sales_flat_quote'), 'emailchef_sync',
+                        "INT( 1 ) NULL"
+                    );
+                }
+
+			    $response["class"]  = get_class($resource);
 				$response["type"]   = "success";
 				$response["msg"]    = "Utente loggato con successo.";
 				$response["policy"] = $mgec->get_policy();
