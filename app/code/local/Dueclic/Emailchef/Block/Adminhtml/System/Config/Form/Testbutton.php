@@ -31,7 +31,7 @@ class Dueclic_Emailchef_Block_Adminhtml_System_Config_Form_Testbutton
             ->setData(
                 array(
                     'id' => 'emailchef_selftest_button',
-                    'label' => __('Controlla i dati'),
+                    'label' => __('Test Login'),
                 )
             );
 

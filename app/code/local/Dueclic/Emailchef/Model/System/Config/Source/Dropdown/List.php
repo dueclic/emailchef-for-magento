@@ -21,7 +21,7 @@ class Dueclic_Emailchef_Model_System_Config_Source_Dropdown_List {
             return array(
                 array(
                     'value' => -1,
-                    'label' => "I dati di accesso eMailChef sono errati.",
+                    'label' => $this->__("eMailChef account credentials are wrong."),
                 ),
             );
 
@@ -30,7 +30,7 @@ class Dueclic_Emailchef_Model_System_Config_Source_Dropdown_List {
         return array(
             array(
                 'value' => -1,
-                'label' => "Effettua il login con eMailChef prima.",
+                'label' => $this->__("Provide valid account credentials."),
             ),
         );
     }

@@ -16,7 +16,7 @@ class Dueclic_Emailchef_AjaxController extends Mage_Core_Controller_Front_Action
 
 		$response = array(
 			'type' => 'error',
-			'msg'  => 'Username o password non corretti.',
+			'msg'  => $this->__("eMailChef account credentials are wrong"),
 		);
 
 		/**
@@ -59,7 +59,7 @@ class Dueclic_Emailchef_AjaxController extends Mage_Core_Controller_Front_Action
 			}
 
 			$response['type'] = "success";
-			$response["msg"]  = "Esportazione iniziale avvenuta con successo.";
+			$response["msg"]  = $this->__( "Customers data sync was successfully sent.");
 
 			Mage::getModel( 'core/config' )->saveConfig( 'emailchef/general/syncevent', 0 );
 
@@ -123,13 +123,13 @@ class Dueclic_Emailchef_AjaxController extends Mage_Core_Controller_Front_Action
 
 		$response = array(
 			'type' => 'error',
-			'msg'  => 'Username o password non corretti.',
+			'msg'  => $this->__("eMailChef account credentials are wrong"),
 		);
 
 		if ( $mgec->isLogged() ) {
 
 			if ( ! $args['list_id'] || empty( $args['list_id'] ) ) {
-				$response['msg'] = 'Lista assegnata non valida.';
+				$response['msg'] = $this->__('Provided list is not valid.');
 
 				$this->getResponse()->setBody(
 					json_encode( $response )
@@ -142,7 +142,7 @@ class Dueclic_Emailchef_AjaxController extends Mage_Core_Controller_Front_Action
 			if ( $init ) {
 
 				$response['type'] = "success";
-				$response['msg']  = "Custom fields creati con successo.";
+				$response['msg']  = $this->__('Custom fields for this list have been successfully created.');
 
 				Mage::log(
 					sprintf(
@@ -176,7 +176,7 @@ class Dueclic_Emailchef_AjaxController extends Mage_Core_Controller_Front_Action
 
 		$response = array(
 			"type" => "error",
-			"msg"  => "I dati di accesso sono errati.",
+			"msg"  => $this->__("eMailChef account credentials are wrong."),
 		);
 
 		$args = $this->getRequest()->getPost();
@@ -213,7 +213,7 @@ class Dueclic_Emailchef_AjaxController extends Mage_Core_Controller_Front_Action
 
 			    $response["class"]  = get_class($resource);
 				$response["type"]   = "success";
-				$response["msg"]    = "Utente loggato con successo.";
+				$response["msg"]    = $this->__("User logged successfully.");
 				$response["policy"] = $mgec->get_policy();
 				$response["lists"]  = $mgec->get_lists();
 			}
@@ -262,20 +262,20 @@ class Dueclic_Emailchef_AjaxController extends Mage_Core_Controller_Front_Action
 
 		$response = array(
 			'type' => 'error',
-			'msg'  => 'Username o password non corretti.',
+			'msg'  => $this->__("eMailChef account credentials are wrong"),
 		);
 
 		if ( $mgec->isLogged() ) {
 
-			if ( ! isset($args['list_name']) || strlen( $args['list_name'] ) == 0 ) {
+			if ( ! isset($args['list_name']) || empty( $args['list_name'] ) ) {
 				$response['msg']
-					= 'Inserisci un nome e una descrizione per la nuova lista';
+					= $this->__("Provide a valid name for eMailChef list.,fornisci un nome valido per la lista eMailChef");
 				$this->getResponse()->setBody(
 					json_encode( $response )
 				);
 			}
 
-			if ( ! $args['list_desc'] || strlen( $args['list_desc'] ) == 0 ) {
+			if ( ! $args['list_desc'] || empty( $args['list_desc'] ) ) {
 				$args['list_desc'] = "";
 			}
 
@@ -288,7 +288,7 @@ class Dueclic_Emailchef_AjaxController extends Mage_Core_Controller_Front_Action
 			if ( $list_id !== false ) {
 
 				$response['type']    = "success";
-				$response['msg']     = "Lista creata con successo.";
+				$response['msg']     = $this->__("List has been created.");
 				$response['list_id'] = $list_id;
 
 				Mage::log(

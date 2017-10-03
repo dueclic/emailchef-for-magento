@@ -6,11 +6,11 @@ class Dueclic_EmailChef_Model_Usernamevalidator  extends Mage_Core_Model_Config_
     {
         $value = $this->getValue();
         if (strlen($value) == 0) {
-            Mage::throwException(__('Please fill the email'));
+            Mage::throwException(__('Please fill the username.'));
         }
 
         if (!filter_var($value, FILTER_VALIDATE_EMAIL)) {
-            Mage::throwException(__('Email is not in the right format'));
+            Mage::throwException(__('Email is not in the right format.'));
         }
 
         return parent::save();

@@ -219,6 +219,12 @@ $e(document).ready(function () {
 
         isCreated = 1;
 
+        if (listName === ""){
+            $e("#create_emailchef_list_danger").find(".reason").text(Translator.translate("provide a valid name for eMailChef list."));
+            $e("#create_emailchef_list_danger").show();
+            return;
+        }
+
         addList(apiUser, apiPass, listName, listDesc);
       });
 

@@ -44,29 +44,27 @@ class Dueclic_Emailchef_Block_Adminhtml_System_Config_Form_Listselect
         </div>
         <div id="emailchef_response">
             <div class="alert alert-info" id="create_emailchef_list_load">
-                <span class="loading-spinner-emailchef"></span> <?php echo __(
+                <span class="loading-spinner-emailchef"></span> <?php echo $this->__(
                     "Making a new list, please wait..."
                 ); ?>
             </div>
             <div class="alert alert-success" id="create_emailchef_list_success">
-                <?php echo __(
+                <?php echo $this->__(
                     "Your list has been created. We’re now adding the custom fields."
                 ); ?>
             </div>
             <div class="alert alert-danger" id="create_emailchef_list_danger">
-                Errore nella creazione della lista indicata: <span
+                <?php echo $this->__("An error occurred while creating this list:"); ?> <span
                         class="reason">{error}</span>
             </div>
             <div class="alert alert-info" id="create_emailchef_cf_load">
-                <span class="loading-spinner-emailchef"></span> Creo i custom
-                fields per la lista creata...
+                <span class="loading-spinner-emailchef"></span> <?php echo $this->__("We're defining custom fields for this newly created list..."); ?>
             </div>
             <div class="alert alert-success" id="create_emailchef_cf_success">
-                Sistemazione dei custom fields per la lista avvenuta con
-                successo.
+                <?php echo $this->__("Custom fields for this list have been successfully created."); ?>
             </div>
             <div class="alert alert-danger" id="create_emailchef_cf_danger">
-                Errore nella sistemazione dei custom fields per la lista scelta:
+	            <?php echo $this->__("An error occurred while defining custom fields for this newly created list:"); ?>
                 <span class="reason">{error}</span>
             </div>
         </div>

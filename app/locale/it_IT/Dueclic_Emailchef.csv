@@ -18,4 +18,19 @@ List description,Descrizione lista
 Create list,Crea lista
 "Making a new list, please wait...","Creazione della lista in corso..."
 "Your list has been created. We're now adding the custom fields.","La lista è stata creata con successo, ora verranno creati i custom fields."
-An error occurred while creating this list.,Errore nella creazione della lista indicata:
+An error occurred while creating this list.,Errore nella creazione della lista indicata.
+provide a valid name for eMailChef list.,fornisci un nome valido per la lista eMailChef
+Provide a valid name for eMailChef list.,Fornisci un nome valido per la lista eMailChef
+An error occurred while creating this list:,Errore nella creazione della lista indicata:
+"We're defining custom fields for this newly created list...","Stiamo creando i custom fields per la lista appena creata..."
+Custom fields for this list have been successfully created.,Creazione dei custom fields per la lista avvenuta con successo.
+An error occurred while defining custom fields for this newly created list:,Errore nella creazione dei custom fields per la lista creata:
+Test Login,Controlla i dati
+eMailChef account credentials are wrong.,I dati di accesso sono errati.
+Customers data sync was successfully sent.,Esportazione iniziale dei dati dei clienti avvenuta con successo.
+Provided list is not valid.,Lista assegnata non valida.
+User logged successfully.,Utente loggato con successo.
+List has been created.,Lista creata con successo.
+Provide valid account credentials.,Inserisci username e password corretti prima.
+Please fill the username.,Compila il campo Username
+Email is not in the right format.,Il campo username non è in un formato corretto.

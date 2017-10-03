@@ -221,6 +221,22 @@ class Dueclic_Emailchef_Model_Observer {
 
 	public function checkAbandonedCarts ( $observer ){
 
+		/**
+		 * @var $resource \Mage_Core_Model_Resource
+		 */
+
+		$resource = Mage::getSingleton("core/resource");
+
+		if ( ! $resource->getConnection('core_read')->tableColumnExists(
+			$resource->getTableName('sales_flat_quote'), 'emailchef_sync'
+		)
+		) {
+			$resource->getConnection('core_write')->addColumn(
+				$resource->getTableName('sales_flat_quote'), 'emailchef_sync',
+				"INT( 1 ) NULL"
+			);
+		}
+
         /**
          * @var $config \Dueclic_Emailchef_Model_Config
          */

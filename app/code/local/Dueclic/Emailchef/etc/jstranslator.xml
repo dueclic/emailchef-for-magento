@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jstranslator>
+    <provide-vaild-list-name translate="message" module="dueclic_emailchef">
+        <message>provide a valid name for eMailChef list.</message>
+    </provide-vaild-list-name>
+</jstranslator>
