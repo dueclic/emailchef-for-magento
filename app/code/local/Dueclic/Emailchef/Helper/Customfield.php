@@ -78,27 +78,27 @@ class Dueclic_Emailchef_Helper_Customfield extends Mage_Core_Helper_Abstract
         return array(
 
             'first_name'                  => array(
-                'name'      => 'Nome',
+                'name'      => $this->__('Name'),
                 'data_type' => 'predefined',
                 'ord'       => 0,
             ),
             'last_name'                   => array(
-                'name'      => 'Cognome',
+                'name'      => $this->__('Surname'),
                 'data_type' => 'predefined',
                 'ord'       => 1,
             ),
             'user_email'                  => array(
-                'name'      => 'Email',
+                'name'      => $this->__('Email address'),
                 'data_type' => 'predefined',
                 'ord'       => 2,
             ),
             'source'                      => array(
-                'name'      => 'Sorgente',
+                'name'      => $this->__('Source'),
                 'data_type' => 'text',
                 'ord'       => 3,
             ),
             'gender'                      => array(
-                'name'          => 'Sesso',
+                'name'          => $this->__('Gender'),
                 'data_type'     => 'select',
                 'options'       => array(
                     array(
@@ -115,7 +115,7 @@ class Dueclic_Emailchef_Helper_Customfield extends Mage_Core_Helper_Abstract
                 'ord'           => 4,
             ),
             'lang'                        => array(
-                'name'          => 'Lingua',
+                'name'          => $this->__("Language"),
                 'data_type'     => 'select',
                 'options'       => $this->getStoreViews(),
                 'default_value' => Mage::app()->getDefaultStoreView()->getName(
@@ -123,52 +123,52 @@ class Dueclic_Emailchef_Helper_Customfield extends Mage_Core_Helper_Abstract
                 'ord'           => 5,
             ),
             'birthday'                    => array(
-                'name'      => 'Data di nascita',
+                'name'      => $this->__("Date of birth"),
                 'data_type' => 'date',
                 'ord'       => 6,
             ),
             'billing_company'             => array(
-                'name'      => 'Società',
+                'name'      => $this->__("Company"),
                 'data_type' => 'text',
                 'ord'       => 7,
             ),
             'billing_address_1'           => array(
-                'name'      => 'Indirizzo',
+                'name'      => $this->__("Address"),
                 'data_type' => 'text',
                 'ord'       => 8,
             ),
             'billing_postcode'            => array(
-                'name'      => 'CAP',
+                'name'      => $this->__("ZIP code"),
                 'data_type' => 'text',
                 'ord'       => 9,
             ),
             'billing_city'                => array(
-                'name'      => 'Città',
+                'name'      => $this->__("City"),
                 'data_type' => 'text',
                 'ord'       => 10,
             ),
             'billing_state'               => array(
-                'name'      => 'Provincia',
+                'name'      => $this->__("State"),
                 'data_type' => 'text',
                 'ord'       => 11,
             ),
             'billing_country'             => array(
-                'name'      => 'Paese',
+                'name'      => $this->__("Country"),
                 'data_type' => 'text',
                 'ord'       => 12,
             ),
             'billing_phone'               => array(
-                'name'      => 'Telefono',
+                'name'      => $this->__("Phone"),
                 'data_type' => 'text',
                 'ord'       => 13,
             ),
             'billing_phone_2'             => array(
-                'name'      => 'Fax',
+                'name'      => $this->__('Fax'),
                 'data_type' => 'text',
                 'ord'       => 14,
             ),
             'newsletter'                  => array(
-                'name'          => 'Consenso newsletter',
+                'name'          => $this->__('Agreed to newsletter'),
                 'data_type'     => 'select',
                 'options'       => array(
                     array(
@@ -185,7 +185,7 @@ class Dueclic_Emailchef_Helper_Customfield extends Mage_Core_Helper_Abstract
                 'ord'           => 15,
             ),
             'currency'                    => array(
-                'name'          => 'Valuta',
+                'name'          => $this->__('Currency'),
                 'data_type'     => 'select',
                 'options'       => $this->getCurrencies(),
                 'default_value' => Mage::app()->getStore()
@@ -193,121 +193,121 @@ class Dueclic_Emailchef_Helper_Customfield extends Mage_Core_Helper_Abstract
                 'ord'           => 16,
             ),
             'customer_id'                 => array(
-                'name'      => 'ID Cliente',
+                'name'      => $this->__("Customer ID"),
                 'data_type' => 'number',
                 'ord'       => 17,
             ),
             'customer_type'               => array(
-                'name'      => 'Tipo cliente',
+                'name'      => $this->__("Customer type"),
                 'data_type' => 'select',
                 'options'   => $this->getCustomerGroups(),
                 'ord'       => 18,
             ),
             'total_ordered'               => array(
-                'name'      => 'Totale ordinato',
+                'name'      => $this->__("Subtotal"),
                 'data_type' => 'number',
                 'ord'       => 19,
             ),
             'total_ordered_30d'           => array(
-                'name'      => 'Totale ordinato negli ultimi 30 giorni',
+                'name'      => $this->__("Total ordered in the last 30 days"),
                 'data_type' => 'number',
                 'ord'       => 20,
             ),
             'total_ordered_12m'           => array(
-                'name'      => 'Totale ordinato negli ultimi 12 mesi',
+                'name'      => $this->__("Total ordered in the last 12 months"),
                 'data_type' => 'number',
                 'ord'       => 21,
             ),
             'total_orders'                => array(
-                'name'      => 'Ordini totali',
+                'name'      => $this->__("Orders"),
                 'data_type' => 'number',
                 'ord'       => 22,
             ),
             'all_ordered_product_ids'     => array(
-                'name'      => 'ID prodotti ordinati',
+                'name'      => $this->__("Ordered Product ID"),
                 'data_type' => 'text',
                 'ord'       => 23,
             ),
             'latest_order_id'             => array(
-                'name'      => 'Ultimo ordine - ID',
+                'name'      => $this->__("Last order - ID"),
                 'data_type' => 'text',
                 'ord'       => 24,
             ),
             'latest_order_date'           => array(
-                'name'      => 'Ultimo ordine - Data',
+                'name'      => $this->__("Last order - Date"),
                 'data_type' => 'date',
                 'ord'       => 25,
             ),
             'latest_order_amount'         => array(
-                'name'      => 'Ultimo ordine - Totale',
+                'name'      => $this->__("Last order - Total"),
                 'data_type' => 'number',
                 'ord'       => 26,
             ),
             'latest_order_status'         => array(
-                'name'      => 'Ultimo ordine - Stato lavorazione',
+                'name'      => $this->__("Last order - Status"),
                 'data_type' => 'select',
                 'options'   => $this->getOrderStatuses(),
                 'ord'       => 27,
             ),
             'latest_order_product_ids'    => array(
-                'name'      => 'Ultimo ordine - ID prodotti',
+                'name'      => $this->__("Last order - Product ID"),
                 'data_type' => 'text',
                 'ord'       => 28,
             ),
             'latest_shipped_order_id'     => array(
-                'name'      => 'Ultimo ordine inviato - ID',
+                'name'      => $this->__("Last shipped order - ID"),
                 'data_type' => 'text',
                 'ord'       => 29,
             ),
             'latest_shipped_order_date'   => array(
-                'name'      => 'Ultimo ordine inviato - Data',
+                'name'      => $this->__("Last shipped order - Data"),
                 'data_type' => 'date',
                 'ord'       => 30,
             ),
             'latest_shipped_order_status' => array(
-                'name'      => 'Ultimo ordine inviato - Stato lavorazione',
+                'name'      => $this->__("Last shipped order - Status"),
                 'data_type' => 'select',
                 'options'   => $this->getOrderStatusDelivered(),
                 'ord'       => 31,
             ),
             'ab_cart_is_abandoned_cart'   => array(
-                'name'          => 'Carrello abbandonato - Sì/No',
+                'name'          => $this->__("Abandoned cart - Yes/No"),
                 'data_type'     => 'boolean',
                 'ord'           => 32,
                 'default_value' => 'no',
             ),
             'ab_cart_prod_name_pr_hr'     => array(
-                'name'      => 'Carrello abbandonato - Nome prodotto più caro',
+                'name'      => $this->__("Abandoned cart - Most expensive product name"),
                 'data_type' => 'text',
                 'ord'       => 33,
             ),
             'ab_cart_prod_desc_pr_hr'     => array(
-                'name'      => 'Carrello abbandonato - Desc. prodotto più caro',
+                'name'      => $this->__("Abandoned cart - Most expensive product description"),
                 'data_type' => 'text',
                 'ord'       => 34,
             ),
             'ab_cart_prod_pr_pr_hr'       => array(
-                'name'      => 'Carrello abbandonato - Prezzo prodotto più caro',
+                'name'      => $this->__("Abandoned cart - Most expensive pricing product"),
                 'data_type' => 'number',
                 'ord'       => 35,
             ),
             'ab_cart_prod_url_pr_hr'      => array(
-                'name'      => 'Carrello abbandonato - URL prodotto più caro',
+                'name'      => $this->__('Abandoned cart - Most expensive product URL'),
                 'data_type' => 'text',
                 'ord'       => 36,
             ),
             'ab_cart_prod_url_img_pr_hr'  => array(
-                'name'      => 'Carrello abbandonato - URL immagine prodotto più caro',
+                'name'      => $this->__('Abandoned cart - Most expensive product image URL'),
                 'data_type' => 'text',
                 'ord'       => 37,
             ),
             'ab_cart_prod_id_pr_hr'       => array(
-                'name'      => 'Carrello abbandonato - ID prodotto più caro',
+                'name'      => $this->__('Abandoned cart - Most expensive product ID'),
                 'data_type' => 'number',
                 'ord'       => 38,
             ),
             'ab_cart_date'                => array(
-                'name'      => 'Carrello abbandonato - Data',
+                'name'      => $this->__('Abandoned cart - Date'),
                 'data_type' => 'date',
                 'ord'       => 39,
             ),

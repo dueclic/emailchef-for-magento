@@ -34,3 +34,43 @@ List has been created.,Lista creata con successo.
 Provide valid account credentials.,Inserisci username e password corretti prima.
 Please fill the username.,Compila il campo Username
 Email is not in the right format.,Il campo username non è in un formato corretto.
+Name,Nome
+Surname,Cognome
+Email address,Email
+Source,Sorgente
+Gender,Sesso
+Language,Lingua
+Date of birth,Data di nascita
+Company,Società
+Address,Indirizzo
+ZIP code,CAP
+City,Città
+State,Provincia
+Country,Paese
+Phone,Telefono fisso
+Fax,Fax
+Agreed to newsletter,Consenso newsletter
+Currency	Valuta
+Customer ID	ID Cliente
+Customer type	Tipo cliente
+Subtotal (?)	Totale ordinato
+Total ordered in the last 30 days	Totale ordinato negli ultimi 30 giorni
+Total ordered in the last 12 months	Totale ordinato negli ultimi 12 mesi
+Orders	Ordini totali
+Ordered Product ID	ID prodotti ordinati
+Last order - ID	Ultimo ordine - ID
+Last order - Date	Ultimo ordine - Data
+Last order - Total	Ultimo ordine - Totale
+Last order - Status	Ultimo ordine - Stato lavorazione
+Last order - Product ID	Ultimo ordine - ID prodotti
+Last shipped order - ID	Ultimo ordine inviato - ID
+Last shipped order - Data	Ultimo ordine inviato - Data
+Last shipped order - Status	Ultimo ordine inviato - Stato lavorazione
+Abandoned cart - Yes/No	Carrello abbandonato - Sì/No
+Abandoned cart - Most expensive product name	Carrello abbandonato - Nome prodotto più caro
+Abandoned cart - Most expensive product description	Carrello abbandonato - Desc. prodotto più caro
+Abandoned cart - Most expensive pricing product	Carrello abbandonato - Prezzo prodotto più caro
+Abandoned cart - Most expensive product URL	Carrello abbandonato - URL prodotto più caro
+Abandoned cart - Most expensive product image URL	Carrello abbandonato - URL immagine prodotto più caro
+Abandoned cart - Most expensive product ID	Carrello abbandonato - ID prodotto più caro
+Abandoned cart - Date	Carrello abbandonato - Data
