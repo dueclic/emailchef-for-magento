@@ -1,107 +1,94 @@
 <?php
 
-class Dueclic_Emailchef_OptinController extends Mage_Core_Controller_Front_Action {
+class Dueclic_Emailchef_OptinController extends
+    Mage_Core_Controller_Front_Action
+{
 
-	public function verifyAction() {
+    public function verifyAction()
+    {
 
-		$email = $this->getRequest()->getParam("email");
+        $email = $this->getRequest()->getParam("email");
 
-		/**
-		 * @var $customer \Mage_Customer_Model_Customer
-		 */
+        /**
+         * @var $config   \Dueclic_Emailchef_Model_Config
+         */
 
-		$customer = Mage::getModel("customer/customer");
-		$customer->setWebsiteId(Mage::app()->getStore()->getWebsiteId());
-		$customer->loadByEmail($email);
+        $config = Mage::getModel("dueclic_emailchef/config");
 
-		if ($customer->getId()) {
+        $username = Mage::getStoreConfig('emailchef/general/username');
+        $password = Mage::getStoreConfig('emailchef/general/password');
+        $list_id  = Mage::getStoreConfig('emailchef/general/list');
 
-			/**
-			 * @var $config \Dueclic_Emailchef_Model_Config
-			 */
+        $mgec = $config->getEmailChefInstance(
+            $username, $password
+        );
 
-			$config = Mage::getModel( "dueclic_emailchef/config" );
+        $upsert = $mgec->upsert_customer(
+            $list_id,
+            array(
+                'user_email' => $email,
+                'newsletter' => 'yes',
+            )
+        );
 
-			$username = Mage::getStoreConfig( 'emailchef/general/username' );
-			$password = Mage::getStoreConfig( 'emailchef/general/password' );
-			$list_id  = Mage::getStoreConfig( 'emailchef/general/list' );
+        if ($upsert) {
+            Mage::getSingleton("core/session")->addSuccess(
+                "Iscrizione alla lista confermata con successo."
+            );
+            $this->_redirect("/");
 
-			$mgec = $config->getEmailChefInstance(
-				$username, $password
-			);
+            return;
+        }
 
-			$upsert = $mgec->upsert_customer(
-				$list_id,
-				array(
-					'first_name'  => $customer->getFirstname(),
-					'last_name'   => $customer->getLastname(),
-					'user_email'  => $email,
-					'newsletter'  => 'yes',
-					'customer_id' => $customer->getId()
-				)
-			);
+        Mage::getSingleton("core/session")->addError(
+            "Iscrizione alla lista non confermata."
+        );
+        $this->_redirect("/");
 
-			if ($upsert){
-				Mage::getSingleton("core/session")->addSuccess("Iscrizione alla lista confermata con successo.");
-				$this->_redirect("/");
-				return;
-			}
-		}
+    }
 
-		Mage::getSingleton("core/session")->addError("Iscrizione alla lista non confermata.");
-		$this->_redirect("/");
+    public function unsubAction()
+    {
 
-	}
+        $email = $this->getRequest()->getParam("email");
 
-	public function unsubAction() {
 
-		$email = $this->getRequest()->getParam("email");
+        /**
+         * @var $config \Dueclic_Emailchef_Model_Config
+         */
 
-		/**
-		 * @var $customer \Mage_Customer_Model_Customer
-		 */
+        $config = Mage::getModel("dueclic_emailchef/config");
 
-		$customer = Mage::getModel("customer/customer");
-		$customer->setWebsiteId(Mage::app()->getStore()->getWebsiteId());
-		$customer->loadByEmail($email);
+        $username = Mage::getStoreConfig('emailchef/general/username');
+        $password = Mage::getStoreConfig('emailchef/general/password');
+        $list_id  = Mage::getStoreConfig('emailchef/general/list');
 
-		if ($customer->getId()) {
+        $mgec = $config->getEmailChefInstance(
+            $username, $password
+        );
 
-			/**
-			 * @var $config \Dueclic_Emailchef_Model_Config
-			 */
+        $upsert = $mgec->upsert_customer(
+            $list_id,
+            array(
+                'user_email' => $email,
+                'newsletter' => 'no',
+            )
+        );
 
-			$config = Mage::getModel( "dueclic_emailchef/config" );
+        if ($upsert) {
+            Mage::getSingleton("core/session")->addSuccess(
+                "Disiscrizione alla lista confermata con successo."
+            );
+            $this->_redirect("/");
 
-			$username = Mage::getStoreConfig( 'emailchef/general/username' );
-			$password = Mage::getStoreConfig( 'emailchef/general/password' );
-			$list_id  = Mage::getStoreConfig( 'emailchef/general/list' );
+            return;
+        }
 
-			$mgec = $config->getEmailChefInstance(
-				$username, $password
-			);
+        Mage::getSingleton("core/session")->addError(
+            "Disiscrizione alla lista non confermata."
+        );
+        $this->_redirect("/");
 
-			$upsert = $mgec->upsert_customer(
-				$list_id,
-				array(
-					'first_name'  => $customer->getFirstname(),
-					'last_name'   => $customer->getLastname(),
-					'user_email'  => $email,
-					'newsletter'  => 'no',
-					'customer_id' => $customer->getId()
-				)
-			);
-
-			if ($upsert){
-				Mage::getSingleton("core/session")->addSuccess("Disiscrizione alla lista confermata con successo.");
-				$this->_redirect("/");
-				return;
-			}
-		}
-
-		Mage::getSingleton("core/session")->addError("Disiscrizione alla lista non confermata.");
-		$this->_redirect("/");
-
-	}
+    }
 
 }

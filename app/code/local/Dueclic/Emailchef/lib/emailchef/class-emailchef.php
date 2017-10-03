@@ -460,6 +460,14 @@ class MG_Emailchef extends MG_Emailchef_Api
 
         );
 
+        if (!isset($customer["first_name"])){
+            unset($args["instance_in"]["firstname"]);
+        }
+
+        if (!isset($customer["last_name"])){
+            unset($args["instance_in"]["lastname"]);
+        }
+
         $response = $this->get("/contacts", $args, "POST");
 
         if (isset($response['contact_added_to_list'])
@@ -522,6 +530,14 @@ class MG_Emailchef extends MG_Emailchef_Api
             ),
 
         );
+
+        if (!isset($customer["first_name"])){
+            unset($args["instance_in"]["firstname"]);
+        }
+
+        if (!isset($customer["last_name"])){
+            unset($args["instance_in"]["lastname"]);
+        }
 
         $update = $this->get($route, $args, "PUT");
 

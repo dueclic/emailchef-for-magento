@@ -2,6 +2,155 @@
 
 class Dueclic_Emailchef_Model_Observer {
 
+    /**
+     * @param $observer \Varien_Event_Observer
+     */
+
+    public function subscribedToNewsletter ($observer) {
+
+        /**
+         * @var $config \Dueclic_Emailchef_Model_Config
+         */
+
+        $config = Mage::getModel( "dueclic_emailchef/config" );
+
+        $username = Mage::getStoreConfig( 'emailchef/general/username' );
+        $password = Mage::getStoreConfig( 'emailchef/general/password' );
+        $list_id  = Mage::getStoreConfig( 'emailchef/general/list' );
+        $policy   = Mage::getStoreConfig( 'emailchef/general/policy' );
+
+        $mgec = $config->getEmailChefInstance(
+            $username, $password
+        );
+
+        if ( $mgec->isLogged() ) {
+
+            $event      = $observer->getEvent();
+            $subscriber = $event->getDataObject();
+            $data       = $subscriber->getData();
+            $request = Mage::app()->getRequest()->getParams();
+
+            $email = $data['subscriber_email'];
+
+            $statusChange = $subscriber->getIsStatusChanged();
+
+            if ($statusChange == true) {
+
+                if ($data['subscriber_status'] == "1") {
+
+                    if ($policy == "dopt") {
+                        $newsletter = "pending";
+                    }
+
+                    if ($policy == "sopt") {
+                        $newsletter = "yes";
+                    }
+
+                }
+                else {
+                    $newsletter = "no";
+                }
+
+                $to_send = array(
+                    "user_email" => $email,
+                    "newsletter" => $newsletter
+                );
+
+                if (isset($request["firstname"]) && $request["lastname"]){
+                    $to_send["first_name"] = $request["firstname"];
+                    $to_send["last_name"] = $request["lastname"];
+                }
+
+                else {
+
+                    /**
+                     * @var $customer \Mage_Customer_Model_Customer
+                     */
+
+                    $customer = Mage::getModel("customer/customer");
+                    $customer->setWebsiteId(Mage::app()->getStore()->getWebsiteId());
+                    $customer->loadByEmail($email);
+                    $to_send["first_name"] = $customer->getFirstname();
+                    $to_send["last_name"] = $customer->getLastname();
+
+                }
+
+                $upsert = $mgec->upsert_customer( $list_id, $to_send );
+
+                if ( $upsert ) {
+                    Mage::log(
+                        sprintf(
+                            "Consenso newsletter applicato al cliente %s su lista %d (Consenso: %s)",
+                            $email,
+                            $list_id,
+                            $newsletter
+                        ),
+                        Zend_Log::INFO
+                    );
+                } else {
+                    Mage::log(
+                        sprintf(
+                            "Consenso newsletter al cliente %s su lista %d (Consenso: %s) non avvenuto.",
+                            $email,
+                            $list_id,
+                            $newsletter
+                        ),
+                        Zend_Log::ERR
+                    );
+                }
+
+
+                if ($newsletter == "pending") {
+
+                    /**
+                     * @var $emailTemplate \Dueclic_Emailchef_Model_Email
+                     */
+
+                    $params = array(
+                        'shop_name'     => Mage::app()->getStore()->getName(),
+                        'customer_name' => $request["firstname"],
+                        'verif_url'     => $config->getVerifyUrl(
+                            $email
+                        ),
+                        'unsub_url'     => $config->getUnsubUrl(
+                            $email
+                        ),
+                        'shop_logo'     => Mage::getSingleton(
+                                'core/design_package'
+                            )->getSkinBaseUrl() . Mage::getStoreConfig(
+                                'design/header/logo_src'
+                            )
+                    );
+
+                    $request["dest_info"] = $request["firstname"]." ".$request["lastname"];
+
+                    $emailTemplate = Mage::getModel('dueclic_emailchef/email');
+                    $emailTemplate->sendEmail(
+                        'emailchef_newsletter_dopt',
+                        "general",
+                        $email,
+                        $request["dest_info"],
+                        'Conferma inserimento nella lista eMailChef',
+                        $params
+                    );
+
+                    Mage::log(
+                        sprintf(
+                            "Double opt-in inviato al cliente %s su lista %d.",
+                            $email,
+                            $list_id
+                        ),
+                        Zend_Log::INFO
+                    );
+
+                }
+
+
+            }
+        }
+
+    }
+
 	/**
 	 * @param $observer \Varien_Event_Observer
 	 */
@@ -25,18 +174,6 @@ class Dueclic_Emailchef_Model_Observer {
 
 		if ( $mgec->isLogged() ) {
 
-			$newsletter = "no";
-
-			$is_subscribed = Mage::app()->getFrontController()->getRequest()->getParam( 'is_subscribed' );
-
-			if ( $is_subscribed !== null && $policy == "dopt" ) {
-				$newsletter = "pending";
-			}
-
-			if ( $is_subscribed !== null && $policy == "sopt" ) {
-				$newsletter = "yes";
-			}
-
 			/**
 			 * @var $helper \Dueclic_Emailchef_Helper_Customer
 			 * @var $customer \Mage_Customer_Model_Customer
@@ -47,68 +184,37 @@ class Dueclic_Emailchef_Model_Observer {
 
 			$sync_data = $helper->getCustomerData(
 				$customer->getId(),
-				$newsletter
+				"noinsert"
 			);
-
-			if ($is_subscribed === null){
-				unset($sync_data["newsletter"]);
-			}
 
 			$upsert = $mgec->upsert_customer( $list_id, $sync_data );
 
 			if ( $upsert ) {
 				Mage::log(
 					sprintf(
-						"Inserito nella lista %d il cliente %d (Nome: %s Cognome: %s Email: %s Consenso Newsletter: %s)",
+						"Inserito nella lista %d il cliente %d (Nome: %s Cognome: %s Email: %s)",
 						$list_id,
 						$customer->getId(),
 						$customer->getFirstname(),
 						$customer->getLastname(),
-						$customer->getEmail(),
-						$newsletter
+						$customer->getEmail()
 					),
 					Zend_Log::INFO
 				);
 			} else {
 				Mage::log(
 					sprintf(
-						"Inserimento nella lista %d del cliente %d (Nome: %s Cognome: %s Email: %s Consenso Newsletter: %s) non avvenuto",
+						"Inserimento nella lista %d del cliente %d (Nome: %s Cognome: %s Email: %s non avvenuto",
 						$list_id,
 						$customer->getId(),
 						$customer->getFirstname(),
 						$customer->getLastname(),
-						$customer->getEmail(),
-						$newsletter
+						$customer->getEmail()
 					),
 					Zend_Log::ERR
 				);
 			}
 
-			if ( $newsletter == "pending" ) {
-				/**
-				 * @var $emailTemplate \Dueclic_Emailchef_Model_Email
-				 */
-
-				$params = array(
-					'shop_name'     => Mage::app()->getStore()->getName(),
-					'customer_name' => $customer->getFirstname(),
-					'verif_url'     => $config->getVerifyUrl($customer->getEmail()),
-					'unsub_url'     => $config->getUnsubUrl($customer->getEmail()),
-					'shop_logo'     => Mage::getSingleton( 'core/design_package' )->getSkinBaseUrl() . Mage::getStoreConfig( 'design/header/logo_src' )
-				);
-
-				$emailTemplate = Mage::getModel( 'dueclic_emailchef/email' );
-				$emailTemplate->sendEmail(
-					'emailchef_newsletter_dopt',
-					"general",
-					$customer->getEmail(),
-					$customer->getFirstname(),
-					'Conferma inserimento nella lista eMailChef',
-					$params
-				);
-
-			}
-            
 		}
 
 	}

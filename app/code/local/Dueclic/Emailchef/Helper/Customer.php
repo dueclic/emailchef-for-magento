@@ -240,6 +240,17 @@ class Dueclic_Emailchef_Helper_Customer extends Mage_Core_Helper_Abstract
 
         $grand_total = $this->getTotalOrdered($customer->getId());
 
+        if ($newsletter == "initial"){
+
+            $subscriber = Mage::getModel('newsletter/subscriber')->loadByEmail($customer->getEmail());
+            if ($subscriber->getId()) {
+                $newsletter = "yes";
+            }
+            else
+                $newsletter = "no";
+
+        }
+
         $data = array(
             "customer_id"   => $customer->getId(),
             "customer_type" => Mage::getModel('customer/group')->load(
@@ -255,6 +266,9 @@ class Dueclic_Emailchef_Helper_Customer extends Mage_Core_Helper_Abstract
             "currency"      => Mage::app()->getStore()->getCurrentCurrencyCode(
             ),
         );
+
+        if ( $newsletter == "noinsert" )
+            unset($data["newsletter"]);
 
         $data = array_merge($data, $grand_total);
 
@@ -285,7 +299,7 @@ class Dueclic_Emailchef_Helper_Customer extends Mage_Core_Helper_Abstract
 
     }
 
-    public function getCustomersData()
+    public function getCustomersData($action = "no")
     {
         $model = Mage::getModel("customer/customer");
 
@@ -302,7 +316,7 @@ class Dueclic_Emailchef_Helper_Customer extends Mage_Core_Helper_Abstract
                 continue;
             }
 
-            $customersCollection[] = $this->getCustomerData($currentCustomerId);
+            $customersCollection[] = $this->getCustomerData($currentCustomerId, $action);
 
         }
 
@@ -311,6 +325,7 @@ class Dueclic_Emailchef_Helper_Customer extends Mage_Core_Helper_Abstract
 
 	/**
 	 * @param $order \Mage_Sales_Model_Order
+     * @return array
 	 */
 
     public function getSyncOrderData($order){

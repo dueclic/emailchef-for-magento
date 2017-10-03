@@ -49,7 +49,7 @@ class Dueclic_Emailchef_AjaxController extends Mage_Core_Controller_Front_Action
 
 			$helper = Mage::helper( "dueclic_emailchef/customer" );
 
-			$customers = $helper->getCustomersData();
+			$customers = $helper->getCustomersData("initial");
 
 			foreach ( $customers as $customer ) {
 				$mgec->upsert_customer(
