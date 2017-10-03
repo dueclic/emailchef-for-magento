@@ -107,6 +107,15 @@
         </emailchef>
     </default>
     <adminhtml>
+        <translate>
+            <modules>
+                <dueclic_emailchef>
+                    <files>
+                        <default>Dueclic_Emailchef.csv</default>
+                    </files>
+                </dueclic_emailchef>
+            </modules>
+        </translate>
         <layout>
             <updates>
                 <dueclic_emailchef>

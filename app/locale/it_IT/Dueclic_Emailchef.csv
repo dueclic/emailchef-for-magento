@@ -1,0 +1,21 @@
+Configuration,Configurazione
+Login credentials,Dati di accesso
+Username,Username
+eMailChef username,Username eMailChef
+eMailChef password,Password eMailChef
+Test Login,Controlla i dati
+List,Lista
+Which policy would you like to use?,Scegli che tipo di policy vuoi adottare
+Save Config,Salva configurazione
+We're defining custom fields for this newly created list...,Sistemo i custom fields per la lista appena scelta...
+Custom fields for this list have been successfully created.,Sistemazione dei custom fields per la lista avvenuta con successo.
+An error occurred while defining custom fields for this newly created list:,Errore nella sistemazione dei custom fields per la lista scelta:
+Or,Oppure
+create a new list,crea una nuova lista
+Create new list,Crea nuova lista
+List name,Nome lista
+List description,Descrizione lista
+Create list,Crea lista
+"Making a new list, please wait...","Creazione della lista in corso..."
+"Your list has been created. We're now adding the custom fields.","La lista è stata creata con successo, ora verranno creati i custom fields."
+An error occurred while creating this list.,Errore nella creazione della lista indicata:

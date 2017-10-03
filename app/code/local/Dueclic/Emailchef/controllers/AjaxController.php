@@ -267,7 +267,7 @@ class Dueclic_Emailchef_AjaxController extends Mage_Core_Controller_Front_Action
 
 		if ( $mgec->isLogged() ) {
 
-			if ( ! $args['list_name'] || empty( $args['list_name'] ) ) {
+			if ( ! isset($args['list_name']) || strlen( $args['list_name'] ) == 0 ) {
 				$response['msg']
 					= 'Inserisci un nome e una descrizione per la nuova lista';
 				$this->getResponse()->setBody(
@@ -275,7 +275,7 @@ class Dueclic_Emailchef_AjaxController extends Mage_Core_Controller_Front_Action
 				);
 			}
 
-			if ( ! $args['list_desc'] || empty( $args['list_desc'] ) ) {
+			if ( ! $args['list_desc'] || strlen( $args['list_desc'] ) == 0 ) {
 				$args['list_desc'] = "";
 			}
 

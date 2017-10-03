@@ -8,7 +8,7 @@
     </tabs>
     <sections>
         <emailchef translate="label" module="adminhtml">
-            <label>Configurazione</label>
+            <label>Configuration</label>
             <tab>emconf</tab>
             <sort_order>10</sort_order>
             <show_in_default>1</show_in_default>
@@ -16,7 +16,7 @@
             <show_in_store>1</show_in_store>
             <groups>
                 <general translate="label comment">
-                    <label>Dati di accesso</label>
+                    <label>Login credentials</label>
                     <sort_order>50</sort_order>
                     <show_in_default>1</show_in_default>
                     <show_in_website>1</show_in_website>
@@ -24,7 +24,7 @@
                     <fields>
                         <username translate="label comment">
                             <label>Username</label>
-                            <comment>Username eMailChef</comment>
+                            <comment>eMailChef username</comment>
                             <frontend_type>text</frontend_type>
                             <sort_order>10</sort_order>
                             <show_in_default>1</show_in_default>
@@ -32,7 +32,7 @@
                             <show_in_store>1</show_in_store>
                             <backend_model>dueclic_emailchef/usernamevalidator</backend_model>
                         </username>
-                        <syncevent translate="label comment">
+                        <syncevent>
                             <label>Sync event</label>
                             <comment></comment>
                             <frontend_type>text</frontend_type>
@@ -43,7 +43,7 @@
                         </syncevent>
                         <password translate="label comment">
                             <label>Password</label>
-                            <comment>Password eMailChef</comment>
+                            <comment>eMailChef password</comment>
                             <frontend_type>password</frontend_type>
                             <sort_order>11</sort_order>
                             <show_in_default>1</show_in_default>
@@ -60,7 +60,7 @@
                             <frontend_model>dueclic_emailchef/adminhtml_system_config_form_testbutton</frontend_model>
                         </check>
                         <list translate="label comment">
-                            <label>Lista</label>
+                            <label>List</label>
                             <comment></comment>
                             <frontend_type>select</frontend_type>
                             <source_model>dueclic_emailchef/system_config_source_dropdown_list</source_model>
@@ -72,7 +72,7 @@
                         </list>
                         <policy translate="label comment">
                             <label>Policy</label>
-                            <comment>Scegli se vuoi usare single / double opt-in</comment>
+                            <comment>Which policy would you like to use?</comment>
                             <frontend_type>select</frontend_type>
                             <source_model>dueclic_emailchef/system_config_source_dropdown_policy</source_model>
                             <frontend_model>dueclic_emailchef/adminhtml_system_config_form_listpolicy</frontend_model>
