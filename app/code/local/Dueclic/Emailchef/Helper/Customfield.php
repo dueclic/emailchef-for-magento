@@ -228,7 +228,7 @@ class Dueclic_Emailchef_Helper_Customfield extends Mage_Core_Helper_Abstract
                 'ord'       => 22,
             ),
             'all_ordered_product_ids'     => array(
-                'name'      => $this->__("Ordered Product ID"),
+                'name'      => $this->__("Ordered Product IDs"),
                 'data_type' => 'text',
                 'ord'       => 23,
             ),
@@ -254,12 +254,12 @@ class Dueclic_Emailchef_Helper_Customfield extends Mage_Core_Helper_Abstract
                 'ord'       => 27,
             ),
             'latest_order_product_ids'    => array(
-                'name'      => $this->__("Last order - Product ID"),
+                'name'      => $this->__("Last order - Product IDs"),
                 'data_type' => 'text',
                 'ord'       => 28,
             ),
             'latest_shipped_order_id'     => array(
-                'name'      => $this->__("Last shipped order - ID"),
+                'name'      => $this->__("Last shipped order - IDs"),
                 'data_type' => 'text',
                 'ord'       => 29,
             ),

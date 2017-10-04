@@ -73,10 +73,9 @@ eMailChef css
 
 .emailchef-logo {
   display: none;
-  margin: 10px 0;
+  margin: 20px 10px;
 }
 
 .emailchef-logo img {
   display: block;
-  margin: 0 auto;
 }
