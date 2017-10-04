@@ -16,7 +16,7 @@ class Dueclic_Emailchef_AjaxController extends Mage_Core_Controller_Front_Action
 
 		$response = array(
 			'type' => 'error',
-			'msg'  => $this->__("eMailChef account credentials are wrong"),
+			'msg'  => $this->__("eMailChef account credentials are wrong."),
 		);
 
 		/**
@@ -262,14 +262,14 @@ class Dueclic_Emailchef_AjaxController extends Mage_Core_Controller_Front_Action
 
 		$response = array(
 			'type' => 'error',
-			'msg'  => $this->__("eMailChef account credentials are wrong"),
+			'msg'  => $this->__("eMailChef account credentials are wrong."),
 		);
 
 		if ( $mgec->isLogged() ) {
 
 			if ( ! isset($args['list_name']) || empty( $args['list_name'] ) ) {
 				$response['msg']
-					= $this->__("Provide a valid name for eMailChef list.,fornisci un nome valido per la lista eMailChef");
+					= $this->__("Provide a valid name for eMailChef list.");
 				$this->getResponse()->setBody(
 					json_encode( $response )
 				);

@@ -109,11 +109,11 @@
     <adminhtml>
         <translate>
             <modules>
-                <dueclic_emailchef>
+                <Dueclic_Emailchef>
                     <files>
                         <default>Dueclic_Emailchef.csv</default>
                     </files>
-                </dueclic_emailchef>
+                </Dueclic_Emailchef>
             </modules>
         </translate>
         <layout>
@@ -125,6 +125,15 @@
         </layout>
     </adminhtml>
     <frontend>
+        <translate>
+            <modules>
+                <Dueclic_Emailchef>
+                    <files>
+                        <default>Dueclic_Emailchef.csv</default>
+                    </files>
+                </Dueclic_Emailchef>
+            </modules>
+        </translate>
         <routers>
             <dueclic_emailchef>
                 <use>standard</use>

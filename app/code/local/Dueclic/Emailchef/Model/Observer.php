@@ -349,7 +349,7 @@ class Dueclic_Emailchef_Model_Observer {
 					Zend_Log::INFO
 				);
 			} else {
-				$this->log(
+				Mage::log(
 					sprintf(
 						"Inserimento nella lista %d dei dati aggiornati del cliente %d (Nome: %s Cognome: %s e altri %d campi) non avvenuto (Errore: %s)" ,
 						$list_id,
@@ -359,7 +359,7 @@ class Dueclic_Emailchef_Model_Observer {
 						intval( count( $syncOrderData ) - 2 ),
 						$mgec->lastError
 					),
-					Zend_Log::ERROR
+					Zend_Log::ERR
 				);
 			}
 

@@ -52,9 +52,13 @@ class Dueclic_Emailchef_Helper_Customfield extends Mage_Core_Helper_Abstract
 
     public function getOrderStatusDelivered()
     {
-        $statuses   = array();
-        $statuses[] = array(
-            "text" => "Complete",
+        $statuses = array(
+            array(
+                "text" => "Complete",
+            ),
+            array(
+                "text" => "Processing"
+            )
         );
 
         return $statuses;
@@ -277,32 +281,44 @@ class Dueclic_Emailchef_Helper_Customfield extends Mage_Core_Helper_Abstract
                 'default_value' => 'no',
             ),
             'ab_cart_prod_name_pr_hr'     => array(
-                'name'      => $this->__("Abandoned cart - Most expensive product name"),
+                'name'      => $this->__(
+                    "Abandoned cart - Most expensive product name"
+                ),
                 'data_type' => 'text',
                 'ord'       => 33,
             ),
             'ab_cart_prod_desc_pr_hr'     => array(
-                'name'      => $this->__("Abandoned cart - Most expensive product description"),
+                'name'      => $this->__(
+                    "Abandoned cart - Most expensive product description"
+                ),
                 'data_type' => 'text',
                 'ord'       => 34,
             ),
             'ab_cart_prod_pr_pr_hr'       => array(
-                'name'      => $this->__("Abandoned cart - Most expensive pricing product"),
+                'name'      => $this->__(
+                    "Abandoned cart - Most expensive pricing product"
+                ),
                 'data_type' => 'number',
                 'ord'       => 35,
             ),
             'ab_cart_prod_url_pr_hr'      => array(
-                'name'      => $this->__('Abandoned cart - Most expensive product URL'),
+                'name'      => $this->__(
+                    'Abandoned cart - Most expensive product URL'
+                ),
                 'data_type' => 'text',
                 'ord'       => 36,
             ),
             'ab_cart_prod_url_img_pr_hr'  => array(
-                'name'      => $this->__('Abandoned cart - Most expensive product image URL'),
+                'name'      => $this->__(
+                    'Abandoned cart - Most expensive product image URL'
+                ),
                 'data_type' => 'text',
                 'ord'       => 37,
             ),
             'ab_cart_prod_id_pr_hr'       => array(
-                'name'      => $this->__('Abandoned cart - Most expensive product ID'),
+                'name'      => $this->__(
+                    'Abandoned cart - Most expensive product ID'
+                ),
                 'data_type' => 'number',
                 'ord'       => 38,
             ),

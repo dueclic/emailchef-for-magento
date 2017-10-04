@@ -4,6 +4,12 @@ $e(document).ready(function () {
 
       var isCreated = 0;
 
+      if ($e("#emailchef_general_username").val() !== "" && $e("#emailchef_general_password").val() !== "") {
+        var apiUser = $e("#emailchef_general_username").val();
+        var apiPass = $e("#emailchef_general_password").val();
+        checkLoginData(apiUser, apiPass);
+      }
+
       function createCustomFields(apiUser, apiPass, listId) {
 
         var ajax_data = {
@@ -112,6 +118,10 @@ $e(document).ready(function () {
       function checkLoginData(apiUser, apiPass) {
         var btn = $e("#emailchef_selftest_button");
         $e(btn).attr("disabled", true);
+
+        $e("#emailchef_response_login .alert").hide();
+        $e("#login_emailchef_list_load").show();
+
         $e.ajax({
           type: "POST",
           url: "/index.php/emailchef/ajax/checkcredentials",
@@ -136,15 +146,26 @@ $e(document).ready(function () {
                 $e("#emailchef_general_list").append($e('<option>').text("Nessuna lista trovata.").attr('value', -1))
               }
 
+              if (response.policy === "premium")
+                $e("#row_emailchef_general_list, #row_emailchef_general_policy").show();
+              else
+                $e("#row_emailchef_general_list, #row_emailchef_general_policy").hide();
+
+              $e("#login_emailchef_list_success").show().delay(3000).fadeOut();
+
             }
             else {
-              alert(response.msg);
+              $e("#login_emailchef_list_danger").find(".reason").text(response.msg);
+              $e("#login_emailchef_list_danger").show();
+              $e("#row_emailchef_general_list, #row_emailchef_general_policy").hide();
             }
           },
           error: function (jqXHR, textStatus, errorThrown) {
-            alert("Errore: " + textStatus + " ( " + errorThrown + " )");
+            $e("#login_emailchef_list_danger").find(".reason").text(textStatus + " " + thrown);
+            $e("#login_emailchef_list_danger").show();
           },
           complete: function (jqXHR, textStatus, errorThrown) {
+            $e("#login_emailchef_list_load").hide();
             $e(btn).attr("disabled", false);
           }
         });

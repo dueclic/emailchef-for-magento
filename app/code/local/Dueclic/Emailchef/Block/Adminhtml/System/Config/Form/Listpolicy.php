@@ -13,13 +13,13 @@ class Dueclic_Emailchef_Block_Adminhtml_System_Config_Form_Listpolicy
         ?>
         <div id="emailchef_response_ccf">
             <div class="alert alert-info" id="create_emailchef_ccf_load">
-                <span class="loading-spinner-emailchef"></span> <?php echo $this->__("We're defining custom fields for this newly created list..."); ?>
+                <span class="loading-spinner-emailchef"></span> <?php echo $this->__("We're modifying custom fields for the chosen list..."); ?>
             </div>
             <div class="alert alert-success" id="create_emailchef_ccf_success">
-        <?php echo $this->__("Custom fields for this list have been successfully created."); ?>
+        <?php echo $this->__("Custom fields for this list have been successfully modified."); ?>
             </div>
             <div class="alert alert-danger" id="create_emailchef_ccf_danger">
-                <?php echo $this->__("An error occurred while defining custom fields for this newly created list:"); ?> <span class="reason">{error}</span>
+                <?php echo $this->__("An error occurred while modifying custom fields for the chosen list:"); ?> <span class="reason">{error}</span>
             </div>
         </div>
         <?php
