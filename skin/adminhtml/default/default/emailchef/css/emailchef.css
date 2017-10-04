@@ -70,3 +70,13 @@ eMailChef css
 #row_emailchef_general_policy {
   display:none;
 }
+
+.emailchef-logo {
+  display: none;
+  margin: 10px 0;
+}
+
+.emailchef-logo img {
+  display: block;
+  margin: 0 auto;
+}

@@ -31,6 +31,7 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                             <backend_model>dueclic_emailchef/usernamevalidator</backend_model>
+                            <frontend_model>dueclic_emailchef/adminhtml_system_config_form_username</frontend_model>
                         </username>
                         <syncevent>
                             <label>Sync event</label>

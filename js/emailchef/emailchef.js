@@ -4,6 +4,11 @@ $e(document).ready(function () {
 
       var isCreated = 0;
 
+      if ($e(".emailchef-logo").length) {
+        $e(".emailchef-logo").prependTo("#config_edit_form");
+        $e(".emailchef-logo").show();
+      }
+
       if ($e("#emailchef_general_username").val() !== "" && $e("#emailchef_general_password").val() !== "") {
         var apiUser = $e("#emailchef_general_username").val();
         var apiPass = $e("#emailchef_general_password").val();
