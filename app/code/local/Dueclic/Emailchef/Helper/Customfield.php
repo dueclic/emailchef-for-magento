@@ -29,7 +29,7 @@ class Dueclic_Emailchef_Helper_Customfield extends Mage_Core_Helper_Abstract
         foreach (Mage::app()->getWebsites() as $website) {
             foreach ($website->getGroups() as $group) {
                 $storeviews[] = array(
-                    "text" => $group->getName()
+                    "text" => $group->getName(),
                 );
             }
         }
@@ -42,7 +42,7 @@ class Dueclic_Emailchef_Helper_Customfield extends Mage_Core_Helper_Abstract
         $storeviews = array();
         foreach (Mage::app()->getWebsites() as $website) {
             $storeviews[] = array(
-                "text" => $website->getName()
+                "text" => $website->getName(),
             );
         }
 
@@ -84,8 +84,8 @@ class Dueclic_Emailchef_Helper_Customfield extends Mage_Core_Helper_Abstract
                 "text" => "Complete",
             ),
             array(
-                "text" => "Processing"
-            )
+                "text" => "Processing",
+            ),
         );
 
         return $statuses;
@@ -145,20 +145,18 @@ class Dueclic_Emailchef_Helper_Customfield extends Mage_Core_Helper_Abstract
                 'default_value' => 'na',
                 'ord'           => 4,
             ),
-            'website_name'                        => array(
+            'website_name'                => array(
                 'name'          => $this->__("Website name"),
                 'data_type'     => 'select',
                 'options'       => $this->getWebsites(),
-                'default_value' => Mage::app()->getWebsite()->getName(
-                ),
+                'default_value' => Mage::app()->getWebsite()->getName(),
                 'ord'           => 5,
             ),
-            'store_name'                        => array(
+            'store_name'                  => array(
                 'name'          => $this->__("Store name"),
                 'data_type'     => 'select',
                 'options'       => $this->getStores(),
-                'default_value' => Mage::app()->getStore()->getName(
-                ),
+                'default_value' => Mage::app()->getStore()->getName(),
                 'ord'           => 5,
             ),
             'lang'                        => array(
