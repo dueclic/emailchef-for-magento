@@ -7,13 +7,11 @@ class Dueclic_Emailchef_TestController extends Mage_Core_Controller_Front_Action
     {
 
         /**
-         * @var $website \Mage_Core_Model_Website
+         * @var $helper \Dueclic_Emailchef_Helper_Customer
          */
 
-        $websites = Mage::app()->getWebsites();
-        foreach ($websites as $website){
-            print $website->getName();
-        }
+        $helper = Mage::helper("dueclic_emailchef/customer");
+	    die(var_dump($helper->getCustomersData()));
     }
 
 }

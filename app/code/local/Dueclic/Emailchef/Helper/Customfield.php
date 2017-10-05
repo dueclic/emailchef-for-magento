@@ -300,7 +300,7 @@ class Dueclic_Emailchef_Helper_Customfield extends Mage_Core_Helper_Abstract
                 'ord'       => 28,
             ),
             'latest_shipped_order_id'     => array(
-                'name'      => $this->__("Last shipped order - IDs"),
+                'name'      => $this->__("Last shipped order - ID"),
                 'data_type' => 'text',
                 'ord'       => 29,
             ),

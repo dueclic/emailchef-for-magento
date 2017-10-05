@@ -33,11 +33,11 @@ class Dueclic_Emailchef_Helper_Customer extends Mage_Core_Helper_Abstract
     public function getStoreIdByCustomerCountryId($countryIdCustomer)
     {
 
-        $storeviews = array(
-            "website" => null,
-            "store" => null,
-            "view" => null
-        );
+	    $storeviews = array(
+		    "website" => Mage::app()->getWebsite()->getName(),
+		    "store" => Mage::app()->getStore()->getName(),
+		    "view" => Mage::app()->getDefaultStoreView()->getName()
+	    );
 
         $countryIdReturn   = null;
         $countryIdCustomer = trim((string)$countryIdCustomer);
@@ -226,7 +226,7 @@ class Dueclic_Emailchef_Helper_Customer extends Mage_Core_Helper_Abstract
         $order_status = Mage::getModel('sales/order_status');
 
         $latest_order_id     = end($allOrdersIds);
-        $latest_order_status = $order_status->load(end($allOrdersStatuses))->getStoreLabel();
+        $latest_order_status = $order_status->load(end($allOrdersStatuses))->getLabel();
 
         $report = array(
             "total_ordered_30d"           => self::_formatPrice(
