@@ -162,7 +162,7 @@ class Dueclic_Emailchef_Helper_Customfield extends Mage_Core_Helper_Abstract
                 'ord'           => 5,
             ),
             'lang'                        => array(
-                'name'          => $this->__("Language"),
+                'name'          => $this->__("Store view - Language"),
                 'data_type'     => 'select',
                 'options'       => $this->getStoreViews(),
                 'default_value' => Mage::app()->getDefaultStoreView()->getName(
