@@ -32,6 +32,47 @@ class Dueclic_Emailchef_Helper_Customer extends Mage_Core_Helper_Abstract
 
     public function getStoreIdByCustomerCountryId($countryIdCustomer)
     {
+
+        $storeviews = array(
+            "website" => null,
+            "store" => null,
+            "view" => null
+        );
+
+        $countryIdReturn   = null;
+        $countryIdCustomer = trim((string)$countryIdCustomer);
+        if ( ! strlen($countryIdCustomer)) {
+            return $storeviews;
+        }
+
+        foreach (Mage::app()->getWebsites() as $website) {
+            foreach ($website->getGroups() as $group) {
+                $stores = $group->getStores();
+                foreach ($stores as $store) {
+                    if ( ! $store->getIsActive()) {
+                        continue;
+                    }
+                    foreach (
+                        explode(',', $store->getConfig('general/country/allow'))
+                        as $countryId
+                    ) {
+                        if (trim((string)$countryId) === $countryIdCustomer) {
+                            $storeviews["view"] = $store->getName();
+                            $storeviews["store"] = $group->getName();
+                            $storeviews["website"] = $website->getName();
+                            break 2;
+                        }
+                    }
+                }
+            }
+        }
+
+        return $storeviews;
+
+    }
+
+    /*public function getStoreIdByCustomerCountryId($countryIdCustomer)
+    {
         $countryIdReturn   = null;
         $countryIdCustomer = trim((string)$countryIdCustomer);
         if ( ! strlen($countryIdCustomer)) {
@@ -53,7 +94,7 @@ class Dueclic_Emailchef_Helper_Customer extends Mage_Core_Helper_Abstract
         }
 
         return $countryIdReturn;
-    }
+    }*/
 
     /**
      * Get Date from DateTime.
@@ -277,11 +318,15 @@ class Dueclic_Emailchef_Helper_Customer extends Mage_Core_Helper_Abstract
                 $customerAddressId
             );
 
+            $storeviews = $this->getStoreIdByCustomerCountryId(
+                $address->getCountry()
+            );
+
             $data = array_merge(
                 $data, array(
-                    "lang"              => $this->getStoreIdByCustomerCountryId(
-                        $address->getCountry()
-                    ),
+                    "lang"              => $storeviews['view'],
+                    "store_name"        => $storeviews["store"],
+                    "website_name"      => $storeviews["website"],
                     "billing_company"   => $address->getData("company"),
                     "billing_address_1" => $address->getData('street'),
                     "billing_postcode"  => $address->getData("postcode"),
@@ -385,7 +430,15 @@ class Dueclic_Emailchef_Helper_Customer extends Mage_Core_Helper_Abstract
 
 	    $data = array_merge($data, $grand_total);
 
-	    /**
+	    $stores = array(
+	        "lang" => $order->getStoreName(),
+            "store_name" => $order->getStoreGroupName(),
+            "website_name" => Mage::app()->getStore($order->getStoreId())->getWebsiteId()
+        );
+
+        $data = array_merge($data, $stores);
+
+        /**
 	     * @var $order_status \Mage_Sales_Model_Order_Status
 	     */
 

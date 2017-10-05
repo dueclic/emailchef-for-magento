@@ -23,6 +23,33 @@ class Dueclic_Emailchef_Helper_Customfield extends Mage_Core_Helper_Abstract
         return $storeviews;
     }
 
+    public function getStores()
+    {
+        $storeviews = array();
+        foreach (Mage::app()->getWebsites() as $website) {
+            foreach ($website->getGroups() as $group) {
+                $storeviews[] = array(
+                    "text" => $group->getName()
+                );
+            }
+        }
+
+        return $storeviews;
+    }
+
+    public function getWebsites()
+    {
+        $storeviews = array();
+        foreach (Mage::app()->getWebsites() as $website) {
+            $storeviews[] = array(
+                "text" => $website->getName()
+            );
+        }
+
+        return $storeviews;
+    }
+
+
     public function getCurrencies()
     {
         $currencies = array();
@@ -117,6 +144,22 @@ class Dueclic_Emailchef_Helper_Customfield extends Mage_Core_Helper_Abstract
                 ),
                 'default_value' => 'na',
                 'ord'           => 4,
+            ),
+            'website_name'                        => array(
+                'name'          => $this->__("Website name"),
+                'data_type'     => 'select',
+                'options'       => $this->getWebsites(),
+                'default_value' => Mage::app()->getWebsite()->getName(
+                ),
+                'ord'           => 5,
+            ),
+            'store_name'                        => array(
+                'name'          => $this->__("Store name"),
+                'data_type'     => 'select',
+                'options'       => $this->getStores(),
+                'default_value' => Mage::app()->getStore()->getName(
+                ),
+                'ord'           => 5,
             ),
             'lang'                        => array(
                 'name'          => $this->__("Language"),

@@ -334,6 +334,7 @@ class Dueclic_Emailchef_Model_Observer {
 			$order = $observer->getEvent()->getOrder();
 
 			$syncOrderData = $helper->getSyncOrderData($order);
+
 			$upsert = $mgec->upsert_customer( $list_id, $syncOrderData );
 
 			if ( $upsert ) {

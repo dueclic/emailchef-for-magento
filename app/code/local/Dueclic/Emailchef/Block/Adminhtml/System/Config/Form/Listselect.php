@@ -32,6 +32,11 @@ class Dueclic_Emailchef_Block_Adminhtml_System_Config_Form_Listselect
             <p class="note"><span><?php echo $this->__(
                         "List description"
                     ); ?></span></p>
+            <p class="white" style="color:#fff;margin-top:10px;margin-bottom:10px;font-style:italic;">
+                <?php echo $this->__(
+                    "By creating a new list, you confirm its compliance with the privacy policy and the CAN-SPAM Act."
+                ); ?>
+            </p>
             <p class="btn-emailchef">
                 <button id="create_emailchef_list_btn"
                         title="<?php echo $this->__("Create list"); ?>"

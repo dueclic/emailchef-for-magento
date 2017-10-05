@@ -14,9 +14,7 @@ class Dueclic_Emailchef_Block_Adminhtml_System_Config_Form_Username
         ?>
 
         <div class="emailchef-logo">
-
             <img src="<?php echo Mage::getSingleton('core/design_package')->getSkinBaseUrl().'/emailchef/img/emailchef.png'; ?>">
-
         </div>
 
 
