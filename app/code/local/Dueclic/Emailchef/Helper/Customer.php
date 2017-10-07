@@ -171,10 +171,10 @@ class Dueclic_Emailchef_Helper_Customer extends Mage_Core_Helper_Abstract
             $allOrdersDateTimes[$currentOrderId] = $currentOrderCreationDate;
             $allOrdersIds[$currentOrderId]       = $currentOrderId;
 
-            if ($order->hasShipments() and ($order->getId()
+            if ($order->hasShipments() and ($order->getIncrementId()
                     > $lastShipmentOrderId)
             ) {
-                $lastShipmentOrderId     = $order->getId();
+                $lastShipmentOrderId     = $order->getIncrementId();
                 $lastShipmentOrderDate   = self::getDateFromDateTime(
                     $order->getCreatedAt()
                 );
@@ -445,7 +445,7 @@ class Dueclic_Emailchef_Helper_Customer extends Mage_Core_Helper_Abstract
 	    $order_status = Mage::getModel('sales/order_status');
 
 	    $latest_order = array(
-	        'latest_order_id' => $order->getId(),
+	        'latest_order_id' => $order->getIncrementId(),
 		    'latest_order_date' => $this->getDateFromDateTime($order->getUpdatedAt()),
 		    'latest_order_amount' => self::_formatPrice($order->getGrandTotal()),
 		    'latest_order_status' => $order_status->load($order->getStatus())->getLabel(),
@@ -505,7 +505,7 @@ class Dueclic_Emailchef_Helper_Customer extends Mage_Core_Helper_Abstract
 
 	    if ($order->hasShipments()) {
 		    $latest_shipped_order = array(
-			    'latest_shipped_order_id' => $order->getId(),
+			    'latest_shipped_order_id' => $order->getIncrementId(),
 			    'latest_shipped_order_date' => $this->getDateFromDateTime($order->getUpdatedAt()),
 			    'latest_shipped_order_status' => $order_status->load($order->getStatus())->getLabel(),
 		    );

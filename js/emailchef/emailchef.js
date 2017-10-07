@@ -137,19 +137,6 @@ $e(document).ready(function () {
           dataType: "json",
           success: function (response) {
             if (response.type == "success") {
-              $e("#emailchef_general_list").empty();
-
-              if (response.lists.length > 0) {
-
-                $e.each(response.lists, function (key, list) {
-                  $e("#emailchef_general_list").append($e('<option>').text(list.label).attr('value', list.value));
-                });
-
-              }
-
-              else {
-                $e("#emailchef_general_list").append($e('<option>').text("Nessuna lista trovata.").attr('value', -1))
-              }
 
               if (response.policy === "premium")
                 $e("#row_emailchef_general_list, #row_emailchef_general_policy").show();
@@ -175,6 +162,62 @@ $e(document).ready(function () {
           }
         });
       }
+
+    function checkPostLoginData(apiUser, apiPass) {
+      var btn = $e("#emailchef_selftest_button");
+      $e(btn).attr("disabled", true);
+
+      $e("#emailchef_response_login .alert").hide();
+      $e("#login_emailchef_list_load").show();
+
+      $e.ajax({
+        type: "POST",
+        url: "/index.php/emailchef/ajax/checkcredentials",
+        data: {
+          'username': apiUser,
+          'password': apiPass
+        },
+        dataType: "json",
+        success: function (response) {
+          if (response.type == "success") {
+            $e("#emailchef_general_list").empty();
+
+            if (response.lists.length > 0) {
+
+              $e.each(response.lists, function (key, list) {
+                $e("#emailchef_general_list").append($e('<option>').text(list.label).attr('value', list.value));
+              });
+
+            }
+
+            else {
+              $e("#emailchef_general_list").append($e('<option>').text("Nessuna lista trovata.").attr('value', -1))
+            }
+
+            if (response.policy === "premium")
+              $e("#row_emailchef_general_list, #row_emailchef_general_policy").show();
+            else
+              $e("#row_emailchef_general_list, #row_emailchef_general_policy").hide();
+
+            $e("#login_emailchef_list_success").show().delay(3000).fadeOut();
+
+          }
+          else {
+            $e("#login_emailchef_list_danger").find(".reason").text(response.msg);
+            $e("#login_emailchef_list_danger").show();
+            $e("#row_emailchef_general_list, #row_emailchef_general_policy").hide();
+          }
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+          $e("#login_emailchef_list_danger").find(".reason").text(textStatus + " " + thrown);
+          $e("#login_emailchef_list_danger").show();
+        },
+        complete: function (jqXHR, textStatus, errorThrown) {
+          $e("#login_emailchef_list_load").hide();
+          $e(btn).attr("disabled", false);
+        }
+      });
+    }
 
       function checkCustomFields(apiUser, apiPass, listId) {
 
@@ -233,7 +276,7 @@ $e(document).ready(function () {
         evt.preventDefault();
         var apiUser = $e("#emailchef_general_username").val();
         var apiPass = $e("#emailchef_general_password").val();
-        checkLoginData(apiUser, apiPass);
+        checkPostLoginData(apiUser, apiPass);
       });
 
       $e(document).on("click", "#create_emailchef_list_btn", function (evt) {
@@ -275,7 +318,7 @@ $e(document).ready(function () {
       $e("#row_emailchef_general_policy .note").show().insertBefore("#emailchef_response_ccf");
       $e("#row_emailchef_general_policy .note").show().insertBefore("#emailchef_response_ccf");
 
-      if ($e("#emailchef_general_syncevent").val() == 1){
+      if ($e("#emailchef_general_syncevent").val() == 1 || $e("#emailchef_general_syncevent_inherit").val() == 1){
         $e.ajax({
           type: 'POST',
           url: "/index.php/emailchef/ajax/initialsync",

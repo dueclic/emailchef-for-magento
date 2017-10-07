@@ -75,6 +75,11 @@ class Dueclic_Emailchef_Model_Observer {
 
                 }
 
+                $to_send['lang'] = Mage::app()->getDefaultStoreView()->getName();
+                $to_send['store_name'] =  Mage::app()->getStore()->getName();
+                $to_send['website_name'] = Mage::app()->getWebsite()->getName();
+                $to_send['source'] = "eMailChef for Magento";
+
                 $upsert = $mgec->upsert_customer( $list_id, $to_send );
 
                 if ( $upsert ) {
@@ -90,10 +95,11 @@ class Dueclic_Emailchef_Model_Observer {
                 } else {
                     Mage::log(
                         sprintf(
-                            "Consenso newsletter al cliente %s su lista %d (Consenso: %s) non avvenuto.",
+                            "Consenso newsletter al cliente %s su lista %d (Consenso: %s) non avvenuto (Errore: %s)",
                             $email,
                             $list_id,
-                            $newsletter
+                            $newsletter,
+                            $mgec->lastError
                         ),
                         Zend_Log::ERR
                     );

@@ -39,7 +39,7 @@ class MG_Emailchef_Api {
 
 	}
 
-	private function getRequest( $url, $payload, $type ) {
+	private function getRequest( $url, $payload, $type, $action = "" ) {
 
 		try {
 
@@ -89,7 +89,7 @@ class MG_Emailchef_Api {
 		return $response;
 	}
 
-	protected function get( $route, $args = array(), $type = "POST", $encoded = false ) {
+	protected function get( $route, $args = array(), $type = "POST", $encoded = false, $action = false ) {
 
 		$url  = $this->api_url . $route;
 		$auth = array();
@@ -106,7 +106,7 @@ class MG_Emailchef_Api {
 			$payload = json_encode( $payload );
 		}
 
-		return json_decode( $this->getRequest( $url, $payload, $type ), true );
+		return json_decode( $this->getRequest( $url, $payload, $type, $action ), true );
 	}
 
 }

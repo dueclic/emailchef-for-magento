@@ -2,8 +2,6 @@
 
 class Dueclic_Emailchef_AjaxController extends Mage_Core_Controller_Front_Action {
 
-
-
 	public function initialSyncAction() {
 
 		error_reporting( 0 );
@@ -61,7 +59,12 @@ class Dueclic_Emailchef_AjaxController extends Mage_Core_Controller_Front_Action
 			$response['type'] = "success";
 			$response["msg"]  = $this->__( "Customers data sync was successfully sent.");
 
-			Mage::getModel( 'core/config' )->saveConfig( 'emailchef/general/syncevent', 0 );
+            /**
+             * @var $config \Mage_Core_Model_Config
+             */
+
+			$config = Mage::getModel( 'core/config' );
+            $config->saveConfig( 'emailchef/general/syncevent', 0, 'stores', Mage::app()->getStore()->getId());
 
 			Mage::log(
 				sprintf(
@@ -174,7 +177,7 @@ class Dueclic_Emailchef_AjaxController extends Mage_Core_Controller_Front_Action
 
 	public function checkCredentialsAction() {
 
-		$response = array(
+        $response = array(
 			"type" => "error",
 			"msg"  => $this->__("eMailChef account credentials are wrong."),
 		);

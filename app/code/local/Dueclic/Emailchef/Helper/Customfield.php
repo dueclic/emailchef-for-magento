@@ -157,7 +157,7 @@ class Dueclic_Emailchef_Helper_Customfield extends Mage_Core_Helper_Abstract
                 'data_type'     => 'select',
                 'options'       => $this->getStores(),
                 'default_value' => Mage::app()->getStore()->getName(),
-                'ord'           => 5,
+                'ord'           => 6,
             ),
             'lang'                        => array(
                 'name'          => $this->__("Store view - Language"),
@@ -165,52 +165,52 @@ class Dueclic_Emailchef_Helper_Customfield extends Mage_Core_Helper_Abstract
                 'options'       => $this->getStoreViews(),
                 'default_value' => Mage::app()->getDefaultStoreView()->getName(
                 ),
-                'ord'           => 5,
+                'ord'           => 7,
             ),
             'birthday'                    => array(
                 'name'      => $this->__("Date of birth"),
                 'data_type' => 'date',
-                'ord'       => 6,
+                'ord'       => 8,
             ),
             'billing_company'             => array(
                 'name'      => $this->__("Company"),
                 'data_type' => 'text',
-                'ord'       => 7,
+                'ord'       => 9,
             ),
             'billing_address_1'           => array(
                 'name'      => $this->__("Address"),
                 'data_type' => 'text',
-                'ord'       => 8,
+                'ord'       => 10,
             ),
             'billing_postcode'            => array(
                 'name'      => $this->__("ZIP code"),
                 'data_type' => 'text',
-                'ord'       => 9,
+                'ord'       => 11,
             ),
             'billing_city'                => array(
                 'name'      => $this->__("City"),
                 'data_type' => 'text',
-                'ord'       => 10,
+                'ord'       => 12,
             ),
             'billing_state'               => array(
                 'name'      => $this->__("State"),
                 'data_type' => 'text',
-                'ord'       => 11,
+                'ord'       => 13,
             ),
             'billing_country'             => array(
                 'name'      => $this->__("Country"),
                 'data_type' => 'text',
-                'ord'       => 12,
+                'ord'       => 14,
             ),
             'billing_phone'               => array(
                 'name'      => $this->__("Phone"),
                 'data_type' => 'text',
-                'ord'       => 13,
+                'ord'       => 15,
             ),
             'billing_phone_2'             => array(
                 'name'      => $this->__('Fax'),
                 'data_type' => 'text',
-                'ord'       => 14,
+                'ord'       => 16,
             ),
             'newsletter'                  => array(
                 'name'          => $this->__('Agreed to newsletter'),
@@ -227,7 +227,7 @@ class Dueclic_Emailchef_Helper_Customfield extends Mage_Core_Helper_Abstract
                     ),
                 ),
                 'default_value' => 'no',
-                'ord'           => 15,
+                'ord'           => 17,
             ),
             'currency'                    => array(
                 'name'          => $this->__('Currency'),
@@ -235,90 +235,90 @@ class Dueclic_Emailchef_Helper_Customfield extends Mage_Core_Helper_Abstract
                 'options'       => $this->getCurrencies(),
                 'default_value' => Mage::app()->getStore()
                     ->getCurrentCurrencyCode(),
-                'ord'           => 16,
+                'ord'           => 18,
             ),
             'customer_id'                 => array(
                 'name'      => $this->__("Customer ID"),
                 'data_type' => 'number',
-                'ord'       => 17,
+                'ord'       => 19,
             ),
             'customer_type'               => array(
                 'name'      => $this->__("Customer type"),
                 'data_type' => 'select',
                 'options'   => $this->getCustomerGroups(),
-                'ord'       => 18,
+                'ord'       => 20,
             ),
             'total_ordered'               => array(
                 'name'      => $this->__("Subtotal"),
                 'data_type' => 'number',
-                'ord'       => 19,
+                'ord'       => 21,
             ),
             'total_ordered_30d'           => array(
                 'name'      => $this->__("Total ordered in the last 30 days"),
                 'data_type' => 'number',
-                'ord'       => 20,
+                'ord'       => 22,
             ),
             'total_ordered_12m'           => array(
                 'name'      => $this->__("Total ordered in the last 12 months"),
                 'data_type' => 'number',
-                'ord'       => 21,
+                'ord'       => 23,
             ),
             'total_orders'                => array(
                 'name'      => $this->__("Orders"),
                 'data_type' => 'number',
-                'ord'       => 22,
+                'ord'       => 24,
             ),
             'all_ordered_product_ids'     => array(
                 'name'      => $this->__("Ordered Product IDs"),
                 'data_type' => 'text',
-                'ord'       => 23,
+                'ord'       => 25,
             ),
             'latest_order_id'             => array(
                 'name'      => $this->__("Last order - ID"),
                 'data_type' => 'text',
-                'ord'       => 24,
+                'ord'       => 26,
             ),
             'latest_order_date'           => array(
                 'name'      => $this->__("Last order - Date"),
                 'data_type' => 'date',
-                'ord'       => 25,
+                'ord'       => 27,
             ),
             'latest_order_amount'         => array(
                 'name'      => $this->__("Last order - Total"),
                 'data_type' => 'number',
-                'ord'       => 26,
+                'ord'       => 28,
             ),
             'latest_order_status'         => array(
                 'name'      => $this->__("Last order - Status"),
                 'data_type' => 'select',
                 'options'   => $this->getOrderStatuses(),
-                'ord'       => 27,
+                'ord'       => 29,
             ),
             'latest_order_product_ids'    => array(
                 'name'      => $this->__("Last order - Product IDs"),
                 'data_type' => 'text',
-                'ord'       => 28,
+                'ord'       => 30,
             ),
             'latest_shipped_order_id'     => array(
                 'name'      => $this->__("Last shipped order - ID"),
                 'data_type' => 'text',
-                'ord'       => 29,
+                'ord'       => 31,
             ),
             'latest_shipped_order_date'   => array(
                 'name'      => $this->__("Last shipped order - Data"),
                 'data_type' => 'date',
-                'ord'       => 30,
+                'ord'       => 32,
             ),
             'latest_shipped_order_status' => array(
                 'name'      => $this->__("Last shipped order - Status"),
                 'data_type' => 'select',
                 'options'   => $this->getOrderStatusDelivered(),
-                'ord'       => 31,
+                'ord'       => 33,
             ),
             'ab_cart_is_abandoned_cart'   => array(
                 'name'          => $this->__("Abandoned cart - Yes/No"),
                 'data_type'     => 'boolean',
-                'ord'           => 32,
+                'ord'           => 34,
                 'default_value' => 'no',
             ),
             'ab_cart_prod_name_pr_hr'     => array(
@@ -326,47 +326,47 @@ class Dueclic_Emailchef_Helper_Customfield extends Mage_Core_Helper_Abstract
                     "Abandoned cart - Most expensive product name"
                 ),
                 'data_type' => 'text',
-                'ord'       => 33,
+                'ord'       => 35,
             ),
             'ab_cart_prod_desc_pr_hr'     => array(
                 'name'      => $this->__(
                     "Abandoned cart - Most expensive product description"
                 ),
                 'data_type' => 'text',
-                'ord'       => 34,
+                'ord'       => 36,
             ),
             'ab_cart_prod_pr_pr_hr'       => array(
                 'name'      => $this->__(
                     "Abandoned cart - Most expensive pricing product"
                 ),
                 'data_type' => 'number',
-                'ord'       => 35,
+                'ord'       => 37,
             ),
             'ab_cart_prod_url_pr_hr'      => array(
                 'name'      => $this->__(
                     'Abandoned cart - Most expensive product URL'
                 ),
                 'data_type' => 'text',
-                'ord'       => 36,
+                'ord'       => 38,
             ),
             'ab_cart_prod_url_img_pr_hr'  => array(
                 'name'      => $this->__(
                     'Abandoned cart - Most expensive product image URL'
                 ),
                 'data_type' => 'text',
-                'ord'       => 37,
+                'ord'       => 39,
             ),
             'ab_cart_prod_id_pr_hr'       => array(
                 'name'      => $this->__(
                     'Abandoned cart - Most expensive product ID'
                 ),
                 'data_type' => 'number',
-                'ord'       => 38,
+                'ord'       => 40,
             ),
             'ab_cart_date'                => array(
                 'name'      => $this->__('Abandoned cart - Date'),
                 'data_type' => 'date',
-                'ord'       => 39,
+                'ord'       => 41,
             ),
 
         );

@@ -104,8 +104,7 @@ class MG_Emailchef extends MG_Emailchef_Api
     public function get_collection($list_id)
     {
         $route = sprintf("/lists/%d/customfields", $list_id);
-
-        return $this->get($route, array(), "GET");
+        return $this->get($route, array(), "GET", false, "debug");
     }
 
     /**
@@ -430,21 +429,21 @@ class MG_Emailchef extends MG_Emailchef_Api
     private function insert_customer($list_id, $customer)
     {
 
-        $collection = $this->get_collection($list_id);
+        $collection = $this->get_collection((int)$list_id);
 
-        $custom_fields = array_map(
-            function ($field) use ($customer) {
+        foreach ($collection as $custom) {
 
-                $field['value'] = $customer[$field['place_holder']];
+            $my_custom = $custom;
 
-                if ($field['value'] == null) {
-                    $field['value'] = "";
-                }
+            if ( ! isset($customer[$my_custom['place_holder']])) {
+                continue;
+            }
 
-                return $field;
+            $my_custom['value'] = $customer[$my_custom['place_holder']];
 
-            }, $collection
-        );
+            $custom_fields[] = $my_custom;
+
+        }
 
         $args = array(
 
@@ -468,7 +467,8 @@ class MG_Emailchef extends MG_Emailchef_Api
             unset($args["instance_in"]["lastname"]);
         }
 
-        $response = $this->get("/contacts", $args, "POST");
+
+        $response = $this->get("/contacts", $args, "POST", false, "debug");
 
         if (isset($response['contact_added_to_list'])
             && $response['contact_added_to_list']
