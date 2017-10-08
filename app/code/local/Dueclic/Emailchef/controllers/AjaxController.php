@@ -25,7 +25,7 @@ class Dueclic_Emailchef_AjaxController extends Mage_Core_Controller_Front_Action
 
 		$username = Mage::getStoreConfig( 'emailchef/general/username' );
 		$password = Mage::getStoreConfig( 'emailchef/general/password' );
-		$list_id  = Mage::getStoreConfig( 'emailchef/general/list' );
+		$list_id  = $args["list_id"];
 
 		$mgec = $config->getEmailChefInstance(
 			$username, $password
