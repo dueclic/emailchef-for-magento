@@ -9,7 +9,7 @@ $e(document).ready(function () {
         $e(".emailchef-logo").show();
       }
 
-      if ($e("#emailchef_general_username").val() !== "" && $e("#emailchef_general_password").val() !== "") {
+      if ($e("#emailchef_general_username").length && $e("#emailchef_general_username").val() !== "" && $e("#emailchef_general_password").length && $e("#emailchef_general_password").val() !== "") {
         var apiUser = $e("#emailchef_general_username").val();
         var apiPass = $e("#emailchef_general_password").val();
         checkLoginData(apiUser, apiPass);

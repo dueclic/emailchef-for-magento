@@ -41,15 +41,18 @@ class Dueclic_Emailchef_AjaxController extends Mage_Core_Controller_Front_Action
 
 		if ( $mgec->isLogged() ) {
 
-            $view = explode("_", $args["store"])[1];
+            $storeIds = array();
 
-            $filter = array(
-                "view_id" => Mage::app()->getStore($view)->getId(),
-                "website_id" => Mage::app()->getStore($view)->getWebsiteId()
-            );
+            if ($args["store"] != "default") {
+	            $what = explode("_", $args["store"]);
 
-		    if ($filter["view_id"] == 1 && $filter["website_id"] == 1){
-		        $filter = array();
+	            if ($what[0] == "website") {
+	            	$storeIds = Mage::app()->getWebsite($what[1])->getStoreIds();
+	            }
+	            if ($what[0] == "store") {
+	            	$storeIds[] = Mage::app()->getStore($what[1])->getId();
+	            }
+
             }
 
 			/**
@@ -58,7 +61,17 @@ class Dueclic_Emailchef_AjaxController extends Mage_Core_Controller_Front_Action
 
 			$helper = Mage::helper( "dueclic_emailchef/customer" );
 
-			$customers = $helper->getCustomersData("initial", $filter);
+			$customers = $helper->getCustomersData("initial", $storeIds);
+
+			die(
+				print_r(
+				array(
+					"store_ids" => $storeIds,
+					"customers" => $customers,
+					"count" => count($customers)
+				)
+				)
+			);
 
 			foreach ( $customers as $customer ) {
 				$mgec->upsert_customer(

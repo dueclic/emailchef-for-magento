@@ -269,7 +269,7 @@ class Dueclic_Emailchef_Helper_Customer extends Mage_Core_Helper_Abstract
      * @return array|false
      */
 
-    public function getCustomerData($currentCustomerId, $newsletter = "no", $filter = array())
+    public function getCustomerData($currentCustomerId, $newsletter = "no", $storeIds = array())
     {
 
         $model = Mage::getModel("customer/customer");
@@ -323,24 +323,22 @@ class Dueclic_Emailchef_Helper_Customer extends Mage_Core_Helper_Abstract
 
         $data = array_merge($data, $grand_total);
 
-        if (!empty($data["latest_order_id"]) && !empty($filter)){
+        if (!empty($storeIds)){
 
             /**
              * @var $order \Mage_Sales_Model_Order
              */
 
-            $order = Mage::getModel('sales/order')->loadByIncrementId($data["latest_order_id"]);
+            if (!empty($data["latest_order_id"])) {
 
-            /*die(
-                print_r(array(
-                    "data" => $data,
-                    "view_id" => $order->getStore()->getName(),
-                    "store_id" => $order->getStoreGroupName(),
-                    "website_id" => $order->getStore()->getWebsite()->getName()
-                ))
-            );*/
+	            $order = Mage::getModel('sales/order')->loadByIncrementId($data["latest_order_id"]);
+	            $order_store_id = $order->getStore()->getId();
 
-            if ($order->getStore()->getWebsiteId() !== $filter['website_id'] || $order->getStore()->getId() !== $filter["view_id"])
+	            if (!in_array($order_store_id, $storeIds))
+	                return false;
+
+            }
+            else
                 return false;
 
         }
@@ -376,7 +374,7 @@ class Dueclic_Emailchef_Helper_Customer extends Mage_Core_Helper_Abstract
 
     }
 
-    public function getCustomersData($action = "no", $filter = array())
+    public function getCustomersData($action = "no", $storeIds = array())
     {
         $model = Mage::getModel("customer/customer");
 
@@ -393,7 +391,7 @@ class Dueclic_Emailchef_Helper_Customer extends Mage_Core_Helper_Abstract
                 continue;
             }
 
-            $cdata = $this->getCustomerData($currentCustomerId, $action, $filter);
+            $cdata = $this->getCustomerData($currentCustomerId, $action, $storeIds);
 
             if ($cdata !== false)
                 $customersCollection[] = $cdata;
