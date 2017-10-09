@@ -260,7 +260,16 @@ class Dueclic_Emailchef_Helper_Customer extends Mage_Core_Helper_Abstract
 
     }
 
-    public function getCustomerData($currentCustomerId, $newsletter = "no")
+    /**
+     * Get customer data
+     *
+     * @param $currentCustomerId
+     * @param string $newsletter
+     * @param array $filter
+     * @return array|false
+     */
+
+    public function getCustomerData($currentCustomerId, $newsletter = "no", $filter = array())
     {
 
         $model = Mage::getModel("customer/customer");
@@ -270,6 +279,7 @@ class Dueclic_Emailchef_Helper_Customer extends Mage_Core_Helper_Abstract
          */
 
         $customer  = $model->load($currentCustomerId);
+
         $gender_id = $customer->getAttribute('gender')->getSource()
             ->getOptionId($customer->getGender());
 
@@ -313,6 +323,28 @@ class Dueclic_Emailchef_Helper_Customer extends Mage_Core_Helper_Abstract
 
         $data = array_merge($data, $grand_total);
 
+        if (!empty($data["latest_order_id"]) && !empty($filter)){
+
+            /**
+             * @var $order \Mage_Sales_Model_Order
+             */
+
+            $order = Mage::getModel('sales/order')->loadByIncrementId($data["latest_order_id"]);
+
+            /*die(
+                print_r(array(
+                    "data" => $data,
+                    "view_id" => $order->getStore()->getName(),
+                    "store_id" => $order->getStoreGroupName(),
+                    "website_id" => $order->getStore()->getWebsite()->getName()
+                ))
+            );*/
+
+            if ($order->getStore()->getWebsiteId() !== $filter['website_id'] || $order->getStore()->getId() !== $filter["view_id"])
+                return false;
+
+        }
+
         if ($customerAddressId) {
             $address = Mage::getModel('customer/address')->load(
                 $customerAddressId
@@ -344,7 +376,7 @@ class Dueclic_Emailchef_Helper_Customer extends Mage_Core_Helper_Abstract
 
     }
 
-    public function getCustomersData($action = "no")
+    public function getCustomersData($action = "no", $filter = array())
     {
         $model = Mage::getModel("customer/customer");
 
@@ -361,7 +393,10 @@ class Dueclic_Emailchef_Helper_Customer extends Mage_Core_Helper_Abstract
                 continue;
             }
 
-            $customersCollection[] = $this->getCustomerData($currentCustomerId, $action);
+            $cdata = $this->getCustomerData($currentCustomerId, $action, $filter);
+
+            if ($cdata !== false)
+                $customersCollection[] = $cdata;
 
         }
 

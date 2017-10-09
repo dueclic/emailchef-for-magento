@@ -323,7 +323,8 @@ $e(document).ready(function () {
           type: 'POST',
           url: "/index.php/emailchef/ajax/initialsync",
           data : {
-              'list_id' : $e("#emailchef_general_list").val()
+              'list_id' : $e("#emailchef_general_list").val(),
+              'store' : $e("#store_switcher").val()
           },
           dataType: 'json',
           success: function (response) {

@@ -553,6 +553,23 @@ class MG_Emailchef extends MG_Emailchef_Api
 
     /**
      *
+     * Get list status
+     *
+     * @param $list_id
+     *
+     * @return bool
+     */
+
+    public function get_list_status($list_id){
+
+        $list_endpoint = sprintf("/lists/%d", (int)$list_id);
+        $list = $this->get($list_endpoint, array(), "GET");
+        return $list;
+
+    }
+
+    /**
+     *
      * Upsert customer
      *
      * @param $list_id
@@ -563,6 +580,15 @@ class MG_Emailchef extends MG_Emailchef_Api
 
     public function upsert_customer($list_id, $customer)
     {
+
+        $list_status = $this->get_list_status($list_id);
+
+        if ($list_status["status"] === "ERROR"){
+
+            $this->lastError = $list_status["message"];
+            return false;
+
+        }
 
         $path = "/contacts";
 
