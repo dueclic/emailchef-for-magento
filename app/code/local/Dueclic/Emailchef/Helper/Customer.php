@@ -265,7 +265,7 @@ class Dueclic_Emailchef_Helper_Customer extends Mage_Core_Helper_Abstract
      *
      * @param $currentCustomerId
      * @param string $newsletter
-     * @param array $filter
+     * @param array $storeIds
      * @return array|false
      */
 
