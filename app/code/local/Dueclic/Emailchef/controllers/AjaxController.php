@@ -5,8 +5,11 @@ class Dueclic_Emailchef_AjaxController extends Mage_Core_Controller_Front_Action
 	public function initialSyncAction() {
 
 		error_reporting( 0 );
+        set_time_limit(0);
+        ini_set('mysql.connect_timeout','0');
+        ini_set('max_execution_time', '0');
 
-		$args = $this->getRequest()->getPost();
+        $args = $this->getRequest()->getPost();
 
 		$this->getResponse()->clearHeaders()->setHeader(
 			'Content-Type', 'application/json', true
@@ -91,7 +94,7 @@ class Dueclic_Emailchef_AjaxController extends Mage_Core_Controller_Front_Action
                 $storeId = Mage::app()->getWebsite($what[1])->getId();
             }
 
-            $config->saveConfig( 'emailchef/general/syncevent', 0, $scope, (int)$storeId);
+            $config->saveConfig( 'emailchef/general/syncevent', 0);
 
 			Mage::log(
 				sprintf(
