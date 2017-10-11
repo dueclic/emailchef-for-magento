@@ -26,6 +26,7 @@ class Dueclic_Emailchef_Model_Observer {
         if ( $mgec->isLogged() ) {
 
             $event      = $observer->getEvent();
+
             $subscriber = $event->getDataObject();
             $data       = $subscriber->getData();
             $request = Mage::app()->getRequest()->getParams();
@@ -75,9 +76,10 @@ class Dueclic_Emailchef_Model_Observer {
 
                 }
 
-                $to_send['lang'] = Mage::app()->getDefaultStoreView()->getName();
-                $to_send['store_name'] =  Mage::app()->getStore()->getName();
+                $to_send['lang'] = Mage::app()->getStore()->getName();
+                $to_send['store_name'] =  Mage::app()->getGroup()->getName();
                 $to_send['website_name'] = Mage::app()->getWebsite()->getName();
+
                 $to_send['source'] = "eMailChef for Magento";
 
                 $upsert = $mgec->upsert_customer( $list_id, $to_send );
@@ -174,6 +176,10 @@ class Dueclic_Emailchef_Model_Observer {
 		$list_id  = Mage::getStoreConfig( 'emailchef/general/list' );
 		$policy   = Mage::getStoreConfig( 'emailchef/general/policy' );
 
+        $stores['lang'] = Mage::app()->getStore()->getName();
+        $stores['store_name'] =  Mage::app()->getGroup()->getName();
+        $stores['website_name'] = Mage::app()->getWebsite()->getName();
+
 		$mgec = $config->getEmailChefInstance(
 			$username, $password
 		);
@@ -190,7 +196,9 @@ class Dueclic_Emailchef_Model_Observer {
 
 			$sync_data = $helper->getCustomerData(
 				$customer->getId(),
-				"noinsert"
+				"noinsert",
+                array(),
+                $stores
 			);
 
 			$upsert = $mgec->upsert_customer( $list_id, $sync_data );

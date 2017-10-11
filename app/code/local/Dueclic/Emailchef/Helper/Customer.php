@@ -30,72 +30,6 @@ class Dueclic_Emailchef_Helper_Customer extends Mage_Core_Helper_Abstract
         return "na";
     }
 
-    public function getStoreIdByCustomerCountryId($countryIdCustomer)
-    {
-
-        $storeviews = array(
-            "website" => Mage::app()->getWebsite()->getName(),
-            "store" => Mage::app()->getStore()->getName(),
-            "view" => Mage::app()->getDefaultStoreView()->getName()
-        );
-
-        $countryIdReturn = null;
-        $countryIdCustomer = trim((string)$countryIdCustomer);
-        if (!strlen($countryIdCustomer)) {
-            return $storeviews;
-        }
-
-        foreach (Mage::app()->getWebsites() as $website) {
-            foreach ($website->getGroups() as $group) {
-                $stores = $group->getStores();
-                foreach ($stores as $store) {
-                    if (!$store->getIsActive()) {
-                        continue;
-                    }
-                    foreach (
-                        explode(',', $store->getConfig('general/country/allow'))
-                        as $countryId
-                    ) {
-                        if (trim((string)$countryId) === $countryIdCustomer) {
-                            $storeviews["view"] = $store->getName();
-                            $storeviews["store"] = $group->getName();
-                            $storeviews["website"] = $website->getName();
-                            break 2;
-                        }
-                    }
-                }
-            }
-        }
-
-        return $storeviews;
-
-    }
-
-    /*public function getStoreIdByCustomerCountryId($countryIdCustomer)
-    {
-        $countryIdReturn   = null;
-        $countryIdCustomer = trim((string)$countryIdCustomer);
-        if ( ! strlen($countryIdCustomer)) {
-            return false;
-        }
-        foreach (Mage::app()->getStores() as $store) {
-            if ( ! $store->getIsActive()) {
-                continue;
-            }
-            foreach (
-                explode(',', $store->getConfig('general/country/allow'))
-                as $countryId
-            ) {
-                if (trim((string)$countryId) === $countryIdCustomer) {
-                    $countryIdReturn = $store->getName();
-                    break 2;
-                }
-            }
-        }
-
-        return $countryIdReturn;
-    }*/
-
     /**
      * Get Date from DateTime.
      *
@@ -269,7 +203,7 @@ class Dueclic_Emailchef_Helper_Customer extends Mage_Core_Helper_Abstract
      * @return array|false
      */
 
-    public function getCustomerData($currentCustomerId, $newsletter = "no", $storeIds = array())
+    public function getCustomerData($currentCustomerId, $newsletter = "no", $storeIds = array(), $stores = array())
     {
 
         $model = Mage::getModel("customer/customer");
@@ -372,15 +306,8 @@ class Dueclic_Emailchef_Helper_Customer extends Mage_Core_Helper_Abstract
                 $customerAddressId
             );
 
-            $storeviews = $this->getStoreIdByCustomerCountryId(
-                $address->getCountry()
-            );
-
             $data = array_merge(
                 $data, array(
-                    "lang" => $storeviews['view'],
-                    "store_name" => $storeviews["store"],
-                    "website_name" => $storeviews["website"],
                     "billing_company" => $address->getData("company"),
                     "billing_address_1" => $address->getData('street'),
                     "billing_postcode" => $address->getData("postcode"),
@@ -392,6 +319,10 @@ class Dueclic_Emailchef_Helper_Customer extends Mage_Core_Helper_Abstract
 
                 )
             );
+        }
+
+        if (!empty($stores)){
+            $data = array_merge($data, $stores);
         }
 
         return $data;
@@ -525,9 +456,9 @@ class Dueclic_Emailchef_Helper_Customer extends Mage_Core_Helper_Abstract
         $address = $order->getBillingAddress();
 
         $order_address = array(
-            "lang" => $this->getStoreIdByCustomerCountryId(
-                $address->getCountry()
-            ),
+            "lang" => $order->getStoreName(),
+            "store_name" => $order->getStoreGroupName(),
+            "website_name" => Mage::app()->getStore($order->getStoreId())->getWebsiteId(),
             "billing_company" => $address->getData("company"),
             "billing_address_1" => $address->getData('street'),
             "billing_postcode" => $address->getData("postcode"),
