@@ -63,16 +63,6 @@ class Dueclic_Emailchef_AjaxController extends Mage_Core_Controller_Front_Action
 
 			$customers = $helper->getCustomersData("initial", $storeIds);
 
-			die(
-				print_r(
-				array(
-					"store_ids" => $storeIds,
-					"customers" => $customers,
-					"count" => count($customers)
-				)
-				)
-			);
-
 			foreach ( $customers as $customer ) {
 				$mgec->upsert_customer(
 					$list_id,
@@ -87,8 +77,21 @@ class Dueclic_Emailchef_AjaxController extends Mage_Core_Controller_Front_Action
              * @var $config \Mage_Core_Model_Config
              */
 
-			$config = Mage::getModel( 'core/config' );
-            $config->saveConfig( 'emailchef/general/syncevent', 0, 'stores', Mage::app()->getStore()->getId());
+			$config = new Mage_Core_Model_Config();
+
+			$scope = "default";
+			$storeId = 0;
+
+			if (count($storeIds) == 1){
+			    $scope = "stores";
+			    $storeId = $storeIds[0];
+            }
+            else {
+                $scope = "websites";
+                $storeId = Mage::app()->getWebsite($what[1])->getId();
+            }
+
+            $config->saveConfig( 'emailchef/general/syncevent', 0, $scope, (int)$storeId);
 
 			Mage::log(
 				sprintf(

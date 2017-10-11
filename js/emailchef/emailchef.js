@@ -318,7 +318,7 @@ $e(document).ready(function () {
       $e("#row_emailchef_general_policy .note").show().insertBefore("#emailchef_response_ccf");
       $e("#row_emailchef_general_policy .note").show().insertBefore("#emailchef_response_ccf");
 
-      if ($e("#emailchef_general_syncevent").val() == 1 || $e("#emailchef_general_syncevent_inherit").val() == 1){
+      if ($e("#emailchef_general_syncevent").val() == 1){
         $e.ajax({
           type: 'POST',
           url: "/index.php/emailchef/ajax/initialsync",
