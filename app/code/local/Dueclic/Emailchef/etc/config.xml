@@ -35,6 +35,16 @@
                     </dueclic_emailchef>
                 </observers>
             </controller_action_layout_load_before>
+            <admin_system_config_changed_section_emailchef>
+                <observers>
+                    <modulename>
+                        <type>singleton</type>
+                        <class>Dueclic_Emailchef_Model_Observer</class>
+                        <method>saveConfig</method>
+                    </modulename>
+                </observers>
+            </admin_system_config_changed_section_emailchef>
+
             <customer_save_after>
                 <observers>
                     <dueclic_emailchef>

@@ -47,16 +47,39 @@ class Dueclic_Emailchef_AjaxController extends Mage_Core_Controller_Front_Action
             $storeIds = array();
 
             if ($args["store"] != "default") {
-	            $what = explode("_", $args["store"]);
+                $what = explode("_", $args["store"]);
 
-	            if ($what[0] == "website") {
-	            	$storeIds = Mage::app()->getWebsite($what[1])->getStoreIds();
-	            }
-	            if ($what[0] == "store") {
-	            	$storeIds[] = Mage::app()->getStore($what[1])->getId();
-	            }
+                if ($what[0] == "website") {
+                    $storeIds = Mage::app()->getWebsite($what[1])->getStoreIds();
+                }
+                if ($what[0] == "store") {
+                    $storeIds[] = Mage::app()->getStore($what[1])->getId();
+                }
 
             }
+
+            /**
+             * @var $config \Mage_Core_Model_Config
+             */
+
+            $config = Mage::getConfig();
+
+            $scope = "default";
+            $storeId = 0;
+
+            if (!empty($storeIds)) {
+
+                if (count($storeIds) == 1) {
+                    $scope = "stores";
+                    $storeId = $storeIds[0];
+                } else {
+                    $scope = "websites";
+                    $storeId = Mage::app()->getWebsite($what[1])->getId();
+                }
+
+            }
+
+            $config->saveConfig( 'emailchef/general/syncevent', 0, $scope, $storeId);
 
 			/**
 			 * @var $helper \Dueclic_Emailchef_Helper_Customer
@@ -67,34 +90,16 @@ class Dueclic_Emailchef_AjaxController extends Mage_Core_Controller_Front_Action
 			$customers = $helper->getCustomersData("initial", $storeIds);
 
 			foreach ( $customers as $customer ) {
+
 				$mgec->upsert_customer(
 					$list_id,
 					$customer
 				);
+
 			}
 
 			$response['type'] = "success";
 			$response["msg"]  = $this->__( "Customers data sync was successfully sent.");
-
-            /**
-             * @var $config \Mage_Core_Model_Config
-             */
-
-			$config = new Mage_Core_Model_Config();
-
-			$scope = "default";
-			$storeId = 0;
-
-			if (count($storeIds) == 1){
-			    $scope = "stores";
-			    $storeId = $storeIds[0];
-            }
-            else {
-                $scope = "websites";
-                $storeId = Mage::app()->getWebsite($what[1])->getId();
-            }
-
-            $config->saveConfig( 'emailchef/general/syncevent', 0);
 
 			Mage::log(
 				sprintf(

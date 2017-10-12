@@ -24,9 +24,7 @@ class MG_Emailchef extends MG_Emailchef_Api
 
     public static function getInstance($username, $password){
 
-        if (self::$instance === false) {
-            self::$instance = new self($username, $password);
-        }
+        self::$instance = new self($username, $password);
 
         return self::$instance;
 

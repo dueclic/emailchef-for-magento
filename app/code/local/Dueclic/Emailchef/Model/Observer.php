@@ -321,6 +321,17 @@ class Dueclic_Emailchef_Model_Observer {
 
     }
 
+    public function saveConfig( \Varien_Event_Observer $observer ){
+
+        /**
+         * @var $config \Mage_Core_Model_Config
+         */
+
+        $config = Mage::getConfig();
+        $config->saveConfig( 'emailchef/general/syncevent', 1);
+
+    }
+
 	public function prepareOrderForDataSync ( $observer ) {
 
 		/**
