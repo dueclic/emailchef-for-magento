@@ -283,6 +283,7 @@ class Dueclic_Emailchef_Helper_Customer extends Mage_Core_Helper_Abstract {
 			"customer_type" => Mage::getModel( 'customer/group' )->load(
 				$customer->getGroupId()
 			)->getCustomerGroupCode(),
+            "customer_created" => date("Y-m-d", $customer->getCreatedAtTimestamp()),
 			"first_name"    => $customer->getFirstname(),
 			"last_name"     => $customer->getLastname(),
 			"user_email"    => $customer->getEmail(),
@@ -326,6 +327,22 @@ class Dueclic_Emailchef_Helper_Customer extends Mage_Core_Helper_Abstract {
 					$isFound = true;
 				}
 			}
+			else {
+
+			    if ($customer->getData("website_id") == $website_id) {
+
+                    $data    = array_merge(
+                        $data, array(
+                            "lang"         => Mage::app()->getStore( $store_id )->getName(),
+                            "store_name"   => Mage::app()->getStore( $store_id )->getGroup()->getName(),
+                            "website_name" => Mage::app()->getWebsite($website_id)->getName(),
+                        )
+                    );
+
+			        $isFound = true;
+                }
+
+            }
 
 			if ( ! $isFound ) {
 
@@ -454,6 +471,7 @@ class Dueclic_Emailchef_Helper_Customer extends Mage_Core_Helper_Abstract {
 				"customer_type" => Mage::getModel( 'customer/group' )->load(
 					$customer->getGroupId()
 				)->getCustomerGroupCode(),
+				"customer_created" => date("Y-m-d", $customer->getCreatedAtTimestamp()),
 				"first_name"    => $customer->getFirstname(),
 				"last_name"     => $customer->getLastname(),
 				"user_email"    => $customer->getEmail(),
@@ -470,7 +488,8 @@ class Dueclic_Emailchef_Helper_Customer extends Mage_Core_Helper_Abstract {
 				"customer_type" => Mage::getModel( 'customer/group' )->load(
 					$order->getCustomerGroupId()
 				)->getCustomerGroupCode(),
-				"first_name"    => $order->getCustomerFirstname(),
+                "customer_created" => date("Y-m-d", $customer->getCreatedAtTimestamp()),
+                "first_name"    => $order->getCustomerFirstname(),
 				"last_name"     => $order->getCustomerLastname(),
 				"user_email"    => $order->getCustomerEmail(),
 				"source"        => "eMailChef for Magento",

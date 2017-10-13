@@ -20,6 +20,10 @@ class Dueclic_Emailchef_Helper_Customfield extends Mage_Core_Helper_Abstract
             }
         }
 
+        $storeviews[] = array(
+            "text" => "Admin"
+        );
+
         return $storeviews;
     }
 
@@ -33,6 +37,10 @@ class Dueclic_Emailchef_Helper_Customfield extends Mage_Core_Helper_Abstract
                 );
             }
         }
+
+        $storeviews[] = array(
+            "text" => "Default"
+        );
 
         return $storeviews;
     }
@@ -248,77 +256,82 @@ class Dueclic_Emailchef_Helper_Customfield extends Mage_Core_Helper_Abstract
                 'options'   => $this->getCustomerGroups(),
                 'ord'       => 20,
             ),
+            'customer_created'               => array(
+                'name'      => $this->__("Account creation date"),
+                'data_type' => 'date',
+                'ord'       => 21,
+            ),
             'total_ordered'               => array(
                 'name'      => $this->__("Subtotal"),
                 'data_type' => 'number',
-                'ord'       => 21,
+                'ord'       => 22,
             ),
             'total_ordered_30d'           => array(
                 'name'      => $this->__("Total ordered in the last 30 days"),
                 'data_type' => 'number',
-                'ord'       => 22,
+                'ord'       => 23,
             ),
             'total_ordered_12m'           => array(
                 'name'      => $this->__("Total ordered in the last 12 months"),
                 'data_type' => 'number',
-                'ord'       => 23,
+                'ord'       => 24,
             ),
             'total_orders'                => array(
                 'name'      => $this->__("Orders"),
                 'data_type' => 'number',
-                'ord'       => 24,
+                'ord'       => 25,
             ),
             'all_ordered_product_ids'     => array(
                 'name'      => $this->__("Ordered Product IDs"),
                 'data_type' => 'text',
-                'ord'       => 25,
+                'ord'       => 26,
             ),
             'latest_order_id'             => array(
                 'name'      => $this->__("Last order - ID"),
                 'data_type' => 'text',
-                'ord'       => 26,
+                'ord'       => 27,
             ),
             'latest_order_date'           => array(
                 'name'      => $this->__("Last order - Date"),
                 'data_type' => 'date',
-                'ord'       => 27,
+                'ord'       => 28,
             ),
             'latest_order_amount'         => array(
                 'name'      => $this->__("Last order - Total"),
                 'data_type' => 'number',
-                'ord'       => 28,
+                'ord'       => 29,
             ),
             'latest_order_status'         => array(
                 'name'      => $this->__("Last order - Status"),
                 'data_type' => 'select',
                 'options'   => $this->getOrderStatuses(),
-                'ord'       => 29,
+                'ord'       => 30,
             ),
             'latest_order_product_ids'    => array(
                 'name'      => $this->__("Last order - Product IDs"),
                 'data_type' => 'text',
-                'ord'       => 30,
+                'ord'       => 31,
             ),
             'latest_shipped_order_id'     => array(
                 'name'      => $this->__("Last shipped order - ID"),
                 'data_type' => 'text',
-                'ord'       => 31,
+                'ord'       => 32,
             ),
             'latest_shipped_order_date'   => array(
                 'name'      => $this->__("Last shipped order - Data"),
                 'data_type' => 'date',
-                'ord'       => 32,
+                'ord'       => 33,
             ),
             'latest_shipped_order_status' => array(
                 'name'      => $this->__("Last shipped order - Status"),
                 'data_type' => 'select',
                 'options'   => $this->getOrderStatusDelivered(),
-                'ord'       => 33,
+                'ord'       => 34,
             ),
             'ab_cart_is_abandoned_cart'   => array(
                 'name'          => $this->__("Abandoned cart - Yes/No"),
                 'data_type'     => 'boolean',
-                'ord'           => 34,
+                'ord'           => 35,
                 'default_value' => 'no',
             ),
             'ab_cart_prod_name_pr_hr'     => array(
@@ -326,47 +339,47 @@ class Dueclic_Emailchef_Helper_Customfield extends Mage_Core_Helper_Abstract
                     "Abandoned cart - Most expensive product name"
                 ),
                 'data_type' => 'text',
-                'ord'       => 35,
+                'ord'       => 36,
             ),
             'ab_cart_prod_desc_pr_hr'     => array(
                 'name'      => $this->__(
                     "Abandoned cart - Most expensive product description"
                 ),
                 'data_type' => 'text',
-                'ord'       => 36,
+                'ord'       => 37,
             ),
             'ab_cart_prod_pr_pr_hr'       => array(
                 'name'      => $this->__(
                     "Abandoned cart - Most expensive pricing product"
                 ),
                 'data_type' => 'number',
-                'ord'       => 37,
+                'ord'       => 38,
             ),
             'ab_cart_prod_url_pr_hr'      => array(
                 'name'      => $this->__(
                     'Abandoned cart - Most expensive product URL'
                 ),
                 'data_type' => 'text',
-                'ord'       => 38,
+                'ord'       => 39
             ),
             'ab_cart_prod_url_img_pr_hr'  => array(
                 'name'      => $this->__(
                     'Abandoned cart - Most expensive product image URL'
                 ),
                 'data_type' => 'text',
-                'ord'       => 39,
+                'ord'       => 40,
             ),
             'ab_cart_prod_id_pr_hr'       => array(
                 'name'      => $this->__(
                     'Abandoned cart - Most expensive product ID'
                 ),
                 'data_type' => 'number',
-                'ord'       => 40,
+                'ord'       => 41,
             ),
             'ab_cart_date'                => array(
                 'name'      => $this->__('Abandoned cart - Date'),
                 'data_type' => 'date',
-                'ord'       => 41,
+                'ord'       => 42,
             ),
 
         );
