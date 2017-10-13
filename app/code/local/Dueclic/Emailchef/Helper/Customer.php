@@ -329,17 +329,39 @@ class Dueclic_Emailchef_Helper_Customer extends Mage_Core_Helper_Abstract {
 			}
 			else {
 
-			    if ($customer->getData("website_id") == $website_id) {
+                if ( ! empty( $data["latest_order_id"] ) ) {
 
-                    $data    = array_merge(
-                        $data, array(
-                            "lang"         => Mage::app()->getStore( $store_id )->getName(),
-                            "store_name"   => Mage::app()->getStore( $store_id )->getGroup()->getName(),
-                            "website_name" => Mage::app()->getWebsite($website_id)->getName(),
-                        )
-                    );
+                    $order          = Mage::getModel( 'sales/order' )->loadByIncrementId( $data["latest_order_id"] );
+                    $order_store_id = $order->getStore()->getId();
 
-			        $isFound = true;
+                    if ( in_array( $order_store_id, $storeIds ) ) {
+                        $data    = array_merge(
+                            $data, array(
+                                "lang"         => Mage::app()->getStore( $order->getStoreId() )->getName(),
+                                "store_name"   => $order->getStoreGroupName(),
+                                "website_name" => Mage::app()->getStore( $order->getStoreId() )->getWebsite()->getName(),
+                            )
+                        );
+                        $isFound = true;
+                    }
+
+                }
+
+                else {
+
+                    if ($customer->getData("website_id") == $website_id) {
+
+                        $data = array_merge(
+                            $data, array(
+                                "lang" => Mage::app()->getStore($store_id)->getName(),
+                                "store_name" => Mage::app()->getStore($store_id)->getGroup()->getName(),
+                                "website_name" => Mage::app()->getWebsite($website_id)->getName(),
+                            )
+                        );
+
+                        $isFound = true;
+                    }
+
                 }
 
             }

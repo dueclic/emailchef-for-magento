@@ -9,11 +9,31 @@ $e(document).ready(function () {
             $e(".emailchef-logo").show();
         }
 
-        if ($e("#emailchef_general_username").length && $e("#emailchef_general_username").val() !== "" && $e("#emailchef_general_password").length && $e("#emailchef_general_password").val() !== "") {
-            var apiUser = $e("#emailchef_general_username").val();
-            var apiPass = $e("#emailchef_general_password").val();
-            checkLoginData(apiUser, apiPass);
+        if ($e("#emailchef_general_username_inherit").is(":checked") && $e("#emailchef_general_password_inherit").is(":checked")) {
+            $e("#row_emailchef_general_check").hide();
         }
+
+        if ($e("#emailchef_general_username").length && $e("#emailchef_general_username").val() !== "" && $e("#emailchef_general_password").length && $e("#emailchef_general_password").val() !== "") {
+
+
+            if (!$e("#emailchef_general_username_inherit").is(":checked") && !$e("#emailchef_general_password_inherit").is(":checked")) {
+
+                var apiUser = $e("#emailchef_general_username").val();
+                var apiPass = $e("#emailchef_general_password").val();
+                checkLoginData(apiUser, apiPass);
+
+                return;
+            }
+
+        }
+
+        $e("#emailchef_general_username_inherit, #emailchef_general_password_inherit").on("change", function(){
+            if ($e(this).is(":checked")){
+                $e("#row_emailchef_general_check").hide();
+            }
+            else
+                $e("#row_emailchef_general_check").show();
+        });
 
         function createCustomFields(apiUser, apiPass, listId) {
 
@@ -178,7 +198,7 @@ $e(document).ready(function () {
 
                             },
                             error: function (jxqr, textStatus, thrown) {
-                                alert("Error: " + textStatus + " " + thrown);
+                                console.log("Error: " + textStatus + " " + thrown);
                             }
                         });
                     }
@@ -187,6 +207,7 @@ $e(document).ready(function () {
         }
 
         function checkPostLoginData(apiUser, apiPass) {
+
             var btn = $e("#emailchef_selftest_button");
             $e(btn).attr("disabled", true);
 
@@ -326,7 +347,7 @@ $e(document).ready(function () {
 
             $e("#emailchef_general_syncevent").val(1);
 
-            if (isCreated === 0) {
+            if (isCreated === 0 && !$e("#emailchef_general_username_inherit").is(":checked") && !$e("#emailchef_general_password_inherit").is(":checked")) {
 
                 var apiUser = $e("#emailchef_general_username").val();
                 var apiPass = $e("#emailchef_general_password").val();
