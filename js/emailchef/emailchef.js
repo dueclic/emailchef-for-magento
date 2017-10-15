@@ -21,8 +21,6 @@ $e(document).ready(function () {
                 var apiUser = $e("#emailchef_general_username").val();
                 var apiPass = $e("#emailchef_general_password").val();
                 checkLoginData(apiUser, apiPass);
-
-                return;
             }
 
         }
