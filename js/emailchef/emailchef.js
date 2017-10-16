@@ -323,6 +323,11 @@ $e(document).ready(function () {
             checkPostLoginData(apiUser, apiPass);
         });
 
+        $e(document).on("click", "#undo_emailchef_list_btn", function (evt) {
+            evt.preventDefault();
+            $e("#create_emailchef_list").hide();
+        });
+
         $e(document).on("click", "#create_emailchef_list_btn", function (evt) {
             evt.preventDefault();
             var apiUser = $e("#emailchef_general_username").val();

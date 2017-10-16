@@ -45,6 +45,15 @@ class Dueclic_Emailchef_Block_Adminhtml_System_Config_Form_Listselect
                                     "Create list"
                                 ); ?></span></span></span>
                 </button>
+
+                <button id="undo_emailchef_list_btn"
+                        title="<?php echo $this->__("Undo"); ?>"
+                        type="button" class="scalable" style="">
+                    <span><span><span><?php echo $this->__(
+                                    "Undo"
+                                ); ?></span></span></span>
+                </button>
+
             </p>
         </div>
         <div id="emailchef_response">

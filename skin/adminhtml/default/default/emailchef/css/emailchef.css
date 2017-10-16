@@ -16,7 +16,7 @@ eMailChef css
 #create_emailchef_list .btn-emailchef {
   margin-top: 10px;
 }
-#create_emailchef_list_btn {
+#create_emailchef_list_btn, #undo_emailchef_list_btn {
   background: #fff;
   color: rgb(244, 114, 0);
 }
