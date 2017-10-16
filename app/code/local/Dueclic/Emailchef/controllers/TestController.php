@@ -34,4 +34,18 @@ class Dueclic_Emailchef_TestController extends Mage_Core_Controller_Front_Action
 
     }
 
+    public function getWebsiteAction(){
+
+        $website_id = $this->getRequest()->getParam("website");
+
+        /**
+         * @var $customer \Dueclic_Emailchef_Helper_Customer
+         */
+
+        $customer = Mage::helper("dueclic_emailchef/customer");
+        $data = $customer->getCustomersByWebsiteId($website_id);
+        die("<pre>".var_export($data, true)."</pre>");
+
+    }
+
 }

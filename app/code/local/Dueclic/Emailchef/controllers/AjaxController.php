@@ -44,8 +44,6 @@ class Dueclic_Emailchef_AjaxController extends Mage_Core_Controller_Front_Action
 
 		if ( $mgec->isLogged() ) {
 
-            $storeIds = array();
-
             if ($args["store"] != "default") {
                 $what = explode("_", $args["store"]);
 
@@ -78,6 +76,17 @@ class Dueclic_Emailchef_AjaxController extends Mage_Core_Controller_Front_Action
                 }
 
             }
+            else {
+                $storeIds = array();
+                foreach (Mage::app()->getWebsites() as $website) {
+                    foreach ($website->getGroups() as $group) {
+                        $stores = $group->getStores();
+                        foreach ($stores as $store) {
+                            $storeIds[] = $store->getId();
+                        }
+                    }
+                }
+            }
 
             $config->saveConfig( 'emailchef/general/syncevent', 0, $scope, $storeId);
 
@@ -87,7 +96,12 @@ class Dueclic_Emailchef_AjaxController extends Mage_Core_Controller_Front_Action
 
 			$helper = Mage::helper( "dueclic_emailchef/customer" );
 
-			$customers = $helper->getCustomersData("initial", $storeIds);
+			if ($args["store"] != "default" && $what[0] == "website"){
+                $website_id = Mage::app()->getWebsite($what[1])->getID();
+                $customers = $helper->getCustomersByWebsiteId($website_id);
+            }
+            else
+			    $customers = $helper->getCustomersData("initial", $storeIds);
 
 			foreach ( $customers as $customer ) {
 

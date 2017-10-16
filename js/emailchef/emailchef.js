@@ -25,8 +25,8 @@ $e(document).ready(function () {
 
         }
 
-        $e("#emailchef_general_username_inherit, #emailchef_general_password_inherit").on("change", function(){
-            if ($e(this).is(":checked")){
+        $e("#emailchef_general_username_inherit, #emailchef_general_password_inherit").on("change", function () {
+            if ($e(this).is(":checked")) {
                 $e("#row_emailchef_general_check").hide();
             }
             else
@@ -174,7 +174,7 @@ $e(document).ready(function () {
                         $e("#row_emailchef_general_list, #row_emailchef_general_policy").hide();
                     }
                 },
-                error: function (jqXHR, textStatus, errorThrown) {
+                error: function (jqXHR, textStatus, thrown) {
                     $e("#login_emailchef_list_danger").find(".reason").text(textStatus + " " + thrown);
                     $e("#login_emailchef_list_danger").show();
                 },
@@ -354,8 +354,9 @@ $e(document).ready(function () {
                 checkCustomFields(apiUser, apiPass, listId);
 
             }
-            else
+            else {
                 configForm.submit();
+            }
 
         });
 
