@@ -452,9 +452,14 @@ class Dueclic_Emailchef_Helper_Customer extends Mage_Core_Helper_Abstract
 
             }
 
-            if (!$isFound) {
+            if ($data["lang"] == "Admin" && $data["store_name"] == "Default" && $website_id === NULL)
+                $data["website_name"] = "";
+
+            /*if (!$isFound) {
 
                 if (!empty($data["latest_order_id"])) {
+
+                    die("CAIO");
 
                     $order = Mage::getModel('sales/order')->loadByIncrementId($data["latest_order_id"]);
                     $order_store_id = $order->getStore()->getId();
@@ -472,10 +477,11 @@ class Dueclic_Emailchef_Helper_Customer extends Mage_Core_Helper_Abstract
 
                 }
 
-            }
+            }*/
 
-            if (!$isFound)
+            if (!$isFound) {
                 return false;
+            }
 
         }
 
