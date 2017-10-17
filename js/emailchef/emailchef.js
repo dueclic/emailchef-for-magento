@@ -181,25 +181,47 @@ $e(document).ready(function () {
                 complete: function (jqXHR, textStatus, errorThrown) {
                     $e("#login_emailchef_list_load").hide();
                     $e(btn).attr("disabled", false);
-                    if ($e("#emailchef_general_syncevent").val() == 1) {
-                        $e.ajax({
-                            type: 'POST',
-                            url: "/index.php/emailchef/ajax/initialsync",
-                            data: {
-                                'list_id': $e("#emailchef_general_list").val(),
-                                'store': $e("#store_switcher").val()
-                            },
-                            dataType: 'json',
-                            success: function (response) {
+                }
+            });
+        }
 
-                                console.log(response.msg);
+        function exportCustomers(apiUser, apiPass, list_id, store){
 
-                            },
-                            error: function (jxqr, textStatus, thrown) {
-                                console.log("Error: " + textStatus + " " + thrown);
-                            }
-                        });
+            var btn = $e("#emailchef_selftest_button");
+            $e(btn).attr("disabled", true);
+
+            $e("#emailchef_response_export .alert").hide();
+            $e("#create_emailchef_export_load").show();
+
+            $e.ajax({
+                type: 'POST',
+                url: "/index.php/emailchef/ajax/initialsync",
+                data: {
+                    'username' : apiUser,
+                    'password' : apiPass,
+                    'list_id': list_id,
+                    'store': store
+                },
+                dataType: 'json',
+                success: function (response) {
+
+                    if (response.type == "success") {
+                        $e("#create_emailchef_export_success").show().delay(3000).fadeOut();
+                        $e("#config_edit_form").submit();
                     }
+                    else {
+                        $e("#create_emailchef_export_danger").find(".reason").text(response.msg);
+                        $e("#create_emailchef_export_danger").show();
+                    }
+
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    $e("#create_emailchef_export_danger").find(".reason").text(textStatus + " " + errorThrown);
+                    $e("#create_emailchef_export_danger").show();
+                },
+                complete: function (jqXHR, textStatus, errorThrown) {
+                    $e("#create_emailchef_export_load").hide();
+                    $e(btn).attr("disabled", false);
                 }
             });
         }
@@ -293,7 +315,11 @@ $e(document).ready(function () {
                     }
 
                     $e("#create_emailchef_ccf_success").show().delay(3000).fadeOut();
-                    $e("#config_edit_form").submit();
+                    if (confirm(Translator.translate("Would you like to begin a first customers export?"))){
+                        exportCustomers(apiUser, apiPass, listId, $e("#store_switcher").val());
+                    }
+                    else
+                        $e("#config_edit_form").submit();
 
                 },
                 error: function (jxqr, textStatus, thrown) {
@@ -351,17 +377,12 @@ $e(document).ready(function () {
             $e("#emailchef_general_syncevent").val(1);
 
             if (isCreated === 0 && !$e("#emailchef_general_username_inherit").is(":checked") && !$e("#emailchef_general_password_inherit").is(":checked")) {
-
                 var apiUser = $e("#emailchef_general_username").val();
                 var apiPass = $e("#emailchef_general_password").val();
                 var listId = $e("#emailchef_general_list").val();
-
-                checkCustomFields(apiUser, apiPass, listId);
-
             }
-            else {
-                configForm.submit();
-            }
+
+            checkCustomFields(apiUser, apiPass, listId);
 
         });
 

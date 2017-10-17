@@ -2,5 +2,6 @@
 <jstranslator>
     <provide-vaild-list-name translate="message" module="dueclic_emailchef">
         <message>provide a valid name for eMailChef list.</message>
+        <message>Would you like to begin a first customers export?</message>
     </provide-vaild-list-name>
 </jstranslator>

@@ -22,6 +22,17 @@ class Dueclic_Emailchef_Block_Adminhtml_System_Config_Form_Listpolicy
                 <?php echo $this->__("An error occurred while modifying custom fields for the chosen list:"); ?> <span class="reason">{error}</span>
             </div>
         </div>
+        <div id="emailchef_response_export">
+            <div class="alert alert-info" id="create_emailchef_export_load">
+                <span class="loading-spinner-emailchef"></span> <?php echo $this->__("We're executing first initial sync..."); ?>
+            </div>
+            <div class="alert alert-success" id="create_emailchef_export_success">
+			    <?php echo $this->__("First customer sync has been successfully executed."); ?>
+            </div>
+            <div class="alert alert-danger" id="create_emailchef_export_danger">
+			    <?php echo $this->__("An error occurred while executing first customer sync:"); ?> <span class="reason">{error}</span>
+            </div>
+        </div>
         <?php
         return ob_get_clean();
     }

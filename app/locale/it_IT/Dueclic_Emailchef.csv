@@ -85,3 +85,7 @@
 "Store view - Language", "Store view - Lingua"
 "Account creation date", "Data creazione account"
 "Undo", "Annulla"
+"Would you like to begin a first customers export?","Vuoi avviare una prima esportazione dei clienti?"
+"An error occurred while executing first customer sync:", "Errore nell'esecuzione della prima esportazione clienti:"
+"First customer sync has been successfully executed.","Esportazione iniziale è stata eseguita con successo."
+"We're executing first initial sync...","Stiamo eseguendo la prima esportazione iniziale..."
