@@ -78,7 +78,7 @@ class Dueclic_Emailchef_Block_Adminhtml_System_Config_Form_Listselect
                 <?php echo $this->__("Custom fields for this list have been successfully created."); ?>
             </div>
             <div class="alert alert-danger" id="create_emailchef_cf_danger">
-	            <?php echo $this->__("An error occurred while defining custom fields for this newly created list:"); ?>
+                <?php echo $this->__("An error occurred while defining custom fields for this newly created list:"); ?>
                 <span class="reason">{error}</span>
             </div>
         </div>
