@@ -374,6 +374,10 @@ $e(document).ready(function () {
 
         $e(document).on("click", "#emailchef_save_wizard", function (evt) {
 
+            if ($e("#emailchef_general_username").val() === "" && $e("#emailchef_general_password").val() === ""){
+                $e("#config_edit_form").submit();
+            }
+
             $e("#emailchef_general_syncevent").val(1);
 
             if (isCreated === 0 && !$e("#emailchef_general_username_inherit").is(":checked") && !$e("#emailchef_general_password_inherit").is(":checked")) {

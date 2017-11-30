@@ -9,6 +9,7 @@ class MG_Emailchef extends MG_Emailchef_Api
     public $lastError;
     public $lastResponse;
     private $new_custom_id;
+    private $temp_custom_id = array();
 
     /**
      * @var $instance \MG_Emailchef
@@ -22,7 +23,8 @@ class MG_Emailchef extends MG_Emailchef_Api
         $this->api_url = "https://app.emailchef.com/apps/api/v1";
     }
 
-    public static function getInstance($username, $password){
+    public static function getInstance($username, $password)
+    {
 
         self::$instance = new self($username, $password);
 
@@ -47,7 +49,7 @@ class MG_Emailchef extends MG_Emailchef_Api
      * Get lists from eMailChef
      *
      * @param array $args
-     * @param bool  $asArray
+     * @param bool $asArray
      *
      * @return mixed
      */
@@ -83,7 +85,7 @@ class MG_Emailchef extends MG_Emailchef_Api
 
         foreach ($lists as $list) {
             $results[] = array(
-                'value'   => $list['id'],
+                'value' => $list['id'],
                 'label' => $list['name'],
             );
         }
@@ -102,6 +104,7 @@ class MG_Emailchef extends MG_Emailchef_Api
     public function get_collection($list_id)
     {
         $route = sprintf("/lists/%d/customfields", $list_id);
+
         return $this->get($route, array(), "GET", false, "debug");
     }
 
@@ -138,12 +141,13 @@ class MG_Emailchef extends MG_Emailchef_Api
     protected function get_custom_fields()
     {
 
-	    /**
-	     * @var $helper \Dueclic_Emailchef_Helper_Customfield
-	     */
+        /**
+         * @var $helper \Dueclic_Emailchef_Helper_Customfield
+         */
 
-    	$helper = Mage::helper("dueclic_emailchef/customfield");
-    	return $helper->getCustomFields();
+        $helper = Mage::helper("dueclic_emailchef/customfield");
+
+        return $helper->getCustomFields();
 
     }
 
@@ -275,6 +279,32 @@ class MG_Emailchef extends MG_Emailchef_Api
 
     }
 
+    public function create_segment($list_id, $logic, $name, $description, $conditions)
+    {
+
+        $args = array(
+            "instance_in" => array(
+                "list_id"          => $list_id,
+                "logic"            => $logic,
+                "condition_groups" => $conditions,
+                "name"             => $name,
+                "description"      => $description
+            )
+        );
+
+        $response = $this->get("/segments", $args, "POST");
+
+        if ($response['status'] != "OK") {
+            $this->lastError    = $response['message'];
+            $this->lastResponse = $response;
+
+            return false;
+        }
+
+        return $response['id'];
+
+    }
+
     /**
      * Delete Custom Field
      *
@@ -305,13 +335,17 @@ class MG_Emailchef extends MG_Emailchef_Api
      * @param        $type
      * @param string $name
      * @param        $placeholder
-     * @param array  $options
+     * @param array $options
      * @param string $default_value
      *
      * @return bool
      */
     public function create_custom_field(
-        $list_id, $type, $name = "", $placeholder, $options = array(),
+        $list_id,
+        $type,
+        $name = "",
+        $placeholder,
+        $options = array(),
         $default_value = ""
     ) {
 
@@ -336,7 +370,8 @@ class MG_Emailchef extends MG_Emailchef_Api
 
         if (isset($response['status']) && $response['status'] == "OK") {
 
-            $this->new_custom_id = $response['custom_field_id'];
+            $this->new_custom_id                = $response['custom_field_id'];
+            $this->temp_custom_id[$placeholder] = $this->new_custom_id;
 
             return true;
         }
@@ -349,19 +384,47 @@ class MG_Emailchef extends MG_Emailchef_Api
     }
 
     /**
+     * Get temporary custom field by placeholder
+     *
+     * @param $placeholder
+     *
+     * @return int
+     */
+
+    public function get_temp_custom_id($placeholder)
+    {
+        return $this->temp_custom_id[$placeholder];
+    }
+
+    /**
+     * Get temporary custom fields
+     *
+     * @return array
+     */
+
+    public function get_temp_custom_fields()
+    {
+        return $this->temp_custom_id;
+    }
+
+    /**
      * Update a Custom Field in List ID
      *
      * @param        $list_id
      * @param        $type
      * @param string $name
      * @param        $placeholder
-     * @param array  $options
+     * @param array $options
      * @param string $default_value
      *
      * @return bool
      */
     public function update_custom_field(
-        $list_id, $type, $name = "", $placeholder, $options = array(),
+        $list_id,
+        $type,
+        $name = "",
+        $placeholder,
+        $options = array(),
         $default_value = ""
     ) {
 
@@ -457,11 +520,11 @@ class MG_Emailchef extends MG_Emailchef_Api
 
         );
 
-        if (!isset($customer["first_name"])){
+        if ( ! isset($customer["first_name"])) {
             unset($args["instance_in"]["firstname"]);
         }
 
-        if (!isset($customer["last_name"])){
+        if ( ! isset($customer["last_name"])) {
             unset($args["instance_in"]["lastname"]);
         }
 
@@ -529,11 +592,11 @@ class MG_Emailchef extends MG_Emailchef_Api
 
         );
 
-        if (!isset($customer["first_name"])){
+        if ( ! isset($customer["first_name"])) {
             unset($args["instance_in"]["firstname"]);
         }
 
-        if (!isset($customer["last_name"])){
+        if ( ! isset($customer["last_name"])) {
             unset($args["instance_in"]["lastname"]);
         }
 
@@ -558,10 +621,12 @@ class MG_Emailchef extends MG_Emailchef_Api
      * @return bool
      */
 
-    public function get_list_status($list_id){
+    public function get_list_status($list_id)
+    {
 
         $list_endpoint = sprintf("/lists/%d", (int)$list_id);
-        $list = $this->get($list_endpoint, array(), "GET");
+        $list          = $this->get($list_endpoint, array(), "GET");
+
         return $list;
 
     }
@@ -581,9 +646,10 @@ class MG_Emailchef extends MG_Emailchef_Api
 
         $list_status = $this->get_list_status($list_id);
 
-        if ($list_status["status"] === "ERROR"){
+        if ($list_status["status"] === "ERROR") {
 
             $this->lastError = $list_status["message"];
+
             return false;
 
         }
