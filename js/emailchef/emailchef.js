@@ -248,6 +248,7 @@ $e(document).ready(function () {
 
                         if (response.lists.length > 0) {
 
+                            $e("#emailchef_general_list").append($e('<option>').text(Translator.translate("-- Choose a list --")).attr('value', 0));
                             $e.each(response.lists, function (key, list) {
                                 $e("#emailchef_general_list").append($e('<option>').text(list.label).attr('value', list.value));
                             });
@@ -386,7 +387,11 @@ $e(document).ready(function () {
                 var listId = $e("#emailchef_general_list").val();
             }
 
-            checkCustomFields(apiUser, apiPass, listId);
+            if (listId != 0)
+                checkCustomFields(apiUser, apiPass, listId);
+            else {
+                alert(Translator.translate("Provided list is not valid."));
+            }
 
         });
 

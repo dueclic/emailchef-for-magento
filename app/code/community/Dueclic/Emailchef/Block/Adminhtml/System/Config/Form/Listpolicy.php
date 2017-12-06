@@ -9,6 +9,7 @@ class Dueclic_Emailchef_Block_Adminhtml_System_Config_Form_Listpolicy
 
     private function createListHtml()
     {
+
         ob_start();
         ?>
         <div id="emailchef_response_ccf">
