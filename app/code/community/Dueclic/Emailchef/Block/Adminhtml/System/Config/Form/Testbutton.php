@@ -9,28 +9,34 @@ class Dueclic_Emailchef_Block_Adminhtml_System_Config_Form_Testbutton
 
     private function login_emailchef()
     {
-        ob_start();
 
-        ?>
+        $verify_login = $this->__(
+            "Verifying your login data..."
+        );
 
-        <div id="emailchef_response_login">
+        $success_login = $this->__(
+            "You have successfully logged into eMailChef."
+        );
+
+        $error_login = $this->__(
+            "Incorrect login credentials:"
+        );
+
+        $login = <<<EOF
+<div id="emailchef_response_login">
             <div class="alert alert-info" id="login_emailchef_list_load">
-                <span class="loading-spinner-emailchef"></span> <?php echo $this->__(
-                    "Verifying your login data..."
-                ); ?>
+                <span class="loading-spinner-emailchef"></span> $verify_login
             </div>
             <div class="alert alert-success" id="login_emailchef_list_success">
-                <?php echo $this->__(
-                    "You have successfully logged into eMailChef."
-                ); ?>
+                $success_login
             </div>
             <div class="alert alert-danger" id="login_emailchef_list_danger">
-                <?php echo $this->__("Incorrect login credentials:"); ?> <span
-                    class="reason">{error}</span>
+                $error_login <span class="reason">{error}</span>
             </div>
         </div>
-        <?php
-        return ob_get_clean();
+EOF;
+
+        return $login;
     }
 
     /**
@@ -54,12 +60,12 @@ class Dueclic_Emailchef_Block_Adminhtml_System_Config_Form_Testbutton
     protected function _toHtml()
     {
         $button = $this->getLayout()->createBlock('adminhtml/widget_button')
-            ->setData(
-                array(
-                    'id' => 'emailchef_selftest_button',
-                    'label' => __('Test Login'),
-                )
-            );
+                       ->setData(
+                           array(
+                               'id'    => 'emailchef_selftest_button',
+                               'label' => __('Test Login'),
+                           )
+                       );
 
         return $button->toHtml();
     }

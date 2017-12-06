@@ -10,32 +10,38 @@ class Dueclic_Emailchef_Block_Adminhtml_System_Config_Form_Listpolicy
     private function createListHtml()
     {
 
-        ob_start();
-        ?>
-        <div id="emailchef_response_ccf">
+        $modifying_cf =  $this->__("We're modifying custom fields for the chosen list...");
+        $modified_cf = $this->__("Custom fields for this list have been successfully modified.");
+        $error_cf = $this->__("An error occurred while modifying custom fields for the chosen list:");
+        $progress_sync = $this->__("We're executing first initial sync...");
+        $success_sync = $this->__("First customer sync has been successfully executed.");
+        $error_sync = $this->__("An error occurred while executing first customer sync:");
+
+        $html = <<<EOF
+<div id="emailchef_response_ccf">
             <div class="alert alert-info" id="create_emailchef_ccf_load">
-                <span class="loading-spinner-emailchef"></span> <?php echo $this->__("We're modifying custom fields for the chosen list..."); ?>
+                <span class="loading-spinner-emailchef"></span> $modifying_cf
             </div>
-            <div class="alert alert-success" id="create_emailchef_ccf_success">
-        <?php echo $this->__("Custom fields for this list have been successfully modified."); ?>
+            <div class="alert alert-success" id="create_emailchef_ccf_success"> 
+                $modified_cf
             </div>
             <div class="alert alert-danger" id="create_emailchef_ccf_danger">
-                <?php echo $this->__("An error occurred while modifying custom fields for the chosen list:"); ?> <span class="reason">{error}</span>
+                 $error_cf <span class="reason">{error}</span>
             </div>
         </div>
         <div id="emailchef_response_export">
             <div class="alert alert-info" id="create_emailchef_export_load">
-                <span class="loading-spinner-emailchef"></span> <?php echo $this->__("We're executing first initial sync..."); ?>
+                <span class="loading-spinner-emailchef"></span> $progress_sync
             </div>
             <div class="alert alert-success" id="create_emailchef_export_success">
-			    <?php echo $this->__("First customer sync has been successfully executed."); ?>
+			    $success_sync
             </div>
             <div class="alert alert-danger" id="create_emailchef_export_danger">
-			    <?php echo $this->__("An error occurred while executing first customer sync:"); ?> <span class="reason">{error}</span>
+			    $error_sync <span class="reason">{error}</span>
             </div>
         </div>
-        <?php
-        return ob_get_clean();
+EOF;
+        return $html;
     }
 
     /**

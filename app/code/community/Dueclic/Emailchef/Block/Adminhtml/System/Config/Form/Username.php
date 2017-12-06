@@ -9,17 +9,16 @@ class Dueclic_Emailchef_Block_Adminhtml_System_Config_Form_Username
 
     private function logo_emailchef()
     {
-        ob_start();
 
-        ?>
+        $src = Mage::getSingleton('core/design_package')->getSkinBaseUrl().'/emailchef/img/emailchef.png';
 
-        <div class="emailchef-logo">
-            <img src="<?php echo Mage::getSingleton('core/design_package')->getSkinBaseUrl().'/emailchef/img/emailchef.png'; ?>">
+        $logo = <<<EOF
+<div class="emailchef-logo">
+            <img src="$src">
         </div>
+EOF;
+        return $logo;
 
-
-        <?php
-        return ob_get_clean();
     }
 
     /**

@@ -9,81 +9,89 @@ class Dueclic_Emailchef_Block_Adminhtml_System_Config_Form_Listselect
 
     private function createListHtml()
     {
-        ob_start();
 
+        $or                     = $this->__("Or");
+        $create_new_list        = $this->__(
+            "create a new list"
+        );
+        $list_name              = $this->__("List name");
+        $list_description       = $this->__(
+            "List description"
+        );
+        $by_creating            = $this->__(
+            "By creating a new list, you confirm its compliance with the privacy policy and the CAN-SPAM Act."
+        );
+        $create_list            = $this->__('Create list');
+        $error_occurred         = $this->__("An error occurred while defining custom fields for this newly created list:");
+        $custom_fields_created  = $this->__("Custom fields for this list have been successfully created.");
+        $custom_fields_defining = $this->__("We're defining custom fields for this newly created list...");
+        $error_creating_list    = $this->__("An error occurred while creating this list:");
 
-        ?>
-        <p><?php echo $this->__("Or"); ?> <a href="#"
-                                             id="create_emailchef_list_trigger"><?php echo $this->__(
-                    "create a new list"
-                ); ?></a></p>
+        $list_created = $this->__(
+            "Your list has been created. We’re now adding the custom fields."
+        );
+
+        $making_list = $this->__(
+            "Making a new list, please wait..."
+        );
+
+        $undo = $this->__("Undo");
+
+        $create = <<<EOF
+<p>$or <a href="#" id="create_emailchef_list_trigger">$create_new_list</a></p>
         <div id="create_emailchef_list">
-            <p><strong><?php echo $this->__("Create new list"); ?></strong></p>
+            <p><strong>$create_new_list</strong></p>
             <p><input type="text" class="input-text" id="new_list_name"
                       name="new_list_name"
-                      placeholder="<?php echo $this->__("List name"); ?>"></p>
-            <p class="note"><span><?php echo $this->__("List name"); ?></span>
+                      placeholder="$list_name"></p>
+            <p class="note"><span>$list_name</span>
             </p>
             <p><input type="text" class="input-text" id="new_list_description"
                       name="new_list_description"
-                      placeholder="<?php echo $this->__(
-                          "List description"
-                      ); ?>"></p>
-            <p class="note"><span><?php echo $this->__(
-                        "List description"
-                    ); ?></span></p>
+                      placeholder="$list_description"></p>
+            <p class="note"><span>$list_description</span></p>
             <p class="white" style="color:#fff;margin-top:10px;margin-bottom:10px;font-style:italic;">
-                <?php echo $this->__(
-                    "By creating a new list, you confirm its compliance with the privacy policy and the CAN-SPAM Act."
-                ); ?>
+                $by_creating
             </p>
             <p class="btn-emailchef">
                 <button id="create_emailchef_list_btn"
-                        title="<?php echo $this->__("Create list"); ?>"
+                        title="$create_list"
                         type="button" class="scalable " onclick="" style="">
-                    <span><span><span><?php echo $this->__(
-                                    "Create list"
-                                ); ?></span></span></span>
+                        <span>$create_list</span>
                 </button>
 
                 <button id="undo_emailchef_list_btn"
-                        title="<?php echo $this->__("Undo"); ?>"
+                        title="$undo"
                         type="button" class="scalable" style="">
-                    <span><span><span><?php echo $this->__(
-                                    "Undo"
-                                ); ?></span></span></span>
+                    <span>$undo</span>
                 </button>
 
             </p>
         </div>
         <div id="emailchef_response">
             <div class="alert alert-info" id="create_emailchef_list_load">
-                <span class="loading-spinner-emailchef"></span> <?php echo $this->__(
-                    "Making a new list, please wait..."
-                ); ?>
+                <span class="loading-spinner-emailchef"></span> $making_list
             </div>
             <div class="alert alert-success" id="create_emailchef_list_success">
-                <?php echo $this->__(
-                    "Your list has been created. We’re now adding the custom fields."
-                ); ?>
+                $list_created
             </div>
             <div class="alert alert-danger" id="create_emailchef_list_danger">
-                <?php echo $this->__("An error occurred while creating this list:"); ?> <span
-                        class="reason">{error}</span>
+                $error_creating_list <span class="reason">{error}</span>
             </div>
             <div class="alert alert-info" id="create_emailchef_cf_load">
-                <span class="loading-spinner-emailchef"></span> <?php echo $this->__("We're defining custom fields for this newly created list..."); ?>
+                <span class="loading-spinner-emailchef"></span> $custom_fields_defining
             </div>
             <div class="alert alert-success" id="create_emailchef_cf_success">
-                <?php echo $this->__("Custom fields for this list have been successfully created."); ?>
+                $custom_fields_created
             </div>
             <div class="alert alert-danger" id="create_emailchef_cf_danger">
-                <?php echo $this->__("An error occurred while defining custom fields for this newly created list:"); ?>
+                $error_occurred
                 <span class="reason">{error}</span>
             </div>
         </div>
-        <?php
-        return ob_get_clean();
+EOF;
+
+        return $create;
     }
 
     /**
