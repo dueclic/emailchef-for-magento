@@ -255,6 +255,8 @@ class Dueclic_Emailchef_AjaxController extends Mage_Core_Controller_Front_Action
                  * @var $resource \Mage_Core_Model_Resource
                  */
 
+                $lists = $mgec->get_lists();
+
                 $resource = Mage::getSingleton("core/resource");
 
                 if ( ! $resource->getConnection('core_read')->tableColumnExists(
@@ -271,7 +273,7 @@ class Dueclic_Emailchef_AjaxController extends Mage_Core_Controller_Front_Action
                 $response["type"]   = "success";
                 $response["msg"]    = $this->__("User logged successfully.");
                 $response["policy"] = $mgec->get_policy();
-                $response["lists"]  = $mgec->get_lists();
+                $response["lists"]  = $lists;
             }
 
         }
@@ -339,6 +341,8 @@ class Dueclic_Emailchef_AjaxController extends Mage_Core_Controller_Front_Action
             $list_id = $mgec->create_list(
                 $args['list_name'], $args['list_desc']
             );
+
+            $mgec->create_integration($list_id);
 
             $response['full_response'] = $mgec->lastResponse;
 

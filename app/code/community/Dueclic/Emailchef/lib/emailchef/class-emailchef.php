@@ -41,8 +41,67 @@ class MG_Emailchef extends MG_Emailchef_Api
     public function get_policy()
     {
         $account = $this->get("/accounts/current", array(), "GET");
-
         return $account['mode'];
+    }
+
+    /**
+     * Get integrations
+     *
+     * @return string
+     */
+
+    public function get_meta_integrations()
+    {
+        $integrations = $this->get("/meta/integrations", array(), "GET");
+        return $integrations;
+    }
+
+
+    /**
+     * Get integrations from eMailChef List
+     *
+     * @param $list_id
+     *
+     * @return mixed
+     */
+
+    public function get_integrations($list_id)
+    {
+        $route = sprintf("/lists/%d/integrations", $list_id);
+        return $this->get($route, array(), "GET", false, "debug");
+    }
+
+    /**
+     * Get integrations from eMailChef List
+     *
+     * @param $list_id
+     *
+     * @return mixed
+     */
+
+    public function create_integration($list_id) {
+
+        $args = array(
+
+            "instance_in" => array(
+                "list_id" => $list_id,
+                "integration_id" => 1,
+                "website" => Mage::getBaseUrl( Mage_Core_Model_Store::URL_TYPE_WEB, true ),
+            )
+
+        );
+
+        $response = $this->get("/integrations", $args, "POST");
+
+        if ($response['status'] != "OK") {
+            $this->lastError    = $response['message'];
+            $this->lastResponse = $response;
+
+            return false;
+        }
+
+        return $response['id'];
+
     }
 
     /**
