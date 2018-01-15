@@ -185,9 +185,13 @@ $e(document).ready(function () {
             });
         }
 
-        function exportCustomers(apiUser, apiPass, list_id, store){
+        function exportCustomers(store){
 
             var btn = $e("#emailchef_selftest_button");
+            var apiUser = $e("#emailchef_general_username").val();
+            var apiPass = $e("#emailchef_general_password").val();
+            var listId = $e("#emailchef_general_list").val();
+
             $e(btn).attr("disabled", true);
 
             $e("#emailchef_response_export .alert").hide();
@@ -199,7 +203,7 @@ $e(document).ready(function () {
                 data: {
                     'username' : apiUser,
                     'password' : apiPass,
-                    'list_id': list_id,
+                    'list_id': listId,
                     'store': store
                 },
                 dataType: 'json',
@@ -317,7 +321,7 @@ $e(document).ready(function () {
 
                     $e("#create_emailchef_ccf_success").show().delay(3000).fadeOut();
                     if (confirm(Translator.translate("Would you like to begin a first customers export?"))){
-                        exportCustomers(apiUser, apiPass, listId, $e("#store_switcher").val());
+                        exportCustomers($e("#store_switcher").val());
                     }
                     else
                         $e("#config_edit_form").submit();
