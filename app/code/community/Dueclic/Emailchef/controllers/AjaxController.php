@@ -394,9 +394,21 @@ class Dueclic_Emailchef_AjaxController extends Mage_Core_Controller_Front_Action
             'Content-Type', 'application/json', true
         );
 
+        $list_ids = array();
+
+        foreach (Mage::app()->getWebsites() as $website) {
+            foreach ($website->getGroups() as $group) {
+                $stores = $group->getStores();
+                foreach ($stores as $store) {
+                    $list_ids[] = Mage::getStoreConfig('emailchef/general/list', $store->getId());
+                }
+            }
+        }
+
         $this->getResponse()->setBody(
             json_encode(array(
-                "is_active" => true
+                "is_active" => true,
+                "list_ids" => $list_ids
             ))
         );
 
