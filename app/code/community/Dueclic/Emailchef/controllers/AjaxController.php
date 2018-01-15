@@ -191,6 +191,8 @@ class Dueclic_Emailchef_AjaxController extends Mage_Core_Controller_Front_Action
 
             }
 
+            $mgec->upsert_integration($args['list_id']);
+
             $init = $mgec->initialize_custom_fields($args['list_id']);
 
             if ($init) {
@@ -342,8 +344,6 @@ class Dueclic_Emailchef_AjaxController extends Mage_Core_Controller_Front_Action
                 $args['list_name'], $args['list_desc']
             );
 
-            $mgec->create_integration($list_id);
-
             $response['full_response'] = $mgec->lastResponse;
 
             if ($list_id !== false) {
@@ -384,6 +384,20 @@ class Dueclic_Emailchef_AjaxController extends Mage_Core_Controller_Front_Action
 
         $this->getResponse()->setBody(
             json_encode($response)
+        );
+
+    }
+
+    public function isActiveAction(){
+
+        $this->getResponse()->clearHeaders()->setHeader(
+            'Content-Type', 'application/json', true
+        );
+
+        $this->getResponse()->setBody(
+            json_encode(array(
+                "is_active" => true
+            ))
         );
 
     }

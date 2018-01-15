@@ -72,6 +72,57 @@ class MG_Emailchef extends MG_Emailchef_Api
     }
 
     /**
+     * Upsert integrations yo eMailChef List
+     *
+     * @param $list_id
+     *
+     * @return mixed
+     */
+
+    public function upsert_integration($list_id) {
+        $integrations = $this->get_integrations($list_id);
+        foreach ($integrations as $integration) {
+            if ($integration["id"] == 1 && $integration["website"] == Mage::getBaseUrl( Mage_Core_Model_Store::URL_TYPE_WEB, true ))
+                return $this->update_integration($integration["row_id"], $list_id);
+        }
+        return $this->create_integration($list_id);
+    }
+
+    /**
+     * Upsert integrations yo eMailChef List
+     *
+     * @param $list_id
+     * @param $integration_id
+     *
+     * @return mixed
+     */
+
+    public function update_integration($integration_id, $list_id) {
+
+        $args = array(
+
+            "instance_in" => array(
+                "list_id" => $list_id,
+                "integration_id" => 1,
+                "website" => Mage::getBaseUrl( Mage_Core_Model_Store::URL_TYPE_WEB, true ),
+            )
+
+        );
+
+        $response = $this->get("/integrations/".$integration_id, $args, "PUT");
+
+        if ($response['status'] != "OK") {
+            $this->lastError    = $response['message'];
+            $this->lastResponse = $response;
+
+            return false;
+        }
+
+        return $response['integration_id'];
+
+    }
+
+    /**
      * Get integrations from eMailChef List
      *
      * @param $list_id
@@ -317,6 +368,12 @@ class MG_Emailchef extends MG_Emailchef_Api
 
             "instance_in" => array(
                 "list_name" => $name,
+                "integrations" => array(
+                    array(
+                        "integration_id" => 1,
+                        "website" => Mage::getBaseUrl( Mage_Core_Model_Store::URL_TYPE_WEB, true )
+                    )
+                )
             ),
 
         );
