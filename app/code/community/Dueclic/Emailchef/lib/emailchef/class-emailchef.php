@@ -593,6 +593,28 @@ class MG_Emailchef extends MG_Emailchef_Api
 
     }
 
+	public function import( $list_id, $customers ) {
+		$args = array(
+
+			"instance_in" => array(
+				"contacts"          => $customers,
+				"notification_link" => ""
+			)
+
+		);
+
+		$update = $this->get( "/lists/" . $list_id . "/import", $args, "POST" );
+
+		if ( isset( $update['status'] ) && $update['status'] == "OK" ) {
+			return true;
+		}
+
+		$this->lastError = $update['message'];
+
+		return false;
+
+	}
+
     /**
      *
      * Insert customer

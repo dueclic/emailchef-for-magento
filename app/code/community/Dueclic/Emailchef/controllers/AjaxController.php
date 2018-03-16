@@ -104,16 +104,29 @@ class Dueclic_Emailchef_AjaxController extends Mage_Core_Controller_Front_Action
                 $customers = $helper->getCustomersData("initial", $storeIds);
             }
 
-            foreach ($customers as $customer) {
+	        $customers_import = array();
 
-                $mgec->upsert_customer(
-                    $list_id,
-                    $customer
-                );
+	        foreach ($customers as $customer) {
 
-            }
+		        $curCustomer = array();
 
-            $response['type'] = "success";
+		        foreach ( $customer as $placeholder => $value ) {
+
+			        if ( $placeholder == "user_email" ) {
+				        $placeholder = "email";
+			        }
+
+			        $curCustomer[] = array(
+				        "placeholder" => $placeholder,
+				        "value"       => $value
+			        );
+		        }
+		        $customers_import[] = $curCustomer;
+	        }
+
+	        $mgec->import($list_id, $customers_import);
+
+	        $response['type'] = "success";
             $response["msg"]  = $this->__("Customers data sync was successfully sent.");
 
             Mage::log(
