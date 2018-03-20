@@ -23,7 +23,7 @@ class Dueclic_Emailchef_Helper_Abandonedcart extends Mage_Core_Helper_Abstract
     public function get($cart){
 
         $abandoned = array(
-            "ab_cart_is_abandoned_cart" => "yes",
+            "ab_cart_is_abandoned_cart" => true,
             "ab_cart_prod_name_pr_hr" => "",
             "ab_cart_prod_desc_pr_hr" => "",
             "ab_cart_prod_pr_pr_hr" => null,

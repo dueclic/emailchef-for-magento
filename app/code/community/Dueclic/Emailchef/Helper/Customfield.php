@@ -356,7 +356,7 @@ class Dueclic_Emailchef_Helper_Customfield extends Mage_Core_Helper_Abstract
                 'name' => $this->__("Abandoned cart - Yes/No"),
                 'data_type' => 'boolean',
                 'ord' => 35,
-                'default_value' => 'no',
+                'default_value' => false,
             ),
             'ab_cart_prod_name_pr_hr' => array(
                 'name' => $this->__(
