@@ -594,6 +594,7 @@ class MG_Emailchef extends MG_Emailchef_Api
     }
 
 	public function import( $list_id, $customers ) {
+
 		$args = array(
 
 			"instance_in" => array(
@@ -669,11 +670,13 @@ class MG_Emailchef extends MG_Emailchef_Api
 
         $response = $this->get("/contacts", $args, "POST", false, "debug");
 
-        if (isset($response['contact_added_to_list'])
-            && $response['contact_added_to_list']
-        ) {
-            return true;
-        }
+	    if ( isset( $response['contact_added_to_list'] ) && $response['contact_added_to_list'] ) {
+		    return true;
+	    }
+
+	    if ( isset( $response['contact_added_to_list'] ) && !$response['contact_added_to_list'] && $response["updated"] ) {
+		    return true;
+	    }
 
         $this->lastError = $response['message'];
 
@@ -781,34 +784,7 @@ class MG_Emailchef extends MG_Emailchef_Api
 
     public function upsert_customer($list_id, $customer)
     {
-
-        $list_status = $this->get_list_status($list_id);
-
-        if ($list_status["status"] === "ERROR") {
-
-            $this->lastError = $list_status["message"];
-
-            return false;
-
-        }
-
-        $path = "/contacts";
-
-        $route = sprintf(
-            "%s?query_string=%s&limit=10&offset=0&list_id=%d&orderby=e&ordertype=a",
-            $path, $customer['user_email'], $list_id
-        );
-
-        $ec_customer = $this->get($route, array(), "GET");
-
-        if (empty($ec_customer)) {
-            return $this->insert_customer($list_id, $customer);
-        }
-
-        return $this->update_customer(
-            $list_id, $customer, $ec_customer[0]['id']
-        );
-
+	    return $this->insert_customer( $list_id, $customer );
     }
 
 }
