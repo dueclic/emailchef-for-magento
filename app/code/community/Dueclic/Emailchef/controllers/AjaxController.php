@@ -121,10 +121,20 @@ class Dueclic_Emailchef_AjaxController extends Mage_Core_Controller_Front_Action
 				        "value"       => $value
 			        );
 		        }
-		        $customers_import[] = $curCustomer;
+
+		        if (count($customers_import) > 100) {
+			        $mgec->import($list_id, $customers_import);
+			        $customers_import = array();
+			        $customers_import[] = $curCustomer;
+		        }
+		        else {
+			        $customers_import[] = $curCustomer;
+		        }
+
 	        }
 
-	        $mgec->import($list_id, $customers_import);
+	        if (count($customers_import) > 0)
+		        $mgec->import($list_id, $customers_import);
 
 	        $response['type'] = "success";
             $response["msg"]  = $this->__("Customers data sync was successfully sent.");
