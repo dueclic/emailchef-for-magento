@@ -631,6 +631,8 @@ class MG_Emailchef extends MG_Emailchef_Api
 
         $collection = $this->get_collection((int)$list_id);
 
+	    $custom_fields = array();
+
         foreach ($collection as $custom) {
 
             $my_custom = $custom;
@@ -666,7 +668,6 @@ class MG_Emailchef extends MG_Emailchef_Api
         if ( ! isset($customer["last_name"])) {
             unset($args["instance_in"]["lastname"]);
         }
-
 
         $response = $this->get("/contacts", $args, "POST", false, "debug");
 
