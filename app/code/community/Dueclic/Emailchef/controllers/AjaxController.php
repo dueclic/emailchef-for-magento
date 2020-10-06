@@ -318,6 +318,23 @@ class Dueclic_Emailchef_AjaxController extends Mage_Core_Controller_Front_Action
 
         $resource = Mage::getSingleton("core/resource");
 
+
+        if ( $resource->getConnection('core_read')->isTableExists('emailchef_abcart_synced')) {
+
+            $readConnection = $resource->getConnection('core_read');
+            $results = $readConnection->fetchAll("SELECT `last_date_sync` FROM `emailchef_abcart_synced` WHERE last_date_sync > (NOW() - INTERVAL 1 DAY)  ORDER BY `last_date_sync` DESC LIMIT 1 OFFSET 0");
+
+            if (count($results) > 0 ){
+                $this->getResponse()->setBody(
+                    json_encode(array(
+                        "sync" => 'not_executed',
+                        "count_sync" => 0
+                    ))
+                );
+                return;
+            }
+        }
+
         if ( ! $resource->getConnection('core_read')->tableColumnExists(
             $resource->getTableName('sales_flat_quote'), 'emailchef_sync'
         )
