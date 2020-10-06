@@ -311,6 +311,114 @@ class Dueclic_Emailchef_AjaxController extends Mage_Core_Controller_Front_Action
         );
     }
 
+    public function syncAbandonedCartsAction(){
+        /**
+         * @var $resource \Mage_Core_Model_Resource
+         */
+
+        $resource = Mage::getSingleton("core/resource");
+
+        if ( ! $resource->getConnection('core_read')->tableColumnExists(
+            $resource->getTableName('sales_flat_quote'), 'emailchef_sync'
+        )
+        ) {
+            $resource->getConnection('core_write')->addColumn(
+                $resource->getTableName('sales_flat_quote'), 'emailchef_sync',
+                "INT( 1 ) NULL"
+            );
+        }
+
+        /**
+         * @var $config \Dueclic_Emailchef_Model_Config
+         */
+
+        $config = Mage::getModel("dueclic_emailchef/config");
+
+        $username = Mage::getStoreConfig('emailchef/general/username');
+        $password = Mage::getStoreConfig('emailchef/general/password');
+        $list_id  = Mage::getStoreConfig('emailchef/general/list');
+
+        $mgec = $config->getEmailChefInstance(
+            $username, $password
+        );
+
+        if ( ! $mgec->isLogged()) {
+            return;
+        }
+
+        $fromDate = date("Y-m-d H:i:s", strtotime('-7 days'));
+        $toDate   = date("Y-m-d H:i:s", strtotime('-1 days'));
+
+        /**
+         * @var $quotes \Mage_Sales_Model_Resource_Quote_Collection
+         */
+
+        $quotes = Mage::getResourceModel('sales/quote_collection');
+
+        $quotes->addFieldToFilter('is_active', 1)
+            ->addFieldToFilter('converted_at', array('null' => true))
+            ->addFieldToFilter('customer_email', array('notnull' => true))
+            ->addFieldToFilter('emailchef_sync', array('null' => true));
+
+        /**
+         * @var $quote \Mage_Sales_Model_Quote
+         */
+
+        $total_quotes = 0;
+
+        $writeConn  = $resource->getConnection('core_write');
+
+        foreach ($quotes as $quote) {
+            if ($quote->getItemsQty() == 0) {
+                continue;
+            }
+
+            if ($quote->getUpdatedAt() < $fromDate
+                || $quote->getUpdatedAt() > $toDate
+            ) {
+                continue;
+            }
+
+            $total_quotes++;
+
+            /**
+             * @var $ab \Dueclic_Emailchef_Helper_Abandonedcart
+             */
+
+            $ab      = Mage::helper("dueclic_emailchef/abandonedcart");
+            $to_send = $ab->get($quote);
+            $mgec->upsert_customer($list_id, $to_send);
+
+            /**
+             * @var $resource \Mage_Core_Model_Resource
+             */
+
+            $resource = Mage::getSingleton('core/resource');
+
+            $sfq_table = $resource->getTableName('sales_flat_quote');
+
+            $writeConn->update(
+                $sfq_table, array(
+                "emailchef_sync" => 1,
+                "is_active"      => 0,
+            ), "customer_email = '".$to_send["user_email"]."'"
+            );
+        }
+
+        $writeConn->insert(
+            'emailchef_abcart_synced', [
+                'last_date_sync' => date('Y-m-d H:i:s')
+            ]
+        );
+
+        $this->getResponse()->setBody(
+            json_encode(array(
+                "sync" => 'done',
+                "count_sync" => $total_quotes
+            ))
+        );
+    }
+
     public function addListAction()
     {
 

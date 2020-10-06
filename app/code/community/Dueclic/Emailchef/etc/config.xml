@@ -1,11 +1,10 @@
 <?xml version="1.0"?>
 <config>
     <modules>
-        <dueclic_emailchef>
-            <version>1.0.5</version>
-        </dueclic_emailchef>
+        <Dueclic_Emailchef>
+            <version>1.0.6</version>
+        </Dueclic_Emailchef>
     </modules>
-
     <global>
         <template>
             <email>
@@ -26,7 +25,7 @@
                     </dueclic_emailchef>
                 </observers>
             </newsletter_subscriber_save_after>
-            <controller_action_layout_load_before>
+            <!--<controller_action_layout_load_before>
                 <observers>
                     <dueclic_emailchef>
                         <type>singleton</type>
@@ -34,7 +33,16 @@
                         <method>checkAbandonedCarts</method>
                     </dueclic_emailchef>
                 </observers>
-            </controller_action_layout_load_before>
+            </controller_action_layout_load_before>-->
+            <controller_action_layout_generate_blocks_after>
+                <observers>
+                    <dueclic_emailchef>
+                        <type>singleton</type>
+                        <class>Dueclic_Emailchef_Model_Observer</class>
+                        <method>appendCheckAbandonedCartsScript</method>
+                    </dueclic_emailchef>
+                </observers>
+            </controller_action_layout_generate_blocks_after>
             <admin_system_config_changed_section_emailchef>
                 <observers>
                     <modulename>
@@ -70,14 +78,14 @@
             </dueclic_emailchef>
         </helpers>
         <resources>
-            <dueclic_emailchef_setup>
+            <emailchef_setup>
                 <setup>
                     <module>Dueclic_Emailchef</module>
                 </setup>
                 <connection>
                     <use>core_setup</use>
                 </connection>
-            </dueclic_emailchef_setup>
+            </emailchef_setup>
             <dueclic_emailchef_write>
                 <connection>
                     <use>core_write</use>
@@ -92,7 +100,16 @@
         <models>
             <dueclic_emailchef>
                 <class>Dueclic_Emailchef_Model</class>
+                <resourceModel>emailchef_resource</resourceModel>
             </dueclic_emailchef>
+            <emailchef_resource>
+                <class>Dueclic_Emailchef_Model_Resource</class>
+                <entities>
+                    <abcartSynced>
+                        <table>emailchef_abcart_synced</table>
+                    </abcartSynced>
+                </entities>
+            </emailchef_resource>
         </models>
         <blocks>
             <dueclic_emailchef>
